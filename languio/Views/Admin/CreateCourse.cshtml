@@ -1,0 +1,39 @@
+@model Languio.Models.LanguageCourse
+
+@{
+    ViewData["Title"] = "Додати новий курс";
+}
+
+<div class="container py-5 text-dark bg-light rounded-4 my-4 shadow-sm" style="max-width: 600px;">
+    <div class="mb-4 pb-2 border-bottom d-flex justify-content-between align-items-center">
+        <h2 class="fw-bold text-secondary-emphasis m-0">✨ Новий мовний курс</h2>
+        <a asp-action="Index" class="btn btn-outline-secondary btn-sm fw-bold">Назад</a>
+    </div>
+
+    <form asp-action="CreateCourse" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="mb-3 text-start">
+            <label asp-for="Title" class="form-label fw-bold text-secondary">Назва курсу</label>
+            <input asp-for="Title" class="form-control form-control-lg border-2" placeholder="Наприклад: Німецька для початківців" required />
+            <span asp-validation-for="Title" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-4 text-start">
+            <label asp-for="LanguageCode" class="form-label fw-bold text-secondary">Код мови (ISO)</label>
+            <input asp-for="LanguageCode" class="form-control form-control-lg border-2 text-uppercase" placeholder="Наприклад: de, en, es" max="5" required />
+            <div class="form-text small">Короткий ідентифікатор мови для побудови посилань (URL) типу /Learn/de.</div>
+            <span asp-validation-for="LanguageCode" class="text-danger small"></span>
+        </div>
+
+        <div class="d-grid">
+            <button type="submit" class="btn btn-success btn-lg fw-bold text-uppercase py-3 rounded-3 shadow-sm">
+                Створити курс
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,205 @@
+﻿@model IEnumerable<Languio.Models.LanguageCourse>
+
+@{
+    ViewData["Title"] = "Панель адміністратора";
+}
+
+<div class="container py-5 text-dark bg-light rounded-4 my-4 shadow-sm">
+
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <h1 class="h2 fw-bold text-secondary-emphasis">⚙️ Панель адміністратора</h1>
+        <div class="d-flex gap-2">
+            <a asp-action="CreateGroup" class="btn btn-warning fw-bold btn-sm text-dark">
+                <i class="bi bi-box-seam me-1"></i> Створити групу
+            </a>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary fw-bold btn-sm">
+                <i class="bi bi-arrow-left"></i> На головну
+            </a>
+        </div>
+    </div>
+
+    <div class="card mb-5 border-0 shadow-sm">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-3 rounded-top-4">
+            <h5 class="m-0 fw-bold"><i class="bi bi-translate me-2"></i> Доступні мовні курси</h5>
+            <a asp-action="CreateCourse" class="btn btn-success btn-sm fw-bold px-3">
+                <i class="bi bi-plus-circle me-1"></i> Додати новий курс
+            </a>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle m-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 80px;">ID</th>
+                            <th>Код мови</th>
+                            <th>Назва курсу</th>
+                            <th style="width: 150px;">К-сть груп</th>
+                            <th class="text-end px-4" style="width: 250px;">Дії</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center text-secondary py-4">Жодного курсу ще не створено.</td>
+                            </tr>
+                        }
+                        @foreach (var course in Model)
+                        {
+                            <tr>
+                                <td class="fw-bold text-secondary">#@course.Id</td>
+                                <td><span class="badge bg-secondary-subtle text-secondary-emphasis border px-2.5 py-1.5 fw-bold text-uppercase">@course.LanguageCode</span></td>
+                                <td class="fw-bold text-dark-emphasis">@course.Title</td>
+                                <td><span class="badge bg-warning-subtle text-warning-emphasis border px-2.5">@course.Groups?.Count</span></td>
+                                <td class="text-end px-4">
+                                    <div class="d-inline-flex gap-2">
+                                        <a asp-action="EditCourse" asp-route-id="@course.Id" class="btn btn-outline-primary btn-sm px-2.5">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <form asp-action="DeleteCourse" asp-route-id="@course.Id" method="post" onsubmit="return confirm('Видалити курс разом з групами та уроками?');">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm px-2.5">
+                                                <i class="bi bi-trash3-fill"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-5 border-0 shadow-sm">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-3 rounded-top-4">
+            <h5 class="m-0 fw-bold"><i class="bi bi-box-seam me-2"></i> Керування групами (Модулями)</h5>
+            <a asp-action="CreateGroup" class="btn btn-warning btn-sm fw-bold px-3 text-dark">
+                <i class="bi bi-plus-circle me-1"></i> Додати нову групу
+            </a>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle m-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 80px;">ID</th>
+                            <th style="width: 180px;">Мовний курс</th>
+                            <th>Назва групи (Модуля)</th>
+                            <th>Опис модуля</th>
+                            <th style="width: 130px;">К-сть занять</th>
+                            <th class="text-end px-4" style="width: 250px;">Дії</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            var hasGroups = false;
+                        }
+                        @foreach (var course in Model)
+                        {
+                            @foreach (var group in course.Groups ?? new List<LanguageLessonGroup>())
+                            {
+                                hasGroups = true;
+                                <tr>
+                                    <td class="text-secondary fw-bold">#@group.Id</td>
+                                    <td><span class="badge bg-success-subtle text-success-emphasis border px-2 fw-bold text-uppercase">@course.Title</span></td>
+                                    <td class="fw-bold text-dark-emphasis">@group.Title</td>
+                                    <td class="text-secondary small text-wrap" style="max-width: 300px;">@group.Description</td>
+                                    <td><span class="badge bg-info-subtle text-info-emphasis border px-2.5">@group.Lessons?.Count</span></td>
+                                    <td class="text-end px-4">
+                                        <div class="d-inline-flex gap-2">
+                                            <a asp-action="EditGroup" asp-route-id="@group.Id" class="btn btn-outline-primary btn-sm px-2.5" title="Редагувати">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+                                            <form asp-action="DeleteGroup" asp-route-id="@group.Id" method="post" onsubmit="return confirm('Ви впевнені, що хочете видалити цю групу разом з усіма її уроками?');">
+                                                <button type="submit" class="btn btn-outline-danger btn-sm px-2.5" title="Видалити">
+                                                    <i class="bi bi-trash3-fill"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        @if (!hasGroups)
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center text-secondary py-4">Жодної групи ще не створено. Створіть її, щоб почати наповнення.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-3 rounded-top-4">
+            <h5 class="m-0 fw-bold"><i class="bi bi-journal-bookmark-fill me-2"></i> Структура занять (Уроки)</h5>
+            <a asp-action="CreateLesson" class="btn btn-primary btn-sm fw-bold px-3">
+                <i class="bi bi-plus-circle me-1"></i> Додати новий урок
+            </a>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle m-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 80px;">ID</th>
+                            <th>Курс $\rightarrow$ Група (Модуль)</th>
+                            <th>Назва уроку</th>
+                            <th>Порядок у змійці</th>
+                            <th class="text-end px-4" style="width: 300px;">Керування вмістом</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            var hasContent = false;
+                        }
+                        @foreach (var course in Model)
+                        {
+                            @foreach (var group in course.Groups ?? new List<LanguageLessonGroup>())
+                            {
+                                @foreach (var lesson in group.Lessons ?? new List<LanguageLesson>())
+                                {
+                                    hasContent = true;
+                                    <tr>
+                                        <td class="text-secondary">#@lesson.Id</td>
+                                        <td>
+                                            <span class="text-uppercase small fw-bold text-success">@course.Title</span>
+                                            <i class="bi bi-arrow-right mx-1 text-muted small"></i>
+                                            <span class="fw-semibold text-secondary small">@group.Title</span>
+                                        </td>
+                                        <td class="fw-bold text-dark-emphasis">@lesson.Title</td>
+                                        <td><span class="badge bg-light text-dark border px-2">№ @lesson.Order</span></td>
+                                        <td class="text-end px-4">
+                                            <div class="d-inline-flex gap-2">
+                                                <a asp-action="ManageQuestions" asp-route-lessonId="@lesson.Id" class="btn btn-outline-warning btn-sm fw-bold px-2.5 text-dark" title="Питання">
+                                                    <i class="bi bi-question-circle-fill me-1"></i> Питання
+                                                </a>
+                                                <a asp-action="EditLesson" asp-route-id="@lesson.Id" class="btn btn-outline-primary btn-sm px-2.5">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </a>
+                                                <form asp-action="DeleteLesson" asp-route-id="@lesson.Id" method="post" onsubmit="return confirm('Видалити урок?');">
+                                                    <button type="submit" class="btn btn-outline-danger btn-sm px-2.5">
+                                                        <i class="bi bi-trash3-fill"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                        @if (!hasContent)
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center text-secondary py-4">Додайте заняття всередину створених груп, щоб побачити фінальну структуру.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

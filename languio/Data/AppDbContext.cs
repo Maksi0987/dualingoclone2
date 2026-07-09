@@ -10,6 +10,12 @@ namespace Languio.Data
         public AppDbContext(DbContextOptions options) : base(options) {}
         public DbSet<LanguageCourse> Courses { get; set; }
         public DbSet<LanguageLesson> Lessons { get; set; }
+        public DbSet<LanguageLessonGroup> Groups { get; set; }
         public DbSet<LanguageQuestion> Questions { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

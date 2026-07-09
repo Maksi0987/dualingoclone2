@@ -1,0 +1,33 @@
+@model Languio.Models.LanguageLessonGroup
+
+@{
+    ViewData["Title"] = "Створити групу (Модуль)";
+}
+
+<div class="container py-5 text-dark bg-light rounded-4 my-4 shadow-sm" style="max-width: 600px;">
+    <div class="mb-4 pb-2 border-bottom d-flex justify-content-between align-items-center">
+        <h2 class="fw-bold text-secondary-emphasis m-0">📦 Нова група (Модуль)</h2>
+        <a asp-action="Index" class="btn btn-outline-secondary btn-sm fw-bold">Назад</a>
+    </div>
+
+    <form asp-action="CreateGroup" method="post">
+        <div class="mb-3 text-start">
+            <label class="form-label fw-bold text-secondary">Для якого курсу?</label>
+            <select name="languageCourseId" class="form-select form-select-lg border-2" asp-items="ViewBag.Courses" required>
+                <option value="">-- Оберіть мовний курс --</option>
+            </select>
+        </div>
+
+        <div class="mb-4 text-start">
+            <label asp-for="Description" class="form-label fw-bold text-secondary">Опис модуля</label>
+            <textarea asp-for="Description" class="form-control border-2" rows="3" placeholder="Наприклад: Навчіться вітатися, розповідати про себе та ставити прості запитання."></textarea>
+            <span asp-validation-for="Description" class="text-danger small"></span>
+        </div>
+
+        <div class="d-grid">
+            <button type="submit" class="btn btn-success btn-lg fw-bold text-uppercase py-3 rounded-3 shadow-sm">
+                Створити групу
+            </button>
+        </div>
+    </form>
+</div>

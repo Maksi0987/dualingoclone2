@@ -1,4 +1,6 @@
-﻿namespace Languio.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Languio.Models
 {
     public class LanguageLesson
     {
@@ -6,8 +8,8 @@
         public string Title { get; set; }
         public int Order { get; set; }
 
-        public int LanguageCoruseId { get; set; }
-        public LanguageCourse LanguageCourse { get; set; }
+        public int LanguageLessonGroupId { get; set; }
+        public LanguageLessonGroup LanguageGroup { get; set; }
 
         public List<LanguageQuestion> Questions { get; set; }
     }

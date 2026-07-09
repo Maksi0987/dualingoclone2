@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Безкоштовне вивчення мов";
+}
+
+<div class="landing-wrapper d-flex flex-column justify-content-between min-vh-100 bg-white text-dark">
+
+    <header class="container d-flex justify-content-between align-items-center py-4 px-3">
+        <div class="logo fw-bold text-success fs-2" style="letter-spacing: -1px;">languio</div>
+        <div class="dropdown">
+            <button class="btn btn-link text-secondary text-uppercase fw-bold text-decoration-none dropdown-toggle small" type="button" data-bs-toggle="dropdown">
+                Мова сайту: Українська
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Українська</a></li>
+                <li><a class="dropdown-item" href="#">English</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="container my-auto">
+        <div class="row align-items-center justify-content-center gy-5">
+
+            <div class="col-12 col-md-6 text-center text-md-end pe-md-5">
+                <img src="~/images/landing-birds.png" alt="Languio Characters" class="img-fluid" style="max-height: 400px; object-fit: contain;"
+                     onerror="this.onerror=null; this.src='https://d35aaqx5ub3544.cloudfront.net/images/super-duolingo-owl.svg';">
+            </div>
+
+            <div class="col-12 col-md-6 text-center text-md-start ps-md-5">
+                <h1 class="fw-bold h2 mb-4 text-secondary-emphasis" style="max-width: 500px; line-height: 1.4;">
+                    Безкоштовний, веселий та ефективний спосіб вивчення мови!
+                </h1>
+
+                <div class="d-flex flex-column gap-3 mx-auto mx-md-0" style="max-width: 330px;">
+                    <a asp-controller="Home"
+                       asp-action="LanguageChoice"
+                       class="btn btn-success fw-bold text-uppercase py-3 rounded-4 shadow-sm btn-3d-green">
+                        Розпочати
+                    </a>
+
+                    <a asp-area="Identity"
+                       asp-page="/Account/Login"
+                       class="btn btn-light border border-2 border-body-secondary fw-bold text-primary text-uppercase py-3 rounded-4 shadow-sm btn-3d-light">
+                        Уже маю обліковий запис
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="border-top border-2 border-light-subtle py-4 mt-5">
+        <div class="container d-flex justify-content-center align-items-center gap-4 flex-wrap text-secondary fw-bold small text-uppercase">
+            <span class="mx-2"><span class="fs-5 me-1">🇺🇸</span> Англійська</span>
+            <span class="mx-2"><span class="fs-5 me-1">🇪🇸</span> Іспанська</span>
+            <span class="mx-2"><span class="fs-5 me-1">🇫🇷</span> Французька</span>
+            <span class="mx-2"><span class="fs-5 me-1">🇩🇪</span> Німецька</span>
+            <span class="mx-2"><span class="fs-5 me-1">🇮🇹</span> Італійська</span>
+            <span class="mx-2"><span class="fs-5 me-1">🇧🇷</span> Португальська</span>
+        </div>
+    </footer>
+
+</div>

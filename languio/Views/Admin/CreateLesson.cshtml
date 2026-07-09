@@ -1,0 +1,73 @@
+﻿@model Languio.Models.LanguageLesson
+
+@{
+    ViewData["Title"] = "Додати нове заняття";
+}
+
+<div class="container py-5 text-dark bg-light rounded-4 my-4 shadow-sm" style="max-width: 600px;">
+    <div class="mb-4 pb-2 border-bottom d-flex justify-content-between align-items-center">
+        <h2 class="fw-bold text-secondary-emphasis m-0">📚 Нове заняття (Урок)</h2>
+        <a asp-action="Index" class="btn btn-outline-secondary btn-sm fw-bold">Назад</a>
+    </div>
+
+    <form asp-action="CreateLesson" method="post">
+
+        <div class="mb-3">
+            <label class="form-label">1. Оберіть курс</label>
+            <select id="courseSelect" class="form-select" asp-items="ViewBag.Courses" required>
+                <option value="">-- Оберіть мовний курс --</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">2. Оберіть групу</label>
+            <select id="groupSelect" asp-for="LanguageLessonGroupId" class="form-select" disabled required>
+                <option value="">-- Спочатку оберіть курс --</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">3. Назва заняття</label>
+            <input asp-for="Title" class="form-control" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Створити</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('courseSelect').addEventListener('change', async function () {
+            let courseId = this.value;
+            let groupSelect = document.getElementById('groupSelect');
+
+            groupSelect.innerHTML = '<option value="">-- Оберіть групу --</option>';
+
+            if (!courseId) {
+                groupSelect.disabled = true;
+                return;
+            }
+
+            try {
+                let response = await fetch(`/Admin/GetGroupsByCourse/${courseId}`);
+                let groups = await response.json();
+
+                if (groups.length > 0) {
+                    groups.forEach(g => {
+                        let option = document.createElement('option');
+                        option.value = g.id;
+                        option.textContent = g.title;
+                        groupSelect.appendChild(option);
+                    });
+                    groupSelect.disabled = false;
+                } else {
+                    groupSelect.innerHTML = '<option value="">В цьому курсі немає груп</option>';
+                    groupSelect.disabled = true;
+                }
+            } catch (error) {
+                console.error("Помилка завантаження груп:", error);
+            }
+        });
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+}

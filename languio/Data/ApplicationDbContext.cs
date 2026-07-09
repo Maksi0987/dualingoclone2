@@ -1,6 +1,6 @@
+using languio.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using languio.Models;
 
 namespace languio.Data
 {

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\sereb\\source\\repos\\WebApplication1\\WebApplication1\\languio.csproj": {}
+    "C:\\Users\\sereb\\source\\repos\\languio\\Languio\\Languio.csproj": {}
   },
   "projects": {
-    "C:\\Users\\sereb\\source\\repos\\WebApplication1\\WebApplication1\\languio.csproj": {
+    "C:\\Users\\sereb\\source\\repos\\languio\\Languio\\Languio.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\sereb\\source\\repos\\WebApplication1\\WebApplication1\\languio.csproj",
-        "projectName": "languio",
-        "projectPath": "C:\\Users\\sereb\\source\\repos\\WebApplication1\\WebApplication1\\languio.csproj",
+        "projectUniqueName": "C:\\Users\\sereb\\source\\repos\\languio\\Languio\\Languio.csproj",
+        "projectName": "Languio",
+        "projectPath": "C:\\Users\\sereb\\source\\repos\\languio\\Languio\\Languio.csproj",
         "packagesPath": "C:\\Users\\sereb\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\sereb\\source\\repos\\WebApplication1\\WebApplication1\\obj\\",
+        "outputPath": "C:\\Users\\sereb\\source\\repos\\languio\\Languio\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -53,6 +53,10 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Authentication.Google": {
+              "target": "Package",
+              "version": "[10.0.9, )"
+            },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
               "version": "[10.0.9, )"
@@ -65,9 +69,11 @@
               "target": "Package",
               "version": "[10.0.9, )"
             },
-            "Microsoft.SqlServer.DacFx": {
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
-              "version": "[170.4.83, )"
+              "version": "[10.0.9, )"
             }
           },
           "imports": [

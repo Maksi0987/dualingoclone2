@@ -4,6 +4,6 @@ namespace languio.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        
+
     }
 }

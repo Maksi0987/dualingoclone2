@@ -1,0 +1,39 @@
+.duo-wrapper {
+    background-color: #131f24;
+}
+
+.left-sidebar .nav-link {
+    transition: all 0.2s ease;
+    color: #afbbca !important;
+}
+
+    .left-sidebar .nav-link:hover {
+        background-color: #202f36 !important;
+        color: #fff !important;
+        cursor: pointer;
+    }
+
+    .left-sidebar .nav-link.active {
+        color: #fff !important;
+    }
+
+.learning-map .btn {
+    border-bottom-width: 5px !important;
+    transition: transform 0.1s, border-bottom-width 0.1s;
+}
+
+    .learning-map .btn:active {
+        transform: translateY(4px);
+        border-bottom-width: 1px !important;
+    }
+
+
+.btn-success {
+    border-bottom-color: #46a302 !important;
+}
+
+.btn-secondary {
+    border-bottom-color: #202f36 !important;
+    background-color: #37464f !important;
+    border-color: #37464f !important;
+}

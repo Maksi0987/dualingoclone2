@@ -1,0 +1,9 @@
+C:\Users\sereb\source\repos\WebApplication1\WebApplication1\obj\Debug\net10.0\languio.csproj.AssemblyReference.cache
+C:\Users\sereb\source\repos\WebApplication1\WebApplication1\obj\Debug\net10.0\rpswa.dswa.cache.json
+C:\Users\sereb\source\repos\WebApplication1\WebApplication1\obj\Debug\net10.0\languio.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\sereb\source\repos\WebApplication1\WebApplication1\obj\Debug\net10.0\languio.AssemblyInfoInputs.cache
+C:\Users\sereb\source\repos\WebApplication1\WebApplication1\obj\Debug\net10.0\languio.AssemblyInfo.cs
+C:\Users\sereb\source\repos\WebApplication1\WebApplication1\obj\Debug\net10.0\languio.csproj.CoreCompileInputs.cache
+C:\Users\sereb\source\repos\WebApplication1\WebApplication1\obj\Debug\net10.0\languio.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\sereb\source\repos\WebApplication1\WebApplication1\obj\Debug\net10.0\languio.RazorAssemblyInfo.cache
+C:\Users\sereb\source\repos\WebApplication1\WebApplication1\obj\Debug\net10.0\languio.RazorAssemblyInfo.cs

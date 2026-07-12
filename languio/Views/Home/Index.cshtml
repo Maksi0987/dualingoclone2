@@ -21,7 +21,7 @@
         <div class="row align-items-center justify-content-center gy-5">
 
             <div class="col-12 col-md-6 text-center text-md-end pe-md-5">
-                <img src="~/images/landing-birds.png" alt="Languio Characters" class="img-fluid" style="max-height: 400px; object-fit: contain;"
+                <img src="~/images/mascot.gif" alt="Languio Characters" class="img-fluid" style="max-height: 400px; height: 300px; object-fit: contain;"
                      onerror="this.onerror=null; this.src='https://d35aaqx5ub3544.cloudfront.net/images/super-duolingo-owl.svg';">
             </div>
 
@@ -38,9 +38,10 @@
                     </a>
 
                     <a asp-area="Identity"
-                       asp-page="/Account/Login"
+                       asp-action="Login"
+                       asp-controller="Account"
                        class="btn btn-light border border-2 border-body-secondary fw-bold text-primary text-uppercase py-3 rounded-4 shadow-sm btn-3d-light">
-                        Уже маю обліковий запис
+                        Вже маю обліковий запис
                     </a>
                 </div>
             </div>

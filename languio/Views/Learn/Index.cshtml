@@ -1,170 +1,167 @@
-﻿@model LearnViewModel
-
+﻿@model Languio.Models.LearnViewModel
 @{
-    ViewData["Title"] = "Карта знань";
-    int globalLessonIndex = 0;
-    int groupNumber = 0;
+    ViewData["Title"] = "Навчання";
 }
 
-<div class="container-fluid min-vh-100 bg-duo-dark text-white p-0">
-    <div class="row g-0 m-0">
+<div class="container-fluid min-vh-100 bg-white font-sans text-dark m-0 p-0">
+    <div class="row min-vh-100 g-0">
 
-        <div class="col-xl-3 d-none d-xl-flex flex-column border-end border-secondary border-opacity-25 min-vh-100 p-4 position-sticky top-0" style="height: 100vh;">
-            <div class="logo fw-bold text-success fs-2 mb-4 px-3" style="letter-spacing: -1px;">languio</div>
-            <div class="d-flex flex-column gap-2 w-100 left-sidebar">
-                <a asp-controller="Learn" asp-action="Index" class="nav-link active d-flex align-items-center py-3 px-4 rounded-4 fw-bold">
-                    <i class="bi bi-house-door-fill me-3 fs-4"></i> НАВЧАННЯ
-                </a>
-                <a asp-controller="Leaderboard" asp-action="Index" class="nav-link d-flex align-items-center py-3 px-4 rounded-4 fw-bold text-white-50">
-                    <i class="bi bi-shield-shaded me-3 fs-4"></i> ДОШКИ ПОШАНИ
-                </a>
-                <a asp-controller="Quests" asp-action="Index" class="nav-link d-flex align-items-center py-3 px-4 rounded-4 fw-bold text-white-50">
-                    <i class="bi bi-trophy-fill me-3 fs-4"></i> КВЕСТИ
-                </a>
-                <a asp-controller="Shop" asp-action="Index" class="nav-link d-flex align-items-center py-3 px-4 rounded-4 fw-bold text-white-50">
-                    <i class="bi bi-bag-heart-fill me-3 fs-4"></i> МАГАЗИН
-                </a>
-                <a asp-controller="Profile" asp-action="Index" class="nav-link d-flex align-items-center py-3 px-4 rounded-4 fw-bold text-white-50">
-                    <i class="bi bi-person-circle me-3 fs-4"></i> ПРОФІЛЬ
-                </a>
-                <a href="#" class="nav-link d-flex align-items-center py-3 px-4 rounded-4 fw-bold text-white-50">
-                    <i class="bi bi-three-dots me-3 fs-4"></i> БІЛЬШЕ
-                </a>
-                <a asp-controller="Admin" asp-action="Index" class="nav-link d-flex align-items-center py-3 px-4 rounded-4 fw-bold text-warning border border-warning border-opacity-25 mt-4">
-                    <i class="bi bi-gear-fill me-3 fs-4"></i> АДМІНІСТРАЦІЯ
+        <aside class="col-lg-2 col-md-3 border-end border-2 border-light-subtle px-4 py-4 d-flex flex-column justify-content-between position-sticky top-0 h-100vh">
+            <div>
+                <div class="logo fw-extrabold text-success fs-1 px-2 mb-4 pb-2" style="letter-spacing: -2px; font-family: 'Nunito', sans-serif;">
+                    languio
+                </div>
+                <nav class="nav flex-column gap-2 left-sidebar">
+                    <a href="#" class="nav-link active d-flex align-items-center gap-3 px-3 py-3 rounded-4 fw-extrabold text-uppercase">
+                        <i class="bi bi-house-door-fill fs-4 text-primary"></i> Навчання
+                    </a>
+                    <a href="#" class="nav-link d-flex align-items-center gap-3 px-3 py-3 rounded-4 fw-extrabold text-uppercase">
+                        <i class="bi bi-shield-shaded fs-4 text-warning"></i> Ліги
+                    </a>
+                    <a href="#" class="nav-link d-flex align-items-center gap-3 px-3 py-3 rounded-4 fw-extrabold text-uppercase">
+                        <i class="bi bi-award-fill fs-4 text-success"></i> Квести
+                    </a>
+                    <a href="#" class="nav-link d-flex align-items-center gap-3 px-3 py-3 rounded-4 fw-extrabold text-uppercase">
+                        <i class="bi bi-shop fs-4 text-danger"></i> Магазин
+                    </a>
+                    <a href="#" class="nav-link d-flex align-items-center gap-3 px-3 py-3 rounded-4 fw-extrabold text-uppercase">
+                        <i class="bi bi-person-circle fs-4 text-info"></i> Профіль
+                    </a>
+                    <a href="#" class="nav-link d-flex align-items-center gap-3 px-3 py-3 rounded-4 fw-extrabold text-uppercase">
+                        <i class="bi bi-three-dots fs-4 text-secondary"></i> Більше
+                    </a>
+                </nav>
+            </div>
+
+            <div class="px-2">
+                <a asp-controller="Admin" asp-action="Index" class="btn btn-3d-light text-uppercase fw-extrabold py-3 rounded-4 w-100 border-2 d-flex align-items-center justify-content-center gap-2">
+                    <i class="bi bi-gear-fill"></i> Адмінка
                 </a>
             </div>
-        </div>
+        </aside>
 
-        <div class="col-12 col-md-8 col-xl-6 py-5 px-3 min-vh-100 border-end border-secondary border-opacity-25">
-            <div class="mx-auto" style="max-width: 560px;">
+        <main class="col-lg-7 col-md-6 py-4 px-lg-5 overflow-auto bg-white">
+            <div class="mx-auto position-relative py-2" style="max-width: 560px;">
 
-                @if (!Model.LanguageLessonGroups.Any())
+                @if (Model.LanguageLessonGroups == null || !Model.LanguageLessonGroups.Any())
                 {
-                    <div class="text-center py-5">
-                        <h3 class="text-secondary">Для цього курсу ще не створено жодного модуля.</h3>
-                        <a asp-controller="Admin" asp-action="Index" class="btn btn-success fw-bold mt-3">В адмінку</a>
+                    <div class="p-5 text-center text-secondary border border-2 border-dashed border-secondary-subtle rounded-4 my-5 bg-light">
+                        <h5 class="fw-bold">Курс поки порожній</h5>
+                        <p class="small m-0">Перейдіть в панель адміністратора, щоб додати розділи та уроки.</p>
                     </div>
                 }
-
-                @foreach (var group in Model.LanguageLessonGroups)
+                else
                 {
-                    groupNumber++;
-
-                    <div class="dl-section-banner rounded-4 p-4 mb-5 shadow-sm d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="text-uppercase fw-extrabold small text-white-50 mb-1" style="letter-spacing: 1px;">
-                                Частина 1, Розділ @groupNumber
+                    int groupCounter = 1;
+                    foreach (var group in Model.LanguageLessonGroups)
+                    {
+                        <div class="dl-section-banner p-4 text-white rounded-4 d-flex justify-content-between align-items-center mb-5 shadow-sm">
+                            <div>
+                                <div class="text-uppercase fw-extrabold small text-white-50 tracking-wider">Розділ @groupCounter</div>
+                                <h2 class="h4 fw-extrabold m-0 mt-1">@group.Title</h2>
                             </div>
-                            <h2 class="h4 fw-bold m-0 text-white text-wrap">
-                                @group.Title
-                            </h2>
+                            <button class="btn btn-light bg-white text-success fw-extrabold text-uppercase px-3 py-2 rounded-3 btn-3d-subtle small d-flex align-items-center gap-2">
+                                <i class="bi bi-book-half"></i> Посібник
+                            </button>
                         </div>
-                        <a href="#" class="btn btn-3d-light bg-success-subtle border-0 fw-extrabold text-white text-uppercase px-3 py-2 rounded-3 btn-sm d-flex align-items-center gap-2">
-                            <i class="bi bi-journal-text fs-5"></i> Посібник
-                        </a>
-                    </div>
 
-                    <div class="position-relative d-flex flex-column align-items-center gap-2 mb-5">
+                        <div class="d-flex flex-column align-items-center gap-4 py-3 mb-5 position-relative">
 
-                        @foreach (var lesson in group.Lessons.OrderBy(l => l.Order))
-                        {
-                            int positionState = globalLessonIndex % 4;
-                            string marginClass = positionState switch
+                            @{
+                                var lessons = group.Lessons?.OrderBy(l => l.Order).ToList() ?? new List<LanguageLesson>();
+                                int[] shifts = new int[] { 0, -30, -55, -30, 0, 30, 55, 30 };
+                            }
+
+                            @if (!lessons.Any())
                             {
-                                1 => "me-5 pe-4",  // Зсув вправо
-                                2 => "ms-5 ps-4",  // Зсув вліво
-                                3 => "ms-5 ps-4",  // Зсув вліво (повернення)
-                                _ => ""            // Центр
-                            };
+                                <div class="text-muted small fw-bold py-2">Уроків у цьому розділі ще немає...</div>
+                            }
 
-                            bool isLocked = globalLessonIndex > 0;
-                            string duolingoBtnClass = isLocked ? "dl-btn-locked" : "dl-btn-active";
-                            string icon = isLocked ? "bi-lock-fill" : "bi-star-fill";
+                            @for (int i = 0; i < lessons.Count; i++)
+                            {
+                                var lesson = lessons[i];
+                                int shiftX = shifts[i % shifts.Length];
+                                bool isFirstLesson = (groupCounter == 1 && i == 0);
 
-                            <div class="d-flex flex-column align-items-center @marginClass position-relative text-center my-2" style="width: 140px; z-index: 2;">
+                                <div class="position-relative" style="transform: translateX(@(shiftX)px);">
+                                    @if (isFirstLesson)
+                                    {
+                                        <div class="dl-tooltip text-uppercase">Почати</div>
+                                        <a asp-controller="Lesson" asp-action="Start" asp-route-id="@lesson.Id"
+                                           class="btn dl-btn dl-btn-active rounded-circle d-flex align-items-center justify-content-center animate-bounce">
+                                            <i class="bi bi-star-fill text-white fs-4"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn dl-btn dl-btn-locked rounded-circle d-flex align-items-center justify-content-center" disabled>
+                                            <i class="bi bi-star-fill fs-4"></i>
+                                        </button>
+                                    }
+                                </div>
+                            }
 
-                                @if (!isLocked)
-                                {
-                                    <div class="dl-tooltip text-uppercase fw-extrabold animate-bounce">
-                                        Почати
-                                    </div>
-                                }
+                        </div>
 
-                                <a asp-controller="Lesson"
-                                   asp-action="Details"
-                                   asp-route-id="@lesson.Id"
-                                   class="btn dl-btn @duolingoBtnClass rounded-circle d-flex align-items-center justify-content-center"
-                                   style="pointer-events: @(isLocked ? "none" : "auto");">
-                                    <i class="bi @icon"></i>
-                                </a>
-                            </div>
-
-                            globalLessonIndex++;
-                        }
-                    </div>
+                        groupCounter++;
+                    }
                 }
-
             </div>
-        </div>
+        </main>
 
-        <div class="col-12 col-md-4 col-xl-3 flex-column p-4 position-sticky top-0 d-none d-md-flex" style="height: 100vh; overflow-y: auto;">
+        <aside class="col-lg-3 col-md-3 border-start border-2 border-light-subtle py-4 px-4 bg-white d-flex flex-column gap-4 position-sticky top-0 h-100vh">
 
-            <div class="d-flex justify-content-between align-items-center w-100 mb-4 px-2">
-                <div class="dl-flag-icon text-uppercase fw-bold border border-secondary border-opacity-50 px-2.5 py-1 rounded-3">
-                    @Model.LanguageCode
-                </div>
-                <span class="fw-extrabold text-secondary-emphasis fs-5 d-flex align-items-center gap-1">
-                    <i class="bi bi-fire text-warning fs-4"></i> @Model.DayStreak
+            <div class="d-flex justify-content-between align-items-center fw-extrabold px-1 stats-row">
+                <span class="d-flex align-items-center gap-2 text-dark fs-5 cursor-pointer rounded-3 px-2 py-1 hover-gray" title="Поточна мова">
+                    <span class="fs-4">@(!string.IsNullOrEmpty(Model.LanguageCode) ? (Model.LanguageCode.ToLower() == "en" ? "🇺🇸" : "🇩🇪") : "🌐")</span>
                 </span>
-                <span class="fw-extrabold text-info fs-5 d-flex align-items-center gap-1">
-                    <i class="bi bi-gem text-info fs-4"></i> @Model.Coins
+
+                <span class="d-flex align-items-center gap-1.5 text-danger fs-5 rounded-3 px-2 py-1 hover-gray" title="Ударний режим (Дні)">
+                    <i class="bi bi-fire fs-4"></i> @Model.DayStreak
+                </span>
+
+                <span class="d-flex align-items-center gap-1.5 text-info fs-5 rounded-3 px-2 py-1 hover-gray" title="Лінгвоти (Монети)">
+                    <i class="bi bi-gem fs-4 text-cyan"></i> @Model.Coins
+                </span>
+
+                <span class="d-flex align-items-center gap-1.5 text-danger fs-5 rounded-3 px-2 py-1 hover-gray" title="Життя">
+                    <i class="bi bi-heart-fill fs-4"></i> 5
                 </span>
             </div>
 
-            <div class="card bg-transparent border border-secondary border-opacity-50 rounded-4 p-4 mb-4">
-                <h5 class="fw-extrabold text-white mb-3 fs-6 text-uppercase" style="letter-spacing: 0.5px;">Розблокуйте дошки пошани!</h5>
-                <div class="d-flex gap-3 align-items-center">
-                    <div class="bg-secondary bg-opacity-20 p-3 rounded-3 border border-secondary border-opacity-25">
-                        <i class="bi bi-shield-lock-fill text-secondary fs-3"></i>
+            <div class="card dl-sidebar-card p-4 rounded-4 border-2 shadow-sm">
+                <h5 class="fw-extrabold text-dark mb-3 h6 text-uppercase tracking-wide text-secondary">Ліга прогресу</h5>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-light border border-2 border-light-subtle rounded-4 p-3 text-secondary opacity-70">
+                        <i class="bi bi-shield-lock-fill fs-2 text-warning"></i>
                     </div>
-                    <p class="text-white-50 small m-0 lh-sm">Пройдіть ще кілька уроків, щоб почати змагання з іншими гравцями.</p>
+                    <div>
+                        <h6 class="fw-extrabold text-dark m-0 mb-1">Розблокуйте ліги!</h6>
+                        <p class="small text-secondary fw-bold m-0" style="line-height: 1.4;">Пройдіть ще декілька уроків, щоб змагатися з іншими.</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="card bg-transparent border border-secondary border-opacity-50 rounded-4 p-4 mb-4">
+            <div class="card dl-sidebar-card p-4 rounded-4 border-2 shadow-sm">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="fw-extrabold text-white m-0 fs-6 text-uppercase" style="letter-spacing: 0.5px;">Квести дня</h5>
-                    <a href="#" class="text-info fw-bold small text-decoration-none">УСІ</a>
+                    <h5 class="fw-extrabold text-dark m-0 h6 text-uppercase tracking-wide text-secondary">Квести дня</h5>
+                    <a href="#" class="text-info text-decoration-none fw-extrabold small tracking-wider">УСІ</a>
                 </div>
-                <div class="d-flex gap-3 align-items-center mb-2">
-                    <i class="bi bi-lightning-charge-fill text-warning fs-3"></i>
-                    <div class="w-100">
-                        <div class="d-flex justify-content-between text-white-50 small mb-1">
-                            <span>Отримайте 10 балів</span>
-                            <span>0 / 10</span>
+                <div class="d-flex align-items-start gap-3">
+                    <i class="bi bi-lightning-charge-fill text-warning fs-2 mt-1"></i>
+                    <div class="flex-grow-1">
+                        <div class="d-flex justify-content-between small fw-extrabold text-dark mb-1">
+                            <span>Наберіть 10 балів</span>
+                            <span class="text-secondary fw-bold">0 / 10</span>
                         </div>
-                        <div class="progress bg-secondary bg-opacity-50" style="height: 12px; border-radius: 6px;">
-                            <div class="progress-bar bg-warning" role="progressbar" style="width: 0%; border-radius: 6px;"></div>
+                        <div class="progress bg-light border border-light-subtle" style="height: 14px; border-radius: 8px;">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: 20%; border-radius: 8px;"></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="card bg-transparent border border-secondary border-opacity-50 rounded-4 p-4">
-                <h5 class="fw-extrabold text-white mb-2 fs-6">Створіть профіль, щоб зберегти свій прогрес!</h5>
-                <p class="text-white-50 small mb-4 lh-sm">Не втрачайте свої лінготи та ударний режим днів.</p>
-
-                @if (!User.Identity.IsAuthenticated)
-                {
-                    <div class="d-flex flex-column gap-2">
-                        <a asp-area="Identity" asp-action="Register" asp-controller="Account" class="btn btn-3d-green text-uppercase fw-extrabold py-2.5 rounded-3 w-100 fs-7">Створити профіль</a>
-                        <a asp-area="Identity" asp-action="Login" asp-controller="Account" class="btn btn-3d-light text-uppercase fw-extrabold py-2.5 rounded-3 w-100 fs-7">Увійти</a>
-                    </div>
-                }
-            </div>
-
-        </div>
+        </aside>
 
     </div>
 </div>

@@ -1,0 +1,60 @@
+﻿@model Languio.Models.CreateQuestionViewModel
+
+<h2>Додати нове питання до уроку</h2>
+
+<div class="card p-4 mt-3" style="max-width: 600px;">
+    <form asp-action="CreateQuestion" method="post" id="questionForm">
+        <input type="hidden" asp-for="LessonId" />
+
+        <div class="mb-3">
+            <label class="form-label">Тип завдання</label>
+            <select asp-for="Type" class="form-select" asp-items="Html.GetEnumSelectList<Languio.Models.QuestionType>()"></select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Текст завдання (Prompt)</label>
+            <input asp-for="PromptText" class="form-control" placeholder="Наприклад: Перекладіть слово 'Яблуко'" required />
+        </div>
+
+        <hr />
+        <h4>Варіанти відповідей</h4>
+
+        <div id="options-container">
+        </div>
+
+        <button type="button" class="btn btn-outline-primary mb-4" onclick="addOption()">
+            + Додати варіант
+        </button>
+
+        <button type="submit" class="btn btn-success w-100">Зберегти питання</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        let optionIndex = 0;
+
+        function addOption() {
+            const container = document.getElementById('options-container');
+
+            const html = `
+                <div class="input-group mb-2 option-row">
+                    <input type="text" name="Options[${optionIndex}].Text" class="form-control" placeholder="Текст варіанту" required />
+
+                    <div class="input-group-text">
+                        <input class="form-check-input mt-0" type="checkbox" name="Options[${optionIndex}].IsCorrect" value="true">
+                        <span class="ms-2">Правильна?</span>
+                    </div>
+
+                    <button type="button" class="btn btn-danger" onclick="this.closest('.option-row').remove()">X</button>
+                </div>
+            `;
+
+            container.insertAdjacentHTML('beforeend', html);
+            optionIndex++;
+        }
+
+        addOption();
+        addOption();
+    </script>
+}

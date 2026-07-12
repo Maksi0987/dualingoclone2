@@ -1,73 +1,41 @@
 ﻿@model Languio.Models.LanguageLesson
-
 @{
-    ViewData["Title"] = "Додати нове заняття";
+    ViewData["Title"] = "Додати новий урок";
+    int groupId = ViewBag.GroupId;
 }
 
-<div class="container py-5 text-dark bg-light rounded-4 my-4 shadow-sm" style="max-width: 600px;">
-    <div class="mb-4 pb-2 border-bottom d-flex justify-content-between align-items-center">
-        <h2 class="fw-bold text-secondary-emphasis m-0">📚 Нове заняття (Урок)</h2>
-        <a asp-action="Index" class="btn btn-outline-secondary btn-sm fw-bold">Назад</a>
+<div class="container-fluid min-vh-100 bg-white d-flex align-items-center justify-content-center p-4">
+    <div class="w-100" style="max-width: 500px;">
+
+        <nav class="mb-3 text-center">
+            <a asp-action="Lessons" asp-route-groupId="@groupId" class="text-info fw-bold text-decoration-none small">
+                <i class="bi bi-arrow-left"></i> Назад до уроків
+            </a>
+        </nav>
+
+        <h1 class="h3 fw-extrabold mb-4 text-dark text-center d-flex align-items-center justify-content-center gap-2" style="font-family: 'Nunito', sans-serif;">
+            <span>📍</span> Додати урок у модуль
+        </h1>
+
+        <form asp-action="CreateLesson" method="post" class="card dl-light-card p-4 rounded-4 shadow-sm border-2">
+            <input type="hidden" name="LanguageLessonGroupId" value="@groupId" />
+
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label fw-extrabold text-secondary small text-uppercase mb-2" style="letter-spacing: 0.8px;">Назва або фокус уроку</label>
+                <input asp-for="Title" class="form-control dl-light-input py-2.5 text-dark fw-bold" placeholder="Наприклад: Знайомство з меню" required autocomplete="off" />
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Order" class="form-label fw-extrabold text-secondary small text-uppercase mb-2" style="letter-spacing: 0.8px;">Порядок відображення (Order)</label>
+                <input asp-for="Order" type="number" class="form-control dl-light-input py-2.5 text-dark text-center fw-bold fs-5" value="1" min="1" required />
+                <div class="form-text text-secondary text-opacity-75 small mt-2 text-center">Уроки сортуються за цим номером від меншого до більшого.</div>
+            </div>
+
+            <div class="d-flex justify-content-end gap-3 border-top border-2 border-light-subtle pt-4">
+                <a asp-action="Lessons" asp-route-groupId="@groupId" class="btn btn-3d-light text-uppercase fw-extrabold px-4 py-2.5 rounded-3 fs-7 text-decoration-none flex-grow-1 text-center">Скасувати</a>
+                <button type="submit" class="btn btn-3d-green text-uppercase fw-extrabold px-4 py-2.5 rounded-3 fs-7 flex-grow-1">Створити урок</button>
+            </div>
+        </form>
+
     </div>
-
-    <form asp-action="CreateLesson" method="post">
-
-        <div class="mb-3">
-            <label class="form-label">1. Оберіть курс</label>
-            <select id="courseSelect" class="form-select" asp-items="ViewBag.Courses" required>
-                <option value="">-- Оберіть мовний курс --</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">2. Оберіть групу</label>
-            <select id="groupSelect" asp-for="LanguageLessonGroupId" class="form-select" disabled required>
-                <option value="">-- Спочатку оберіть курс --</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">3. Назва заняття</label>
-            <input asp-for="Title" class="form-control" required />
-        </div>
-
-        <button type="submit" class="btn btn-primary">Створити</button>
-    </form>
 </div>
-
-@section Scripts {
-    <script>
-        document.getElementById('courseSelect').addEventListener('change', async function () {
-            let courseId = this.value;
-            let groupSelect = document.getElementById('groupSelect');
-
-            groupSelect.innerHTML = '<option value="">-- Оберіть групу --</option>';
-
-            if (!courseId) {
-                groupSelect.disabled = true;
-                return;
-            }
-
-            try {
-                let response = await fetch(`/Admin/GetGroupsByCourse/${courseId}`);
-                let groups = await response.json();
-
-                if (groups.length > 0) {
-                    groups.forEach(g => {
-                        let option = document.createElement('option');
-                        option.value = g.id;
-                        option.textContent = g.title;
-                        groupSelect.appendChild(option);
-                    });
-                    groupSelect.disabled = false;
-                } else {
-                    groupSelect.innerHTML = '<option value="">В цьому курсі немає груп</option>';
-                    groupSelect.disabled = true;
-                }
-            } catch (error) {
-                console.error("Помилка завантаження груп:", error);
-            }
-        });
-    </script>
-    <partial name="_ValidationScriptsPartial" />
-}

@@ -1,7 +1,6 @@
 ﻿using Languio.Data;
 using Languio.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Languio.Controllers
@@ -9,118 +8,166 @@ namespace Languio.Controllers
     public class AdminController : Controller
     {
         private readonly AppDbContext _context;
+
         public AdminController(AppDbContext context)
         {
             _context = context;
         }
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var courses = await _context.Courses
-                .Include(c => c.Groups)
-                    .ThenInclude(g => g.Lessons)
-                .ToListAsync();
-
+            var courses = await _context.Courses.ToListAsync();
             return View(courses);
         }
-        [HttpGet]
-        public ActionResult CreateCourse()
-        {
-            return View();
-        }
-        [HttpGet]
-        public async Task<IActionResult> CreateLesson()
-        {
-            var courses = await _context.Courses.ToListAsync();
-            ViewBag.Courses = new SelectList(courses, "Id", "Title");
 
-            ViewBag.Groups = new SelectList(new List<LanguageLessonGroup>(), "Id", "Title");
-            return View();
-        }
         [HttpGet]
-        public async Task<IActionResult> CreateGroup()
+        public IActionResult CreateCourse()
         {
-            var courses = await _context.Courses.ToListAsync();
-            ViewBag.Courses = new SelectList(courses, "Id", "Title");
-            return View();
+            return View(new LanguageCourse());
         }
-        [HttpPost("Admin/CreateCourse")]
-        public async Task<ActionResult> CreateCourse([Bind("Title,LanguageCode")] LanguageCourse course)
+
+        [HttpPost]
+        public async Task<IActionResult> CreateCourse(LanguageCourse course)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Courses.Add(course);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return View(course);
             }
-            return View(course);
+
+            if (string.IsNullOrWhiteSpace(course.LanguageCode))
+            {
+                ModelState.AddModelError("", "Код мови обов'язковий!");
+                return View(course);
+            }
+
+            course.LanguageCode = course.LanguageCode.Trim().ToLower();
+
+            _context.Courses.Add(course);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
-        [HttpPost("Admin/CreateLesson")]
-        public async Task<IActionResult> CreateLesson(LanguageLesson lesson, int languageLessonGroupId)
+        [HttpGet]
+        public IActionResult CreateGroup(int courseId)
         {
-            lesson.LanguageLessonGroupId = languageLessonGroupId;
+            ViewBag.CourseId = courseId;
+            return View(new LanguageLessonGroup());
+        }
 
-            lesson.Order = await _context.Lessons
-                .Where(l => l.LanguageLessonGroupId == languageLessonGroupId)
-                .CountAsync() + 1;
+        [HttpPost]
+        public async Task<IActionResult> CreateGroup(LanguageLessonGroup group)
+        {
+            _context.Groups.Add(group);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Groups", new { courseId = group.LanguageCourseId });
+        }
 
+        [HttpGet]
+        public IActionResult CreateLesson(int groupId)
+        {
+            ViewBag.GroupId = groupId;
+            return View(new LanguageLesson());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateLesson(LanguageLesson lesson)
+        {
             _context.Lessons.Add(lesson);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
-
-            var courses = await _context.Courses.ToListAsync();
-            ViewBag.Courses = new SelectList(courses, "Id", "Title");
-            return View(lesson);
+            return RedirectToAction("Lessons", new { groupId = lesson.LanguageLessonGroupId });
         }
-        [HttpPost("Admin/CreateGroup")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateGroup(LanguageLessonGroup group, int languageCourseId)
-        {
-            var course = await _context.Courses.Include(c => c.Groups).FirstOrDefaultAsync(c => c.Id == languageCourseId);
-            group.Title = $"Модуль {_context.Groups.Count(g => g.LanguageCourseId == languageCourseId) + 1}";
 
-            if (course != null)
+        [HttpGet]
+        public IActionResult CreateQuestion(int lessonId)
+        {
+            var model = new CreateQuestionViewModel { LessonId = lessonId };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateQuestion(CreateQuestionViewModel model)
+        {
+            if (!ModelState.IsValid)
             {
-                course.Groups.Add(group);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View(model);
             }
 
-            var courses = await _context.Courses.ToListAsync();
-            ViewBag.Courses = new SelectList(courses, "Id", "Title");
-            return View(group);
+            var question = new LanguageQuestion
+            {
+                LanguageLessonId = model.LessonId,
+                PromptText = model.PromptText,
+                Type = model.Type,
+                Options = model.Options.Select(o => new AnswerOption
+                {
+                    Text = o.Text,
+                    IsCorrect = o.IsCorrect
+                }).ToList()
+            };
+
+            _context.Questions.Add(question);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Questions", new { lessonId = model.LessonId });
         }
-        [HttpGet("Admin/GetGroupsByCourse/{courseId}")]
-        public async Task<IActionResult> GetGroupsByCourse(int courseId)
+        [HttpGet]
+        public async Task<IActionResult> Groups(int courseId)
         {
+            var course = await _context.Courses
+                .FirstOrDefaultAsync(c => c.Id == courseId);
+
+            if (course == null) return NotFound();
+
             var groups = await _context.Groups
                 .Where(g => g.LanguageCourseId == courseId)
-                .Select(g => new { id = g.Id, title = g.Title })
                 .ToListAsync();
 
-            return Json(groups);
+            ViewBag.CourseId = courseId;
+            ViewBag.CourseName = course.LanguageCode;
+            return View(groups);
         }
-        [HttpPost("Admin/DeleteCourse/{id}")]
-        public async Task<IActionResult> DeleteCourse(int id)
+
+        [HttpGet]
+        public async Task<IActionResult> Lessons(int groupId)
         {
-            var course = await _context.Courses.FindAsync(id);
-            if (course != null)
-            {
-                _context.Courses.Remove(course);
-                await _context.SaveChangesAsync();
-            }
-            return RedirectToAction("Index");
+            var group = await _context.Groups
+                .FirstOrDefaultAsync(g => g.Id == groupId);
+
+            if (group == null) return NotFound();
+
+            var lessons = await _context.Lessons
+                .Where(l => l.LanguageLessonGroupId == groupId)
+                .OrderBy(l => l.Order)
+                .ToListAsync();
+
+            ViewBag.GroupId = groupId;
+            ViewBag.CourseId = group.LanguageCourseId;
+            ViewBag.GroupName = group.Title;
+            return View(lessons);
         }
-        [HttpPost("Admin/DeleteLesson/{id}")]
-        public async Task<IActionResult> DeleteLesson(int id)
+
+        [HttpGet]
+        public async Task<IActionResult> Questions(int lessonId)
         {
-            var lesson = await _context.Lessons.FindAsync(id);
-            if (lesson != null)
+            var lesson = await _context.Lessons
+                .Include(l => l.LanguageGroup)
+                .FirstOrDefaultAsync(l => l.Id == lessonId);
+
+            if (lesson == null)
             {
-                _context.Lessons.Remove(lesson);
-                await _context.SaveChangesAsync();
+                return NotFound("Урок не знайдено");
             }
-            return RedirectToAction("Index");
+
+            var questions = await _context.Questions
+                .Include(q => q.Options)
+                .Where(q => q.LanguageLessonId == lessonId)
+                .ToListAsync();
+
+            ViewBag.LessonId = lesson.Id;
+            ViewBag.LessonTitle = lesson.Title;
+            ViewBag.GroupId = lesson.LanguageLessonGroupId;
+
+            return View(questions);
         }
+
     }
 }

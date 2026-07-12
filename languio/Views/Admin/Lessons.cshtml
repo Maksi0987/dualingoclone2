@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Languio.Models.LanguageLesson>
+@{
+    ViewData["Title"] = "Адмінка - Уроки";
+}
+
+<div class="container-fluid min-vh-100 bg-white text-dark p-5">
+    <div class="mx-auto" style="max-width: 900px;">
+
+        <nav class="mb-3">
+            <a asp-action="Groups" asp-route-courseId="@ViewBag.CourseId" class="text-info fw-bold text-decoration-none small">
+                <i class="bi bi-arrow-left"></i> Назад до розділів
+            </a>
+        </nav>
+
+        <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-2 border-light-subtle">
+            <h1 class="h3 fw-extrabold text-dark m-0" style="font-family: 'Nunito', sans-serif;">
+                Уроки модуля: <span class="text-primary">@ViewBag.GroupName</span>
+            </h1>
+            <a asp-action="CreateLesson" asp-route-groupId="@ViewBag.GroupId" class="btn btn-3d-green text-uppercase fw-extrabold px-4 py-2 rounded-3 fs-7 text-decoration-none">
+                + Додати урок
+            </a>
+        </div>
+
+        <div class="d-flex flex-column gap-3">
+            @if (!Model.Any())
+            {
+                <div class="p-5 text-center text-secondary border border-2 border-dashed border-secondary-subtle rounded-4 bg-light bg-opacity-50">
+                    У цьому розділі ще немає уроків.
+                </div>
+            }
+            @foreach (var lesson in Model)
+            {
+                <a asp-action="Questions" asp-route-lessonId="@lesson.Id" class="rounded-4 border-2 p-4 d-flex justify-content-between align-items-center dl-light-row text-decoration-none">
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="badge bg-light border border-2 border-light-subtle text-dark rounded-3 px-3 py-2 fw-extrabold fs-7 shadow-sm">
+                            № @lesson.Order
+                        </span>
+                        <div>
+                            <h5 class="fw-extrabold m-0 text-dark">@lesson.Title</h5>
+                            <small class="text-secondary fw-bold small">ID Уроку: #@lesson.Id • Керування інтерактивними завданнями</small>
+                        </div>
+                    </div>
+                    <div class="text-success fw-extrabold fs-5 pe-2">
+                        <i class="bi bi-chevron-right"></i>
+                    </div>
+                </a>
+            }
+        </div>
+
+    </div>
+</div>

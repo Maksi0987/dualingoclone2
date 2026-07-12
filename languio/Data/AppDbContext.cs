@@ -13,6 +13,7 @@ namespace Languio.Data
         public DbSet<LanguageLessonGroup> Groups { get; set; }
         public DbSet<LanguageQuestion> Questions { get; set; }
         public DbSet<UserProgress> Progresses { get; set; }
+        public DbSet<AnswerOption> AnswerOptions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

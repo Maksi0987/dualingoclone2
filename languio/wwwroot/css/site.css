@@ -1,137 +1,88 @@
-.duo-wrapper {
-    background-color: #131f24;
+/* ГОЛОВНИЙ ФОН ПЛАТФОРМИ DUOLINGO */
+.bg-duo-dark {
+    background-color: #131f24 !important;
 }
 
+/* ЛІВЕ МЕНЮ НАВІГАЦІЇ */
 .left-sidebar .nav-link {
     transition: all 0.2s ease;
     color: #afbbca !important;
+    font-size: 0.95rem;
+    letter-spacing: 0.8px;
 }
 
     .left-sidebar .nav-link:hover {
         background-color: #202f36 !important;
         color: #fff !important;
-        cursor: pointer;
     }
 
     .left-sidebar .nav-link.active {
-        color: #fff !important;
+        background-color: #202f36 !important;
+        color: #58cc02 !important;
+        border: 2px solid #37464f !important;
     }
 
-.learning-map .btn {
-    border-bottom-width: 5px !important;
-    transition: transform 0.1s, border-bottom-width 0.1s;
-}
-
-    .learning-map .btn:active {
-        transform: translateY(4px);
-        border-bottom-width: 1px !important;
-    }
-
-
-.btn-success {
-    border-bottom-color: #46a302 !important;
-}
-
-.btn-secondary {
-    border-bottom-color: #202f36 !important;
-    background-color: #37464f !important;
-    border-color: #37464f !important;
-}
-
-/* 3D Ефект для зеленої кнопки */
-.btn-3d-green {
+/* ФІРМОВИЙ ЗЕЛЕНИЙ БАННЕР РОЗДІЛУ */
+.dl-section-banner {
     background-color: #58cc02 !important;
-    border: none !important;
-    border-bottom: 4px solid #46a302 !important;
-    transition: all 0.1s ease;
+    border-bottom: 5px solid #46a302 !important;
 }
 
-    .btn-3d-green:active {
-        transform: translateY(2px);
-        border-bottom-width: 2px !important;
-    }
-
-    .btn-3d-green:hover {
-        background-color: #61e004 !important;
-    }
-
-/* 3D Ефект для білої кнопки */
-.btn-3d-light {
-    background-color: #ffffff !important;
-    border-bottom: 4px solid #e5e5e5 !important;
-    color: #1cb0f6 !important;
-    transition: all 0.1s ease;
-}
-
-    .btn-3d-light:active {
-        transform: translateY(2px);
-        border-bottom-width: 2px !important;
-    }
-
-    .btn-3d-light:hover {
-        background-color: #f7f7f7 !important;
-    }
-
-/* Базовий клас для кола Duolingo */
+/* БАЗОВИЙ КЛАС ДЛЯ КНОПОК-КІЛ У ЗМІЙЦІ */
 .dl-btn {
     width: 84px;
-    height: 80px; /* Трохи менше висоти для компенсації бордера */
+    height: 80px;
     border: none !important;
     padding: 0;
     transition: all 0.1s ease;
     position: relative;
 }
 
-/* СТАН: АКТИВНИЙ (Яскраво-зелений 3D ефект) */
+/* СТАН КНОПКИ: АКТИВНИЙ (Зелений 3D) */
 .dl-btn-active {
     background-color: #58cc02 !important;
-    box-shadow: 0 8px 0 #46a302 !important; /* Об'ємне дно кнопки */
+    box-shadow: 0 8px 0 #46a302 !important;
     color: #ffffff !important;
 }
 
-    /* Ефект ховеру (робить колір трішки світлішим) */
     .dl-btn-active:hover {
         background-color: #61e002 !important;
     }
 
-    /* Ефект натискання (кнопка візуально вдавлюється вниз) */
     .dl-btn-active:active {
         transform: translateY(4px);
         box-shadow: 0 4px 0 #46a302 !important;
     }
 
-/* СТАН: ЗАБЛОКОВАНИЙ (Темно-сірий, плаский, зливається з темним фоном) */
+/* СТАН КНОПКИ: ЗАБЛОКОВАНИЙ (Сірий) */
 .dl-btn-locked {
     background-color: #37464f !important;
     box-shadow: 0 8px 0 #2b373e !important;
     color: #4b5f6c !important;
-    opacity: 0.8;
 }
 
-/* Стилізація іконок всередині кнопок */
 .dl-btn i {
     font-size: 1.85rem;
     line-height: 1;
 }
 
-/* ПЛАШКА "ПОЧАТИ" */
+/* ПЛАШКА "ПОЧАТИ" НАД АКТИВНИМ УРОКОМ */
 .dl-tooltip {
     position: absolute;
-    top: -45px; /* Підіймаємо над кнопкою */
-    background-color: #131f24;
+    top: -42px;
+    background-color: #202f36;
     color: #58cc02;
     font-weight: 800;
     font-size: 0.75rem;
-    padding: 6px 16px;
+    padding: 6px 14px;
     border-radius: 12px;
     border: 2px solid #37464f;
     z-index: 10;
     letter-spacing: 0.5px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     white-space: nowrap;
 }
 
-    /* Стрілочка (трикутник) знизу плашки ПОЧАТИ */
     .dl-tooltip::after {
         content: "";
         position: absolute;
@@ -140,12 +91,11 @@
         transform: translateX(-50%);
         border-width: 8px 8px 0;
         border-style: solid;
-        border-color: #131f24 transparent;
+        border-color: #202f36 transparent;
         display: block;
         width: 0;
     }
 
-    /* Додатковий тонкий контур для стрілочки */
     .dl-tooltip::before {
         content: "";
         position: absolute;
@@ -160,7 +110,50 @@
         z-index: -1;
     }
 
-/* Анімація легкого погойдування плашки вгору-вниз */
+/* 3D ЕФЕКТИ ДЛЯ СТАНДАРТНИХ КНОПОК КАРТОК ПРАВОЇ ПАНЕЛІ */
+.btn-3d-green {
+    background-color: #58cc02 !important;
+    border: none !important;
+    border-bottom: 4px solid #46a302 !important;
+    color: white !important;
+    transition: all 0.1s ease;
+}
+
+    .btn-3d-green:hover {
+        background-color: #61e004 !important;
+    }
+
+    .btn-3d-green:active {
+        transform: translateY(2px);
+        border-bottom-width: 2px !important;
+    }
+
+.btn-3d-light {
+    background-color: #202f36 !important;
+    border: 2px solid #37464f !important;
+    border-bottom: 5px solid #37464f !important;
+    color: #1cb0f6 !important;
+    transition: all 0.1s ease;
+}
+
+    .btn-3d-light:hover {
+        background-color: #283c46 !important;
+    }
+
+    .btn-3d-light:active {
+        transform: translateY(2px);
+        border-bottom-width: 2px !important;
+    }
+
+/* ПОЗИЦІОНУВАННЯ МАСКОТА ПОРУЧ ЗІ ЗМІЙКОЮ */
+.dl-mascot-container {
+    position: absolute;
+    right: 30px;
+    top: 60px;
+    z-index: 1;
+}
+
+/* АНІМАЦІЯ ПОГОЙДУВАННЯ */
 @keyframes bounce {
     0%, 100% {
         transform: translateY(0);
@@ -175,7 +168,10 @@
     animation: bounce 2s infinite ease-in-out;
 }
 
-/* Жирний шрифт для тексту у стилі Duolingo */
 .fw-extrabold {
     font-weight: 800;
+}
+
+.fs-7 {
+    font-size: 0.85rem;
 }

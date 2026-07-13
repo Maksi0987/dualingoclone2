@@ -1,0 +1,305 @@
+/* ЕЛЕМЕНТИ КАРТОК В АДМІНЦІ */
+.dl-admin-card {
+    background-color: #1c2d35 !important; /* Трохи світліший за фон додатка для створення об'єму */
+    border: 2px solid #37464f !important;
+}
+
+/* КОНТРАСТНИЙ ІНПУТ ДЛЯ ТЕМНОЇ ТЕМИ */
+.dl-admin-input {
+    background-color: #131f24 !important;
+    border: 2px solid #37464f !important;
+    color: #ffffff !important;
+    border-radius: 12px !important;
+}
+
+    .dl-admin-input:focus {
+        border-color: #1cb0f6 !important;
+        box-shadow: 0 0 0 3px rgba(28, 176, 246, 0.2) !important;
+    }
+
+/* ІНТЕРАКТИВНИЙ РЯДОК КУРСУ */
+.dl-clickable-row {
+    background-color: #1c2d35 !important;
+    border: 2px solid #37464f !important;
+    border-bottom: 5px solid #37464f !important;
+    color: #ffffff !important;
+    transition: all 0.15s ease;
+    display: flex;
+}
+
+    .dl-clickable-row:hover {
+        background-color: #243741 !important;
+        border-color: #4b5f6c !important;
+        transform: translateY(-1px);
+    }
+
+    .dl-clickable-row:active {
+        transform: translateY(3px);
+        border-bottom-width: 2px !important;
+    }
+
+/* КОРЕКЦІЯ ШРИФТІВ ДЛЯ УЗГОДЖЕНОСТІ */
+.fw-extrabold {
+    font-weight: 800 !important;
+}
+
+.fs-7 {
+    font-size: 0.85rem !important;
+}
+
+/* СТАТИЧНИЙ СВІТЛИЙ РЯДОК БЕЗ ЕФЕКТУ КЛІКУ НА ВСЮ ПЛОЩУ */
+.dl-light-row-static {
+    background-color: #ffffff !important;
+    border: 2px solid #e5e5e5 !important;
+    border-bottom: 5px solid #e5e5e5 !important;
+    color: #3c3c3c !important;
+}
+
+/* ЛІВЕ МЕНЮ НАВІГАЦІЇ (СВІТЛЕ) */
+.left-sidebar .nav-link {
+    transition: all 0.15s ease;
+    color: #4b5f6c !important;
+    font-size: 0.85rem;
+    letter-spacing: 0.8px;
+}
+
+    .left-sidebar .nav-link:hover {
+        background-color: #f7f7f7 !important;
+        color: #3c3c3c !important;
+    }
+
+    .left-sidebar .nav-link.active {
+        background-color: #ddf4ff !important;
+        color: #1899d6 !important;
+        border: 2px solid #84d8ff !important;
+    }
+
+/* ФІРМОВИЙ ЗЕЛЕНИЙ БАННЕР */
+.dl-section-banner {
+    background-color: #58cc02 !important;
+    border-bottom: 5px solid #46a302 !important;
+}
+
+.btn-3d-subtle {
+    border: none !important;
+    border-bottom: 4px solid #e5e5e5 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* БАЗОВІ КНОПКИ У ЗМІЙЦІ */
+.dl-btn {
+    width: 76px;
+    height: 72px;
+    border: none !important;
+    padding: 0;
+    transition: all 0.1s ease;
+}
+
+    .dl-btn i {
+        font-size: 1.6rem;
+    }
+
+/* СТАН КНОПКИ: АКТИВНИЙ (Зелений 3D) */
+.dl-btn-active {
+    background-color: #58cc02 !important;
+    box-shadow: 0 8px 0 #46a302 !important;
+}
+
+    .dl-btn-active:hover {
+        background-color: #61e004 !important;
+    }
+
+    .dl-btn-active:active {
+        transform: translateY(4px);
+        box-shadow: 0 4px 0 #46a302 !important;
+    }
+
+/* СТАН КНОПКИ: ЗАБЛОКОВАНИЙ (Сірий) */
+.dl-btn-locked {
+    background-color: #e5e5e5 !important;
+    box-shadow: 0 8px 0 #ccc !important;
+    color: #afafaf !important;
+    cursor: not-allowed;
+}
+
+/* ЕЛЕМЕНТИ ЗМІЙКИ: СКРИНЯ ТА КУБОК */
+.dl-chest-locked, .dl-trophy-locked {
+    width: 70px;
+    height: 65px;
+    background-color: #f7f7f7;
+    border: 3px dashed #e5e5e5;
+    border-radius: 18px;
+}
+
+/* ПЛАШКА "ПОЧАТИ" НАД АКТИВНИМ УРОКОМ */
+.dl-tooltip {
+    position: absolute;
+    top: -45px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ffffff;
+    color: #58cc02;
+    font-weight: 800;
+    font-size: 0.75rem;
+    padding: 6px 14px;
+    border-radius: 12px;
+    border: 2px solid #e5e5e5;
+    letter-spacing: 0.8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    white-space: nowrap;
+    z-index: 10;
+}
+
+    .dl-tooltip::after {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 8px 8px 0;
+        border-style: solid;
+        border-color: #ffffff transparent;
+    }
+
+    .dl-tooltip::before {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 9px 9px 0;
+        border-style: solid;
+        border-color: #e5e5e5 transparent;
+        z-index: -1;
+    }
+
+/* СВІТЛІ БОКОВІ КАРТКИ */
+.dl-sidebar-card {
+    background-color: #ffffff !important;
+    border: 2px solid #e5e5e5 !important;
+}
+
+/* БЛАКИТНА 3D КНОПКА ДЛЯ ВХОДУ */
+.btn-3d-blue {
+    background-color: #1cb0f6 !important;
+    border: none !important;
+    border-bottom: 5px solid #1899d6 !important;
+    color: #ffffff !important;
+}
+
+    .btn-3d-blue:hover {
+        background-color: #24baff !important;
+    }
+
+    .btn-3d-blue:active {
+        transform: translateY(4px) !important;
+        border-bottom-width: 1px !important;
+    }
+
+.tracking-wider {
+    letter-spacing: 1px;
+}
+
+.gap-1\.5 {
+    gap: 0.35rem;
+}
+/* ГЛОБАЛЬНЕ НАЛАШТУВАННЯ ВИСОТИ СТОРІНКИ */
+.h-100vh {
+    height: 100vh !important;
+}
+
+/* ЛІВИЙ САДБАР (Широкий та адаптований під Duolingo) */
+.left-sidebar .nav-link {
+    transition: all 0.15s ease;
+    color: #4b5f6c !important;
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    border: 2px solid transparent;
+}
+
+    .left-sidebar .nav-link i {
+        width: 28px;
+        text-align: center;
+    }
+
+    .left-sidebar .nav-link:hover {
+        background-color: #f7f7f7 !important;
+        color: #3c3c3c !important;
+    }
+    /* Стан активного пункту навігації */
+    .left-sidebar .nav-link.active {
+        background-color: #ddf4ff !important;
+        color: #1899d6 !important;
+        border: 2px solid #84d8ff !important;
+    }
+
+/* ФІРМОВИЙ ЗЕЛЕНИЙ БАНЕР РОЗДІЛУ */
+.dl-section-banner {
+    background-color: #58cc02 !important;
+    border-bottom: 5px solid #46a302 !important;
+}
+
+/* КНОПКИ У ЗМІЙЦІ */
+.dl-btn {
+    width: 74px;
+    height: 70px;
+    border: none !important;
+    padding: 0;
+    transition: all 0.1s ease;
+}
+
+/* АКТИВНА ЗЕЛЕНА КНОПКА З ЕФЕКТОМ НАТИСКАННЯ */
+.dl-btn-active {
+    background-color: #58cc02 !important;
+    box-shadow: 0 8px 0 #46a302 !important;
+}
+
+    .dl-btn-active:hover {
+        background-color: #61e004 !important;
+    }
+
+    .dl-btn-active:active {
+        transform: translateY(4px);
+        box-shadow: 0 4px 0 #46a302 !important;
+    }
+
+/* ЗАБЛОКОВАНА КНОПКА (Прибираємо темні відтінки) */
+.dl-btn-locked {
+    background-color: #e5e5e5 !important;
+    box-shadow: 0 8px 0 #afafaf !important;
+    color: #afafaf !important;
+    opacity: 1 !important;
+}
+
+/* ПРАВА ПАНЕЛЬ СТАТИСТИКИ */
+.stats-row .text-cyan {
+    color: #1cb0f6 !important;
+}
+
+.stats-row .text-danger {
+    color: #ff4b4b !important;
+}
+
+.stats-row .text-warning {
+    color: #ff9600 !important;
+}
+
+.hover-gray {
+    transition: background 0.2s ease;
+}
+
+    .hover-gray:hover {
+        background-color: #f7f7f7;
+        cursor: pointer;
+    }
+
+/* КАРТКИ В САЙДБАРІ */
+.dl-sidebar-card {
+    background-color: #ffffff !important;
+    border: 2px solid #e5e5e5 !important;
+}
+
+.tracking-wide {
+    letter-spacing: 0.8px;
+}

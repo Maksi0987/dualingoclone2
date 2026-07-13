@@ -1,0 +1,50 @@
+@model IEnumerable<Languio.Models.LanguageLessonGroup>
+@{
+    ViewData["Title"] = "Адмінка - Розділи";
+}
+
+<div class="container-fluid min-vh-100 bg-white text-dark p-5">
+    <div class="mx-auto" style="max-width: 900px;">
+
+        <nav class="mb-3">
+            <a asp-action="Index" class="text-info fw-bold text-decoration-none small">
+                <i class="bi bi-arrow-left"></i> Назад до курсів
+            </a>
+        </nav>
+
+        <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-2 border-light-subtle">
+            <h1 class="h3 fw-extrabold text-dark m-0" style="font-family: 'Nunito', sans-serif;">
+                Розділи курсу <span class="text-success text-uppercase">@ViewBag.CourseName</span>
+            </h1>
+            <a asp-action="CreateGroup" asp-route-courseId="@ViewBag.CourseId" class="btn btn-3d-green text-uppercase fw-extrabold px-4 py-2 rounded-3 fs-7 text-decoration-none">
+                + Додати розділ
+            </a>
+        </div>
+
+        <div class="d-flex flex-column gap-3">
+            @if (!Model.Any())
+            {
+                <div class="p-5 text-center text-secondary border border-2 border-dashed border-secondary-subtle rounded-4 bg-light bg-opacity-50">
+                    У цьому курсі ще немає створених розділів.
+                </div>
+            }
+            @foreach (var group in Model)
+            {
+                <div class="rounded-4 border-2 p-4 d-flex justify-content-between align-items-center dl-light-row-static">
+                    <div>
+                        <h5 class="fw-extrabold m-0 text-dark">@group.Title</h5>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <a asp-action="GroupVocabulary" asp-route-groupId="@group.Id" class="btn btn-3d-light btn-sm text-uppercase fw-extrabold px-3 py-2 rounded-3 fs-7 text-decoration-none text-info">
+                            <i class="bi bi-book-half me-1"></i> Словник
+                        </a>
+                        <a asp-action="Lessons" asp-route-groupId="@group.Id" class="btn btn-3d-green btn-sm text-uppercase fw-extrabold px-3 py-2 rounded-3 fs-7 text-decoration-none">
+                            Уроки <i class="bi bi-chevron-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+</div>

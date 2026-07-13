@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Languio.Models.LanguageQuestion>
+@{
+    ViewData["Title"] = "Адмінка - Питання уроку";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid min-vh-100 bg-white text-dark p-5">
+    <div class="mx-auto" style="max-width: 900px;">
+
+        <nav class="mb-3">
+            <a asp-action="Lessons" asp-controller="Admin" asp-route-groupId="@ViewBag.GroupId" class="text-info fw-bold text-decoration-none small">
+                <i class="bi bi-arrow-left"></i> Назад до уроків
+            </a>
+        </nav>
+
+        <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-2 border-light-subtle">
+            <h1 class="h3 fw-extrabold text-dark m-0" style="font-family: 'Nunito', sans-serif;">
+                Питання уроку: <span class="text-primary">@ViewBag.LessonTitle</span>
+            </h1>
+
+            <a asp-action="CreateQuestion" asp-route-lessonId="@ViewBag.LessonId" class="btn btn-3d-green text-uppercase fw-extrabold px-4 py-2 rounded-3 fs-7 text-decoration-none">
+                + Додати питання
+            </a>
+        </div>
+
+        <div class="d-flex flex-column gap-3">
+            @if (!Model.Any())
+            {
+                <div class="p-5 text-center text-secondary border border-2 border-dashed border-secondary-subtle rounded-4 bg-light bg-opacity-50 fw-bold">
+                    У цьому уроці ще немає питань. Додайте перше!
+                </div>
+            }
+
+            @foreach (var question in Model)
+            {
+                <div class="rounded-4 border-2 p-4 d-flex justify-content-between align-items-center dl-light-row text-decoration-none">
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="badge bg-light border border-2 border-light-subtle text-dark rounded-3 px-3 py-2 fw-extrabold fs-7 shadow-sm">
+                            @question.Type
+                        </span>
+
+                        <div>
+                            <h5 class="fw-extrabold m-0 text-dark">@question.PromptText</h5>
+                            <small class="text-secondary fw-bold small">
+                                ID: #@question.Id • Варіантів відповідей: @(question.Options?.Count ?? 0)
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <a asp-action="Edit" asp-route-id="@question.Id" class="btn btn-sm btn-outline-primary fw-bold rounded-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <form asp-action="Delete" asp-route-id="@question.Id" method="post" onsubmit="return confirm('Ви впевнені, що хочете видалити це питання?');">
+                            <button type="submit" class="btn btn-sm btn-outline-danger fw-bold rounded-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+</div>

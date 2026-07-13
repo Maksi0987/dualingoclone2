@@ -453,4 +453,4 @@ C:\IT\TeamProject\Languio\obj\Debug\net10.0\refint\Languio.dll
 C:\IT\TeamProject\Languio\obj\Debug\net10.0\Languio.pdb
 C:\IT\TeamProject\Languio\obj\Debug\net10.0\Languio.genruntimeconfig.cache
 C:\IT\TeamProject\Languio\obj\Debug\net10.0\ref\Languio.dll
-C:\IT\TeamProject\Languio\obj\Debug\net10.0\compressed\t192yoitaz-{0}-2nwsmxqepj-2nwsmxqepj.gz
+C:\IT\TeamProject\Languio\obj\Debug\net10.0\compressed\t192yoitaz-{0}-kky50uyd1z-kky50uyd1z.gz

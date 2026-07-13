@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Languio.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly AppDbContext _context;
@@ -66,8 +66,22 @@ namespace Languio.Controllers
         public async Task<IActionResult> CreateLesson(LanguageLesson lesson)
         {
             if (!ModelState.IsValid) return View(lesson);
+
+            var group = await _context.Groups
+                .FirstOrDefaultAsync(g => g.Id == lesson.LanguageLessonGroupId);
+
+            if (group == null) return NotFound();
+
+            var maxOrder = await _context.Lessons
+                .Where(l => l.LanguageGroup.LanguageCourseId == group.LanguageCourseId)
+                .Select(l => (int?)l.Order)
+                .MaxAsync() ?? 0;
+
+            lesson.Order = maxOrder + 1;
+
             _context.Lessons.Add(lesson);
             await _context.SaveChangesAsync();
+
             return RedirectToAction("Lessons", new { groupId = lesson.LanguageLessonGroupId });
         }
 

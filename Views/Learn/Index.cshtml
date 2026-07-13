@@ -33,13 +33,13 @@
                         </a>
 
                         <div class="dl-more-menu shadow p-3 bg-white border border-2 border-light-subtle">
-                            <a href="#" class="dropdown-item fw-bold px-3 py-2 rounded-3 text-secondary d-flex align-items-center gap-3 mb-1">
-                                <i class="bi bi-gear-fill fs-5"></i> Налаштування
+                            <a href="#" class="nav-link d-flex align-items-center gap-3 px-3 py-3 rounded-4 fw-extrabold text-uppercase mb-1">
+                                <i class="bi bi-gear-fill fs-4 text-secondary"></i> Налаштування
                             </a>
 
                             <form asp-controller="Account" asp-action="Logout" method="post" class="m-0 p-0">
-                                <button type="submit" class="dropdown-item fw-bold px-3 py-2 rounded-3 d-flex align-items-center gap-3 w-100 border-0 bg-transparent text-start dl-logout-btn">
-                                    <i class="bi bi-box-arrow-right fs-5"></i> Вийти
+                                <button type="submit" class="nav-link d-flex align-items-center gap-3 px-3 py-3 rounded-4 fw-extrabold text-uppercase w-100 border-0 bg-transparent text-start dl-logout-btn">
+                                    <i class="bi bi-box-arrow-right fs-4 text-danger"></i> Вийти
                                 </button>
                             </form>
                         </div>
@@ -47,11 +47,14 @@
                 </nav>
             </div>
 
-            <div class="px-2">
-                <a asp-controller="Admin" asp-action="Index" class="btn btn-3d-light text-uppercase fw-extrabold py-3 rounded-4 w-100 border-2 d-flex align-items-center justify-content-center gap-2">
-                    <i class="bi bi-gear-fill"></i> Адмінка
-                </a>
-            </div>
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="px-2">
+                    <a asp-controller="Admin" asp-action="Index" class="btn btn-3d-light text-uppercase fw-extrabold py-3 rounded-4 w-100 border-2 d-flex align-items-center justify-content-center gap-2">
+                        <i class="bi bi-gear-fill"></i> Адмінка
+                    </a>
+                </div>
+            }
         </aside>
 
         <main class="col-lg-7 col-md-6 py-4 px-lg-5 overflow-auto bg-white">
@@ -69,22 +72,28 @@
                     int groupCounter = 1;
                     foreach (var group in Model.LanguageLessonGroups)
                     {
-                        <div class="dl-section-banner p-4 text-white rounded-4 d-flex justify-content-between align-items-center mb-5 shadow-sm">
-                            <div>
-                                <div class="text-uppercase fw-extrabold small text-white-50 tracking-wider">Розділ @groupCounter</div>
-                                <h2 class="h4 fw-extrabold m-0 mt-1">@group.Title</h2>
+                        var lessons = group.Lessons?.OrderBy(l => l.Order).ToList() ?? new List<LanguageLesson>();
+                        int[] shifts = new int[] { 0, -30, -55, -30, 0, 30, 55, 30 };
+                        bool isGroupLocked = Model.CurrentLanguageLesson != null && lessons.Any()
+                            && lessons.Min(l => l.Order) > Model.CurrentLanguageLesson.Order;
+
+                        if (isGroupLocked)
+                        {
+                            <div class="dl-section-divider mb-5">
+                                <span>@group.Title</span>
                             </div>
-                            <button class="btn btn-light bg-white text-success fw-extrabold text-uppercase px-3 py-2 rounded-3 btn-3d-subtle small d-flex align-items-center gap-2">
-                                <i class="bi bi-book-half"></i> Посібник
-                            </button>
-                        </div>
+                        }
+                        else
+                        {
+                            <div class="dl-section-banner p-4 text-white rounded-4 d-flex justify-content-between align-items-center mb-5 shadow-sm">
+                                <div>
+                                    <div class="text-uppercase fw-extrabold small text-white-50 tracking-wider">Розділ @groupCounter</div>
+                                    <h2 class="h4 fw-extrabold m-0 mt-1">@group.Title</h2>
+                                </div>
+                            </div>
+                        }
 
                         <div class="d-flex flex-column align-items-center gap-4 py-3 mb-5 position-relative">
-
-                            @{
-                                var lessons = group.Lessons?.OrderBy(l => l.Order).ToList() ?? new List<LanguageLesson>();
-                                int[] shifts = new int[] { 0, -30, -55, -30, 0, 30, 55, 30 };
-                            }
 
                             @if (!lessons.Any())
                             {
@@ -146,10 +155,6 @@
 
                 <span class="d-flex align-items-center gap-1.5 text-info fs-5 rounded-3 px-2 py-1 hover-gray" title="Лінгвоти (Монети)">
                     <i class="bi bi-gem fs-4 text-cyan"></i> @Model.Coins
-                </span>
-
-                <span class="d-flex align-items-center gap-1.5 text-danger fs-5 rounded-3 px-2 py-1 hover-gray" title="Життя">
-                    <i class="bi bi-heart-fill fs-4"></i> 5
                 </span>
             </div>
 

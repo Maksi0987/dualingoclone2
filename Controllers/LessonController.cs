@@ -25,16 +25,30 @@ namespace Languio.Controllers
         [HttpGet]
         public async Task<IActionResult> Start(int id)
         {
-            var user = await _context.Users.Include(u => u.Progresses).ThenInclude(p => p.LanguageLesson).FirstOrDefaultAsync(u => u.Id == _userManager.GetUserId(User));
+            var user = await _context.Users
+                .Include(u => u.Progresses)
+                    .ThenInclude(p => p.LanguageLesson)
+                .FirstOrDefaultAsync(u => u.Id == _userManager.GetUserId(User));
+
+            if (user == null) return Challenge();
 
             var lesson = await _context.Lessons
                 .Include(l => l.Questions)
                     .ThenInclude(q => q.Options)
+                .Include(l => l.LanguageGroup)
                 .FirstOrDefaultAsync(l => l.Id == id);
 
             if (lesson == null) return NotFound();
 
-            if (user.Progresses.FirstOrDefault(p => p.LanguageLesson.Id == lesson.Id).LanguageLesson.Order < lesson.Order)
+            var progress = user.Progresses
+                .FirstOrDefault(p => p.LanguageCourseId == lesson.LanguageGroup.LanguageCourseId);
+
+            if (progress == null || progress.LanguageLesson == null)
+            {
+                if (lesson.Order != 1)
+                    return RedirectToAction("Index", "Learn");
+            }
+            else if (lesson.Order > progress.LanguageLesson.Order)
             {
                 return RedirectToAction("Index", "Learn");
             }
@@ -65,14 +79,17 @@ namespace Languio.Controllers
         public async Task<IActionResult> CompleteLesson(int lessonId)
         {
             var user = await _context.Users.Include(u => u.Progresses).FirstOrDefaultAsync(u => u.Id == _userManager.GetUserId(User));
-            var currentLesson = await _context.Lessons.Include(l => l.LanguageGroup).ThenInclude(g => g.Lessons).FirstOrDefaultAsync(l => l.Id == lessonId);
+            var currentLesson = await _context.Lessons.Include(l => l.LanguageGroup).FirstOrDefaultAsync(l => l.Id == lessonId);
+
             if (user != null && currentLesson != null)
             {
                 user.Experience += 10;
                 user.Coins += 5;
-                var nextLesson = currentLesson.LanguageGroup.Lessons
-                .OrderBy(l => l.Order)
-                .FirstOrDefault(l => l.Order > currentLesson.Order);
+
+                var nextLesson = await _context.Lessons
+                    .Where(l => l.LanguageGroup.LanguageCourseId == currentLesson.LanguageGroup.LanguageCourseId)
+                    .OrderBy(l => l.Order)
+                    .FirstOrDefaultAsync(l => l.Order > currentLesson.Order);
 
                 var progress = user.Progresses.FirstOrDefault(p => p.LanguageCourseId == currentLesson.LanguageGroup.LanguageCourseId);
 

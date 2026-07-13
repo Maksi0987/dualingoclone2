@@ -44,19 +44,39 @@ namespace Languio.Controllers
 
             if (course == null) return NotFound();
 
+            var groups = await _context.Groups
+                .Where(g => g.LanguageCourseId == course.Id)
+                .Include(g => g.Lessons)
+                .OrderBy(g => g.Id)
+                .ToListAsync();
+
             var userProgress = user.Progresses?.FirstOrDefault(p => p.LanguageCourseId == course.Id);
+
+            if (userProgress == null)
+            {
+                var firstLesson = groups
+                    .SelectMany(g => g.Lessons)
+                    .OrderBy(l => l.Order)
+                    .FirstOrDefault();
+
+                userProgress = new UserProgress
+                {
+                    User = user,
+                    LanguageCourseId = course.Id,
+                    LanguageLesson = firstLesson
+                };
+
+                _context.UserProgresses.Add(userProgress);
+                await _context.SaveChangesAsync();
+            }
 
             var learnViewModel = new LearnViewModel
             {
                 LanguageCode = currentLangCode,
                 Coins = user.Coins,
                 DayStreak = user.DayStreak,
-                LanguageLessonGroups = await _context.Groups
-                    .Where(g => g.LanguageCourseId == course.Id)
-                    .Include(g => g.Lessons)
-                    .OrderBy(g => g.Id)
-                    .ToListAsync(),
-                CurrentLanguageLesson = userProgress?.LanguageLesson
+                LanguageLessonGroups = groups,
+                CurrentLanguageLesson = userProgress.LanguageLesson
             };
 
             return View(learnViewModel);

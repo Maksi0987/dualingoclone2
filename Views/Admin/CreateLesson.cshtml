@@ -25,12 +25,6 @@
                 <input asp-for="Title" class="form-control dl-light-input py-2.5 text-dark fw-bold" placeholder="Наприклад: Знайомство з меню" required autocomplete="off" />
             </div>
 
-            <div class="mb-4">
-                <label asp-for="Order" class="form-label fw-extrabold text-secondary small text-uppercase mb-2" style="letter-spacing: 0.8px;">Порядок відображення (Order)</label>
-                <input asp-for="Order" type="number" class="form-control dl-light-input py-2.5 text-dark text-center fw-bold fs-5" value="1" min="1" required />
-                <div class="form-text text-secondary text-opacity-75 small mt-2 text-center">Уроки сортуються за цим номером від меншого до більшого.</div>
-            </div>
-
             <div class="d-flex justify-content-end gap-3 border-top border-2 border-light-subtle pt-4">
                 <a asp-action="Lessons" asp-route-groupId="@groupId" class="btn btn-3d-light text-uppercase fw-extrabold px-4 py-2.5 rounded-3 fs-7 text-decoration-none flex-grow-1 text-center">Скасувати</a>
                 <button type="submit" class="btn btn-3d-green text-uppercase fw-extrabold px-4 py-2.5 rounded-3 fs-7 flex-grow-1">Створити урок</button>

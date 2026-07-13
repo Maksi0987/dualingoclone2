@@ -4,6 +4,7 @@ using Languio.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Languio.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260713190523_addedNameToLanguageCourse")]
+    partial class addedNameToLanguageCourse
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -230,10 +233,10 @@ namespace Languio.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("LanguageCourseId")
+                    b.Property<int>("CurrentLessonId")
                         .HasColumnType("int");
 
-                    b.Property<int>("LanguageLessonId")
+                    b.Property<int>("LanguageCourseId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -242,8 +245,6 @@ namespace Languio.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("LanguageCourseId");
-
-                    b.HasIndex("LanguageLessonId");
 
                     b.HasIndex("UserId");
 
@@ -438,19 +439,11 @@ namespace Languio.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Languio.Models.LanguageLesson", "LanguageLesson")
-                        .WithMany()
-                        .HasForeignKey("LanguageLessonId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("Languio.Models.ApplicationUser", "User")
                         .WithMany("Progresses")
                         .HasForeignKey("UserId");
 
                     b.Navigation("Course");
-
-                    b.Navigation("LanguageLesson");
 
                     b.Navigation("User");
                 });

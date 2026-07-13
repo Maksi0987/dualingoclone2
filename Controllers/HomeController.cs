@@ -1,43 +1,96 @@
-﻿using Languio.Models;
+﻿using Languio.Data;
+using Languio.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Languio.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly AppDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public HomeController(AppDbContext context, UserManager<ApplicationUser> userManager)
+        {
+            _context = context;
+            _userManager = userManager;
+        }
         [HttpGet]
         public IActionResult Index()
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Learn", new { lang = Request.Cookies["lang"] });
+                return RedirectToAction("Index", "Learn");
             }
             return View();
         }
-        [HttpGet()]
+
+        [HttpGet]
         public IActionResult LanguageChoice()
         {
             var model = new ChooseLanguageViewModel
             {
-                Languages = new List<LanguageCardViewModel>
-            {
-                new() { Code = "en", Name = "Англійська", FlagEmoji = "🇺🇸" },
-                new() { Code = "de", Name = "Німецька", FlagEmoji = "🇩🇪" },
-                new() { Code = "es", Name = "Іспанська", FlagEmoji = "🇪🇸" },
-                new() { Code = "fr", Name = "Французька", FlagEmoji = "🇫🇷" },
-                new() { Code = "it", Name = "Італійська", FlagEmoji = "🇮🇹" },
-                new() { Code = "ja", Name = "Японська", FlagEmoji = "🇯🇵" },
-                new() { Code = "ko", Name = "Корейська", FlagEmoji = "🇰🇷" },
-                new() { Code = "zh", Name = "Китайська (спрощена)", FlagEmoji = "🇨🇳" }
-            }
+                Languages = _context.Courses.Select(c => new LanguageCardViewModel
+                {
+                    Code = c.LanguageCode,
+                    Name = c.Name,
+                }).ToList()
             };
-
             return View(model);
         }
-        [HttpPost("LanguageChoice")]
-        public IActionResult SelectLanguage(string lang)
+
+        [HttpPost]
+        public async Task<IActionResult> SelectLanguage(string lang)
         {
+            var user = await _context.Users
+                .Include(u => u.Progresses)
+                .FirstOrDefaultAsync(u => u.Id == _userManager.GetUserId(User));
+
+            var course = await _context.Courses
+                .Include(c => c.Groups)
+                    .ThenInclude(g => g.Lessons)
+                .FirstOrDefaultAsync(c => c.LanguageCode == lang);
+
+            if (user != null && course != null)
+            {
+                user.ActiveLanguageCourse = course;
+
+                var progress = user.Progresses.FirstOrDefault(p => p.LanguageCourseId == course.Id);
+
+                if (progress == null)
+                {
+                    var firstLesson = course.Groups
+                        .OrderBy(g => g.Id)
+                        .SelectMany(g => g.Lessons)
+                        .OrderBy(l => l.Order)
+                        .FirstOrDefault();
+
+                    var newProgress = new UserProgress
+                    {
+                        User = user,
+                        Course = course,
+                        LanguageCourseId = course.Id,
+                        LanguageLesson = firstLesson
+                    };
+
+                    _context.UserProgresses.Add(newProgress);
+                }
+
+                await _context.SaveChangesAsync();
+            }
+
             return RedirectToAction("Index", "Learn", new { lang = lang });
+        }
+        [Route("Home/Error")]
+        public IActionResult Error(int? statusCode = null)
+        {
+            if (statusCode.HasValue && statusCode.Value == 404)
+            {
+                return View("NotFound");
+            }
+
+            return View("Error");
         }
     }
 }

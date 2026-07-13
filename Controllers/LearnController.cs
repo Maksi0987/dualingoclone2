@@ -1,12 +1,14 @@
-﻿using Languio.Models;
-using Languio.Data;
+﻿using Languio.Data;
 using Languio.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Languio.Controllers
 {
+    [Authorize]
     public class LearnController : Controller
     {
         private readonly AppDbContext _context;
@@ -21,52 +23,41 @@ namespace Languio.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(string lang)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _context.Users
+                .Include(u => u.ActiveLanguageCourse)
+                .Include(u => u.Progresses)
+                    .ThenInclude(p => p.LanguageLesson)
+                .FirstOrDefaultAsync(u => u.Id == _userManager.GetUserId(User));
 
-            var learnViewModel = new LearnViewModel();
+            if (user == null) return Challenge();
+            if (user.ActiveLanguageCourse == null) return RedirectToAction("LanguageChoice", "Home");
 
-            if (user != null)
+            if ((DateTime.UtcNow.Date - user.LastActiveDate.Date).TotalDays >= 2)
             {
-                var daysPassed = (DateTime.UtcNow.Date - user.LastActiveDate.Date).TotalDays;
-                if (daysPassed >= 2)
-                {
-                    user.DayStreak = 0;
-                }
-
-                user.LastActiveDate = DateTime.UtcNow;
-
-                await _userManager.UpdateAsync(user);
-
-                var currentLangCode = string.IsNullOrEmpty(lang) && user.ActiveLangeageCourse != null ? user.ActiveLangeageCourse.LanguageCode : lang;
-
-                var course = await _context.Courses.FirstOrDefaultAsync(c => c.LanguageCode == currentLangCode);
-
-                int courseId = course?.Id ?? 0;
-
-                learnViewModel.LanguageCode = currentLangCode;
-                learnViewModel.Coins = user.Coins;
-                learnViewModel.DayStreak = user.DayStreak;
-                learnViewModel.LanguageLessonGroups = await _context.Groups
-                    .Where(g => g.LanguageCourseId == courseId)
-                    .Include(g => g.Lessons)
-                    .ToListAsync();
+                user.DayStreak = 0;
             }
-            else
+            user.LastActiveDate = DateTime.UtcNow;
+            await _userManager.UpdateAsync(user);
+
+            var currentLangCode = string.IsNullOrEmpty(lang) ? user.ActiveLanguageCourse.LanguageCode : lang;
+            var course = await _context.Courses.FirstOrDefaultAsync(c => c.LanguageCode == currentLangCode);
+
+            if (course == null) return NotFound();
+
+            var userProgress = user.Progresses?.FirstOrDefault(p => p.LanguageCourseId == course.Id);
+
+            var learnViewModel = new LearnViewModel
             {
-                if (string.IsNullOrEmpty(lang)) lang = "en"; 
-
-                var course = await _context.Courses.FirstOrDefaultAsync(c => c.LanguageCode == lang);
-
-                int courseId = course?.Id ?? 0;
-
-                learnViewModel.LanguageCode = lang;
-                learnViewModel.Coins = 0;
-                learnViewModel.DayStreak = 0;
-                learnViewModel.LanguageLessonGroups = await _context.Groups
-                    .Where(g => g.LanguageCourseId == courseId)
+                LanguageCode = currentLangCode,
+                Coins = user.Coins,
+                DayStreak = user.DayStreak,
+                LanguageLessonGroups = await _context.Groups
+                    .Where(g => g.LanguageCourseId == course.Id)
                     .Include(g => g.Lessons)
-                    .ToListAsync();
-            }
+                    .OrderBy(g => g.Id)
+                    .ToListAsync(),
+                CurrentLanguageLesson = userProgress?.LanguageLesson
+            };
 
             return View(learnViewModel);
         }

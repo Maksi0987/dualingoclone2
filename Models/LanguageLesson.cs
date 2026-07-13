@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Languio.Models
 {
@@ -9,8 +11,9 @@ namespace Languio.Models
         public int Order { get; set; }
 
         public int LanguageLessonGroupId { get; set; }
+        [ValidateNever]
         public LanguageLessonGroup LanguageGroup { get; set; }
 
-        public List<LanguageQuestion> Questions { get; set; }
+        public List<LanguageQuestion> Questions { get; set; } = new();
     }
 }

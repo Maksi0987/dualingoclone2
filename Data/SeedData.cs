@@ -1,19 +1,29 @@
 using Languio.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Languio.Data
 {
     public static class SeedData
     {
-        public static async Task Initialize(AppDbContext context, UserManager<ApplicationUser> userManager)
+        public static async Task Initialize(AppDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            context.Database.EnsureCreated();
-            
-            // Створення Адміна, якщо немає
-            if (await userManager.FindByEmailAsync("admin@languio.com") == null)
+            await context.Database.MigrateAsync();
+
+            if (!await roleManager.RoleExistsAsync("Admin"))
             {
-                var admin = new ApplicationUser { UserName = "admin@languio.com", Email = "admin@languio.com" };
-                await userManager.CreateAsync(admin, "Admin123!");
+                await roleManager.CreateAsync(new IdentityRole("Admin"));
+            }
+
+            var adminEmail = "admin@languio.com";
+            if (await userManager.FindByEmailAsync(adminEmail) == null)
+            {
+                var admin = new ApplicationUser { UserName = adminEmail, Email = adminEmail, EmailConfirmed = true };
+                var result = await userManager.CreateAsync(admin, "Admin123!");
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(admin, "Admin");
+                }
             }
         }
     }

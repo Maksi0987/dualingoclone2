@@ -31,7 +31,7 @@ namespace Languio.Controllers
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, isPersistent: false);
-                return RedirectToAction("Index", "Learn");
+                return RedirectToAction("LanguageChoice", "Home");
             }
             foreach (var error in result.Errors) ModelState.AddModelError("", error.Description);
             return View(model);
@@ -59,15 +59,29 @@ namespace Languio.Controllers
         {
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null) return RedirectToAction("Login");
-            var result = await _signInManager.ExternalLoginAsync(info, false);
-            if (result.Succeeded) return RedirectToAction("Index", "Learn");
+
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false);
+            if (result.Succeeded) return RedirectToAction("LanguageChoice", "Home");
 
             var email = info.Principal.FindFirst(System.Security.Claims.ClaimTypes.Email).Value;
             var user = new ApplicationUser { UserName = email, Email = email };
-            await _userManager.CreateAsync(user);
-            await _userManager.AddLoginAsync(user, info);
-            await _signInManager.SignInAsync(user, false);
-            return RedirectToAction("Index", "Learn");
+
+            var createResult = await _userManager.CreateAsync(user);
+            if (createResult.Succeeded)
+            {
+                await _userManager.AddLoginAsync(user, info);
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                return RedirectToAction("LanguageChoice", "Home");
+            }
+
+            return RedirectToAction("Login");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

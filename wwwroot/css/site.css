@@ -303,3 +303,62 @@
 .tracking-wide {
     letter-spacing: 0.8px;
 }
+
+/* Стилі для випадаючого меню "Більше" */
+.dl-more-menu-container .dl-more-menu {
+    position: absolute;
+    /* Відображаємо меню зверху кнопки (бо вона в самому низу списку) */
+    bottom: 100%;
+    left: 0;
+    min-width: 220px;
+    border-radius: 16px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.2s ease-in-out;
+    z-index: 1050;
+    margin-bottom: 5px;
+}
+
+/* При наведенні на весь контейнер показуємо меню */
+.dl-more-menu-container:hover .dl-more-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Ефекти при наведенні на пункти меню */
+.dl-more-menu .dropdown-item {
+    transition: background-color 0.15s;
+    color: #777; /* Сірий колір тексту */
+}
+
+    .dl-more-menu .dropdown-item:hover {
+        background-color: #f7f7f7;
+    }
+
+/* Робимо червоний акцент для кнопки виходу при наведенні */
+.dl-more-menu .dl-logout-btn:hover {
+    background-color: #ffd3d3;
+    color: #ea2b2b !important;
+}
+
+    .dl-more-menu .dl-logout-btn:hover i {
+        color: #ea2b2b !important;
+    }
+
+.btn-outline-danger:hover {
+        background-color: #ffe5e5;
+        color: #ea2b2b;
+        border-color: #ffcccc;
+    }
+    .btn-outline-primary:hover {
+        background-color: #e5f3ff;
+        color: #007bff;
+        border-color: #cce5ff;
+    }
+    .dl-light-row:hover {
+        background-color: #fcfcfc;
+        border-color: #e5e5e5;
+    }
+    

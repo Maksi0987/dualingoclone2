@@ -8,6 +8,6 @@ namespace Languio.Models
         public ApplicationUser User { get; set; }
         public int LanguageCourseId { get; set; }
         public LanguageCourse Course { get; set; }
-        public int CurrentLessonId { get; set; }
+        public LanguageLesson LanguageLesson { get; set; }
     }
 }

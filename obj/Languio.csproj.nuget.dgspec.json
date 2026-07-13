@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\sereb\\source\\repos\\dualingoclone2-lesson\\Languio\\Languio.csproj": {}
+    "C:\\IT\\TeamProject\\Languio\\Languio.csproj": {}
   },
   "projects": {
-    "C:\\Users\\sereb\\source\\repos\\dualingoclone2-lesson\\Languio\\Languio.csproj": {
+    "C:\\IT\\TeamProject\\Languio\\Languio.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\sereb\\source\\repos\\dualingoclone2-lesson\\Languio\\Languio.csproj",
+        "projectUniqueName": "C:\\IT\\TeamProject\\Languio\\Languio.csproj",
         "projectName": "Languio",
-        "projectPath": "C:\\Users\\sereb\\source\\repos\\dualingoclone2-lesson\\Languio\\Languio.csproj",
-        "packagesPath": "C:\\Users\\sereb\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\sereb\\source\\repos\\dualingoclone2-lesson\\Languio\\obj\\",
+        "projectPath": "C:\\IT\\TeamProject\\Languio\\Languio.csproj",
+        "packagesPath": "C:\\Users\\dimas\\.nuget\\packages\\",
+        "outputPath": "C:\\IT\\TeamProject\\Languio\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\sereb\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\dimas\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,7 +26,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

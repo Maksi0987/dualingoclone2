@@ -27,9 +27,23 @@
                     <a href="#" class="nav-link d-flex align-items-center gap-3 px-3 py-3 rounded-4 fw-extrabold text-uppercase">
                         <i class="bi bi-person-circle fs-4 text-info"></i> Профіль
                     </a>
-                    <a href="#" class="nav-link d-flex align-items-center gap-3 px-3 py-3 rounded-4 fw-extrabold text-uppercase">
-                        <i class="bi bi-three-dots fs-4 text-secondary"></i> Більше
-                    </a>
+                    <div class="nav-item position-relative dl-more-menu-container">
+                        <a href="#" class="nav-link d-flex align-items-center gap-3 px-3 py-3 rounded-4 fw-extrabold text-uppercase">
+                            <i class="bi bi-three-dots fs-4 text-secondary"></i> Більше
+                        </a>
+
+                        <div class="dl-more-menu shadow p-3 bg-white border border-2 border-light-subtle">
+                            <a href="#" class="dropdown-item fw-bold px-3 py-2 rounded-3 text-secondary d-flex align-items-center gap-3 mb-1">
+                                <i class="bi bi-gear-fill fs-5"></i> Налаштування
+                            </a>
+
+                            <form asp-controller="Account" asp-action="Logout" method="post" class="m-0 p-0">
+                                <button type="submit" class="dropdown-item fw-bold px-3 py-2 rounded-3 d-flex align-items-center gap-3 w-100 border-0 bg-transparent text-start dl-logout-btn">
+                                    <i class="bi bi-box-arrow-right fs-5"></i> Вийти
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </nav>
             </div>
 
@@ -81,10 +95,12 @@
                             {
                                 var lesson = lessons[i];
                                 int shiftX = shifts[i % shifts.Length];
-                                bool isFirstLesson = (groupCounter == 1 && i == 0);
+                                bool isCompleted = Model.CurrentLanguageLesson != null && lesson.Order < Model.CurrentLanguageLesson.Order;
+                                bool isActive = Model.CurrentLanguageLesson != null && lesson.Id == Model.CurrentLanguageLesson.Id;
 
                                 <div class="position-relative" style="transform: translateX(@(shiftX)px);">
-                                    @if (isFirstLesson)
+
+                                    @if (isActive)
                                     {
                                         <div class="dl-tooltip text-uppercase">Почати</div>
                                         <a asp-controller="Lesson" asp-action="Start" asp-route-id="@lesson.Id"
@@ -92,11 +108,19 @@
                                             <i class="bi bi-star-fill text-white fs-4"></i>
                                         </a>
                                     }
+                                    else if (isCompleted)
+                                    {
+                                        <a asp-controller="Lesson" asp-action="Start" asp-route-id="@lesson.Id"
+                                           class="btn dl-btn dl-btn-active rounded-circle d-flex align-items-center justify-content-center animate-bounce">
+                                            <i class="bi bi-check-lg text-white fs-3"></i>
+                                        </a>
+                                    }
                                     else
                                     {
-                                        <button class="btn dl-btn dl-btn-locked rounded-circle d-flex align-items-center justify-content-center" disabled>
-                                            <i class="bi bi-star-fill fs-4"></i>
-                                        </button>
+                                        <a class="btn dl-btn dl-btn-locked rounded-circle d-flex align-items-center justify-content-center"
+                                           style="background-color: #f7f7f7 !important; border: 3px dashed #e5e5e5 !important; box-shadow: none !important;">
+                                            <i class="bi bi-play-fill fs-3 text-secondary"></i>
+                                        </a>
                                     }
                                 </div>
                             }

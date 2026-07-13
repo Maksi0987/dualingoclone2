@@ -1,41 +1,33 @@
 ﻿@model Languio.Models.ChooseLanguageViewModel
-
 @{
     ViewData["Title"] = "Яку мову ви хочете вчити?";
+    Layout = "_Layout";
 }
 
-<div class="bg-white text-dark min-vh-100 d-flex flex-column justify-content-between">
-
-    <header class="container d-flex justify-content-between align-items-center py-4 px-3">
-        <div class="logo fw-bold text-success fs-2" style="letter-spacing: -1px; cursor:pointer;" onclick="location.href='/'">languio</div>
-        <div class="dropdown">
-            <button class="btn btn-link text-secondary text-uppercase fw-bold text-decoration-none dropdown-toggle small" type="button" data-bs-toggle="dropdown">
-                Мова сайту: Українська
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Українська</a></li>
-            </ul>
-        </div>
+<div class="container-fluid min-vh-100 bg-white d-flex flex-column">
+    <header class="container d-flex justify-content-between align-items-center py-4 px-3 border-bottom border-light-subtle">
+        <div class="logo fw-extrabold text-success fs-2" style="letter-spacing: -1.5px; cursor:pointer;" onclick="location.href='/'">languio</div>
     </header>
 
-    <main class="container my-auto py-5" style="max-width: 1000px;">
-        <h1 class="text-center fw-bold h3 mb-5 text-dark-emphasis">Яку мову ви хочете вчити?</h1>
+    <main class="container my-auto py-5" style="max-width: 800px;">
+        <h1 class="text-center fw-extrabold h3 mb-5 text-dark" style="font-family: 'Nunito', sans-serif;">
+            Яку мову ви хочете вчити?
+        </h1>
 
-        <form id="langForm" method="post" action="/LanguageChoice">
+        <form id="langForm" asp-controller="Home" asp-action="SelectLanguage" method="post">
             <input type="hidden" id="selectedLangInput" name="lang" value="" />
 
-            <div class="row row-cols-2 row-cols-sm-2 row-cols-md-4 g-4 justify-content-center">
+            <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4 justify-content-center">
                 @foreach (var lang in Model.Languages)
                 {
                     <div class="col">
-                        <div class="card lang-card h-100 text-center p-4 border border-2 rounded-4 shadow-sm"
-                             style="cursor: pointer;"
+                        <div class="card h-100 text-center p-4 border-2 rounded-4 shadow-sm dl-lang-card"
+                             style="cursor: pointer; transition: all 0.2s;"
                              onclick="submitLanguage('@lang.Code')">
 
-                            <div class="flag-icon display-3 my-3">@lang.FlagEmoji</div>
-
-                            <div class="card-body p-0">
-                                <h5 class="card-title fw-bold fs-6 mb-1 text-secondary-emphasis">@lang.Name</h5>
+                            <div class="card-body p-0 d-flex flex-column align-items-center justify-content-center">
+                                <span class="fs-1 mb-2">@lang.Code</span>
+                                <h5 class="card-title fw-extrabold fs-6 m-0 text-dark">@lang.Name</h5>
                             </div>
                         </div>
                     </div>
@@ -43,15 +35,24 @@
             </div>
         </form>
     </main>
-
-    <footer class="py-4"></footer>
 </div>
+
+<style>
+    .dl-lang-card:hover {
+        background-color: #f7f7f7;
+        border-color: #1cb0f6 !important;
+        transform: translateY(-5px);
+    }
+
+    .logo {
+        font-family: 'Nunito', sans-serif;
+    }
+</style>
 
 @section Scripts {
     <script>
         function submitLanguage(langCode) {
             localStorage.setItem("current_lang", langCode);
-
             document.getElementById("selectedLangInput").value = langCode;
             document.getElementById("langForm").submit();
         }

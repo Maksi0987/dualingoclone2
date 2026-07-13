@@ -6,11 +6,7 @@
 <div class="container-fluid min-vh-100 bg-white text-dark p-5">
     <div class="mx-auto" style="max-width: 900px;">
 
-        <nav class="mb-3">
-            <a asp-action="Groups" asp-route-courseId="@ViewBag.CourseId" class="text-info fw-bold text-decoration-none small">
-                <i class="bi bi-arrow-left"></i> Назад до розділів
-            </a>
-        </nav>
+        <nav class="mb-3"><a asp-action="Groups" asp-route-courseId="@ViewBag.CourseId" class="text-info fw-bold text-decoration-none small"><i class="bi bi-arrow-left"></i> Назад до розділів</a></nav>
 
         <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-2 border-light-subtle">
             <h1 class="h3 fw-extrabold text-dark m-0" style="font-family: 'Nunito', sans-serif;">
@@ -24,28 +20,34 @@
         <div class="d-flex flex-column gap-3">
             @if (!Model.Any())
             {
-                <div class="p-5 text-center text-secondary border border-2 border-dashed border-secondary-subtle rounded-4 bg-light bg-opacity-50">
-                    У цьому розділі ще немає уроків.
-                </div>
+                <div class="p-5 text-center text-secondary border border-2 border-dashed border-secondary-subtle rounded-4 bg-light bg-opacity-50">У цьому розділі ще немає уроків.</div>
             }
+
             @foreach (var lesson in Model)
             {
-                <a asp-action="Questions" asp-route-lessonId="@lesson.Id" class="rounded-4 border-2 p-4 d-flex justify-content-between align-items-center dl-light-row text-decoration-none">
-                    <div class="d-flex align-items-center gap-3">
+                <div class="rounded-4 border-2 p-3 p-md-4 d-flex justify-content-between align-items-center dl-light-row transition-all mb-1">
+                    <a asp-action="Questions" asp-route-lessonId="@lesson.Id" class="d-flex align-items-center gap-3 text-decoration-none flex-grow-1">
                         <span class="badge bg-light border border-2 border-light-subtle text-dark rounded-3 px-3 py-2 fw-extrabold fs-7 shadow-sm">
                             № @lesson.Order
                         </span>
                         <div>
                             <h5 class="fw-extrabold m-0 text-dark">@lesson.Title</h5>
-                            <small class="text-secondary fw-bold small">ID Уроку: #@lesson.Id • Керування інтерактивними завданнями</small>
+                            <small class="text-secondary fw-bold small">ID Уроку: #@lesson.Id • Керування питаннями</small>
                         </div>
+                    </a>
+                    <div class="d-flex align-items-center gap-3 ps-3 border-start border-2 border-light-subtle">
+                        <a asp-action="EditLesson" asp-route-id="@lesson.Id" class="btn btn-sm btn-outline-primary fw-bold rounded-3 d-flex align-items-center justify-content-center border-2" style="width: 38px; height: 38px; transition: all 0.2s;" title="Редагувати">
+                            <i class="bi bi-pencil-fill"></i>
+                        </a>
+                        <form asp-action="DeleteLesson" asp-route-id="@lesson.Id" method="post" onsubmit="return confirm('Ви впевнені, що хочете видалити цей урок?');" class="m-0">
+                            <button type="submit" class="btn btn-sm btn-outline-danger fw-bold rounded-3 d-flex align-items-center justify-content-center border-2" style="width: 38px; height: 38px; transition: all 0.2s;" title="Видалити урок">
+                                <i class="bi bi-trash-fill fs-6"></i>
+                            </button>
+                        </form>
+                        <a asp-action="Questions" asp-route-lessonId="@lesson.Id" class="text-success fw-extrabold fs-5 text-decoration-none"><i class="bi bi-chevron-right"></i></a>
                     </div>
-                    <div class="text-success fw-extrabold fs-5 pe-2">
-                        <i class="bi bi-chevron-right"></i>
-                    </div>
-                </a>
+                </div>
             }
         </div>
-
     </div>
 </div>

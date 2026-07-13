@@ -1,21 +1,240 @@
 @model Languio.Models.LoginViewModel
+@{
+    ViewData["Title"] = "Увійти";
+    Layout = null; // Вимикаємо стандартне меню, робимо чистий інтерфейс
+}
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-4">
-            <h2 class="text-center mb-4">Вхід</h2>
-            <form asp-controller="Account" asp-action="Login" method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="mb-3">
-                    <input asp-for="EmailOrUsername" class="form-control" placeholder="Ел. адреса або ім'я користувача" />
-                    <span asp-validation-for="EmailOrUsername" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <input asp-for="Password" class="form-control" placeholder="Пароль" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-                <button type="submit" class="btn btn-primary w-100">УВІЙТИ</button>
-            </form>
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - Languio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+            body {
+                font-family: 'Nunito', sans-serif;
+                background-color: #ffffff;
+                color: #3c3c3c;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+            }
+
+            .auth-container {
+                width: 100%;
+                max-width: 380px;
+                padding: 20px;
+            }
+
+            .btn-close-custom {
+                font-size: 1.5rem;
+                color: #afafaf;
+                cursor: pointer;
+                text-decoration: none;
+                transition: color 0.2s;
+            }
+
+                .btn-close-custom:hover {
+                    color: #777;
+                }
+
+            .dl-input {
+                width: 100%;
+                background-color: #f7f7f7;
+                border: 2px solid #e5e5e5;
+                border-radius: 16px;
+                padding: 14px 16px;
+                font-size: 1rem;
+                font-weight: 700;
+                color: #3c3c3c;
+                transition: all 0.2s ease;
+            }
+
+                .dl-input::placeholder {
+                    color: #afafaf;
+                    font-weight: 700;
+                }
+
+                .dl-input:focus {
+                    outline: none;
+                    border-color: #1cb0f6;
+                    background-color: #ffffff;
+                }
+
+            .btn-dl-primary {
+                background-color: #1cb0f6;
+                color: white;
+                border: none;
+                border-bottom: 4px solid #1899d6;
+                border-radius: 16px;
+                font-weight: 800;
+                letter-spacing: 0.8px;
+                padding: 14px;
+                text-transform: uppercase;
+                width: 100%;
+                transition: all 0.1s;
+            }
+
+                .btn-dl-primary:hover {
+                    background-color: #159aeb;
+                    color: white;
+                }
+
+                .btn-dl-primary:active {
+                    border-bottom-width: 0px;
+                    transform: translateY(4px);
+                    margin-bottom: 4px;
+                }
+
+            .divider-container {
+                display: flex;
+                align-items: center;
+                text-align: center;
+                margin: 24px 0;
+                color: #afafaf;
+                font-weight: 800;
+                font-size: 0.85rem;
+            }
+
+                .divider-container::before,
+                .divider-container::after {
+                    content: '';
+                    flex: 1;
+                    border-bottom: 2px solid #e5e5e5;
+                }
+
+                .divider-container:not(:empty)::before {
+                    margin-right: .5em;
+                }
+
+                .divider-container:not(:empty)::after {
+                    margin-left: .5em;
+                }
+
+            .btn-dl-social {
+                background-color: #ffffff;
+                border: 2px solid #e5e5e5;
+                border-bottom: 4px solid #e5e5e5;
+                border-radius: 16px;
+                font-weight: 800;
+                letter-spacing: 0.5px;
+                padding: 12px;
+                text-transform: uppercase;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                transition: all 0.1s;
+                margin-bottom: 12px;
+            }
+
+                .btn-dl-social:hover {
+                    background-color: #f7f7f7;
+                }
+
+                .btn-dl-social:active {
+                    border-bottom-width: 2px;
+                    transform: translateY(2px);
+                    margin-bottom: 14px;
+                }
+
+            .text-facebook {
+                color: #1877f2;
+            }
+
+            .text-google {
+                color: #3c3c3c;
+            }
+
+            .bottom-links {
+                font-size: 0.9rem;
+                color: #afafaf;
+                text-align: center;
+                margin-top: 24px;
+                font-weight: 800;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+                .bottom-links a {
+                    color: #1cb0f6;
+                    text-decoration: none;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+
+                    .bottom-links a:hover {
+                        color: #159aeb;
+                    }
+
+            .bottom-terms a {
+                color: #afafaf;
+                font-size: 0.75rem;
+                text-transform: none;
+            }
+
+                .bottom-terms a:hover {
+                    text-decoration: underline;
+                }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container">
+        <div class="d-flex align-items-center mb-4 position-relative">
+            <a href="/" class="btn-close-custom position-absolute" aria-label="Close" style="left: 0;">
+                <i class="bi bi-x-lg"></i>
+            </a>
+            <h4 class="fw-black w-100 text-center m-0" style="font-weight: 800; font-size: 1.3rem;">Увійти</h4>
+        </div>
+
+        <form asp-controller="Account" asp-action="Login" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3 fw-bold small text-center"></div>
+
+            <div class="mb-3">
+                <input asp-for="EmailOrUsername" class="dl-input" placeholder="Ел. пошта або ім'я користувача" />
+                <span asp-validation-for="EmailOrUsername" class="text-danger small fw-bold ms-2"></span>
+            </div>
+
+            <div class="mb-4">
+                <input asp-for="Password" type="password" class="dl-input" placeholder="Пароль" />
+                <span asp-validation-for="Password" class="text-danger small fw-bold ms-2"></span>
+            </div>
+
+            <button type="submit" class="btn-dl-primary">Увійти</button>
+        </form>
+
+        <div class="divider-container">АБО</div>
+
+        <form asp-controller="Account" asp-action="ExternalLogin" method="post">
+            <button type="submit" name="provider" value="Facebook" class="btn-dl-social text-facebook">
+                <i class="bi bi-facebook fs-5"></i> Facebook
+            </button>
+
+            <button type="submit" name="provider" value="Google" class="btn-dl-social text-google">
+                <i class="bi bi-google fs-5"></i> Google
+            </button>
+        </form>
+
+        <div class="bottom-links mt-4">
+            <a asp-controller="Account" asp-action="ForgotPassword">Забули пароль?</a>
+            <div class="bottom-terms mt-3">
+                By signing in to Languio, you agree to our <br>
+                <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.
+            </div>
         </div>
     </div>
-</div>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+
+</body>
+</html>

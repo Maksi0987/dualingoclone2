@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public List<LanguageLesson> Lessons { get; set; }
+        public List<LanguageLesson> Lessons { get; set; } = new();
 
         public int LanguageCourseId { get; set; }
     }

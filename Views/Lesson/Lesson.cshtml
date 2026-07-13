@@ -1,7 +1,7 @@
 ﻿@model Languio.Models.LanguageLesson
 @{
     ViewData["Title"] = Model.Title;
-    Layout = null; // Вимикаємо загальний Layout сайту для створення ігрового повноекранного інтерфейсу
+    Layout = null;
 }
 
 <!DOCTYPE html>
@@ -22,7 +22,6 @@
                 background-color: #ffffff;
                 color: #3c3c3c;
             }
-            /* Стиль кнопок варіантів відповідей а-ля Duolingo */
             .dl-option-btn {
                 width: 100%;
                 text-align: left;
@@ -47,14 +46,12 @@
                     border-bottom-width: 2px;
                     transform: translateY(2px);
                 }
-                /* Стан коли варіант вибрано */
                 .dl-option-btn.selected {
                     border-color: #1cb0f6;
                     border-bottom-color: #1899d6;
                     background-color: #ddf4ff;
                     color: #1cb0f6;
                 }
-            /* Кастомна 3D кнопка перевірки */
             .btn-3d {
                 border-radius: 16px;
                 font-weight: 900;
@@ -85,7 +82,6 @@
                     border-bottom-width: 0px;
                     transform: translateY(4px);
                 }
-            /* Нижня плашка результату */
             .result-panel {
                 position: fixed;
                 bottom: 0;
@@ -161,7 +157,6 @@
 </div>
 
 <script>
-        // Магія Razor: серіалізуємо питання з C# прямо в JS масив
         const questions = @Html.Raw(Json.Serialize(Model.Questions));
 
         let currentQuestionIndex = 0;
@@ -169,7 +164,6 @@
         let lives = 5;
         let correctAnswersCount = 0;
 
-        // DOM елементи
         const typeBadge = document.getElementById('question-type-badge');
         const promptText = document.getElementById('prompt-text');
         const optionsBox = document.getElementById('options-box');
@@ -184,12 +178,9 @@
         const resultIconBox = document.getElementById('result-icon-box');
         const resultTitle = document.getElementById('result-title');
 
-        // Ініціалізація першого питання
         function renderQuestion() {
-            // Скидаємо стан вибору
             selectedOptionId = null;
 
-            // Повертаємо дефолтну нижню панель
             actionPanel.className = "bg-white border-top border-2 p-4 fixed-bottom";
             panelDefault.classList.remove('d-none');
             panelDefault.classList.add('d-flex');
@@ -201,7 +192,6 @@
 
             const currentQuestion = questions[currentQuestionIndex];
 
-            // Відображаємо локалізований тип питання
             if (currentQuestion.type === 0 || currentQuestion.type === "MultipleChoice") {
                 typeBadge.innerText = "Виберіть правильний варіант";
             } else if (currentQuestion.type === 1 || currentQuestion.type === "Translation") {
@@ -213,7 +203,6 @@
             promptText.innerText = currentQuestion.promptText;
             optionsBox.innerHTML = '';
 
-            // Генеруємо кнопки відповідей
             currentQuestion.options.forEach((option, index) => {
                 const btn = document.createElement('button');
                 btn.className = 'dl-option-btn d-flex align-items-center';
@@ -226,9 +215,7 @@
             updateUi();
         }
 
-        // Клік на варіант відповіді
         function selectOption(buttonElement, optionId) {
-            // Якщо результат вже перевірено, клікати не можна
             if (panelDefault.classList.contains('d-none')) return;
 
             document.querySelectorAll('.dl-option-btn').forEach(btn => btn.classList.remove('selected'));
@@ -236,17 +223,14 @@
 
             selectedOptionId = optionId;
 
-            // Активуємо зелену 3D кнопку перевірки
             checkBtn.disabled = false;
             checkBtn.className = "btn btn-3d btn-3d-green px-5 py-3 text-uppercase fs-6";
         }
 
-        // Клік на кнопку "Перевірити"
         checkBtn.onclick = async function() {
             const currentQuestion = questions[currentQuestionIndex];
 
             try {
-                // Робимо POST-запит до MVC контролера без перезавантаження
                 const formData = new FormData();
                 formData.append('questionId', currentQuestion.id);
                 formData.append('selectedOptionId', selectedOptionId);
@@ -259,26 +243,22 @@
                 if (!response.ok) throw new Error("Помилка сервера");
                 const result = await response.json();
 
-                // Перемикаємо відображення плашок знизу
                 panelDefault.classList.remove('d-flex');
                 panelDefault.classList.add('d-none');
                 panelResult.classList.remove('d-none');
                 panelResult.classList.add('d-flex');
 
                 if (result.isCorrect) {
-                    // Стиль успіху
                     actionPanel.className = "result-panel result-success fixed-bottom d-block animate__animated animate__slideInUp";
                     resultIconBox.innerHTML = "✅";
                     resultTitle.innerText = "Чудова робота!";
                     nextBtn.className = "btn btn-3d btn-3d-green px-5 py-3 text-uppercase fs-6";
                     correctAnswersCount++;
                 } else {
-                    // Стиль помилки
                     actionPanel.className = "result-panel result-danger fixed-bottom d-block animate__animated animate__slideInUp";
                     resultIconBox.innerHTML = "❌";
                     resultTitle.innerText = "Помилка:";
 
-                    // Пробуємо знайти текст правильної відповіді для підказки користувачу
                     const correctOption = currentQuestion.options.find(o => o.isCorrect || o.IsCorrect);
                     document.getElementById('result-message').innerText = correctOption ? `Правильно: ${correctOption.text}` : "Неправильна відповідь";
 
@@ -291,7 +271,7 @@
                         livesCount.innerText = "0";
                         setTimeout(() => {
                             alert("Упс! Закінчилися життя. Спробуйте пройти урок знову.");
-                            window.location.href = "/"; // Повернення на головну
+                            window.location.href = "/"; 
                         }, 300);
                         return;
                     }
@@ -303,14 +283,12 @@
             }
         };
 
-        // Клік на кнопку "Продовжити" (наступне питання)
         nextBtn.onclick = function() {
             currentQuestionIndex++;
 
             if (currentQuestionIndex < questions.length) {
                 renderQuestion();
             } else {
-                // Екран успішного завершення уроку
                 actionPanel.classList.add('d-none');
                 progressBar.style.width = "100%";
 
@@ -319,23 +297,28 @@
                         <h1 style="font-size: 4rem;">🎉</h1>
                         <h2 class="fw-black text-success mb-3" style="font-weight: 900;">Урок успішно завершено!</h2>
                         <p class="fs-5 text-secondary fw-bold">Ви відповіли правильно на ${correctAnswersCount} з ${questions.length} питань.</p>
-                        <a href="/" class="btn btn-3d btn-3d-green mt-4 px-5 py-3 text-uppercase fs-6 text-decoration-none d-inline-block">
+                        <button onclick="completeLesson()" class="btn btn-3d btn-3d-green mt-4 px-5 py-3 text-uppercase fs-6">
                             Отримати нагороду
-                        </a>
+                        </button>
                     </div>
                 `;
             }
         };
 
-        // Оновлення життів та прогрес-бару
         function updateUi() {
             livesCount.innerText = lives;
             const progressPercent = (currentQuestionIndex / questions.length) * 100;
             progressBar.style.width = `${progressPercent}%`;
         }
 
-        // Запускаємо опитування при завантаженні сторінки
         renderQuestion();
+
+        async function completeLesson() {
+            const response = await fetch('/Lesson/CompleteLesson?lessonId=@Model.Id', { method: 'POST' });
+            if (response.ok) {
+                window.location.href = '/Learn';
+            }
+        }
 </script>
 
 </body>

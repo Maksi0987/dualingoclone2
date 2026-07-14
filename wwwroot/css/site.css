@@ -402,3 +402,39 @@ body {
     .dl-course-row:hover {
         background-color: var(--hover-bg);
     }
+
+/* ==========================================================
+   АДАПТИВНІ САЙДБАРИ
+   ========================================================== */
+
+.dl-sticky-aside {
+    position: static;
+    height: auto;
+}
+
+@media (min-width: 992px) {
+    .dl-sticky-aside {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+    }
+}
+
+.dl-right-aside {
+    border-top-width: 2px;
+    border-top-style: solid;
+    border-left-width: 0;
+}
+
+@media (min-width: 992px) {
+    .dl-right-aside {
+        border-top-width: 0;
+        border-left-width: 2px;
+        border-left-style: solid;
+    }
+}
+
+.offcanvas {
+    background-color: var(--bg-card) !important;
+    color: var(--text-main) !important;
+}

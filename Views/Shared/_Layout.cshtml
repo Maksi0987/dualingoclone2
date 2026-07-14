@@ -23,55 +23,42 @@
 </head>
 <body>
 
+    <nav class="d-flex d-lg-none align-items-center justify-content-between px-3 py-3 border-bottom border-2 border-light-subtle bg-white sticky-top">
+        <button class="btn btn-light border-0 p-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileNav" aria-controls="mobileNav">
+            <i class="bi bi-list fs-2 text-dark"></i>
+        </button>
+        <div class="logo fw-extrabold text-success fs-3" style="letter-spacing: -1.5px;" onclick="location.href='/'">languio</div>
+        <span style="width: 40px;"></span>
+    </nav>
+
+    <div class="offcanvas offcanvas-start bg-white text-dark d-lg-none" tabindex="-1" id="mobileNav" aria-labelledby="mobileNavLabel">
+        <div class="offcanvas-header border-bottom border-2 border-light-subtle">
+            <span class="logo fw-extrabold text-success fs-3" style="letter-spacing: -1.5px;">languio</span>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column justify-content-between">
+            <partial name="_LeftNav" />
+        </div>
+    </div>
+
     <div class="container-fluid min-vh-100 bg-white font-sans text-dark m-0 p-0">
         <div class="row min-vh-100 g-0">
 
-            <aside class="col-lg-2 col-md-3 border-end border-2 border-light-subtle px-4 py-4 d-flex flex-column justify-content-between position-sticky top-0 h-100vh">
-                <div>
-                    <div class="logo fw-extrabold text-success fs-1 px-2 mb-4 pb-2" style="letter-spacing: -2px; font-family: 'Nunito', sans-serif;">
-                        languio
-                    </div>
-                    <nav class="nav flex-column gap-2 left-sidebar">
-                        <a asp-controller="Learn" asp-action="Index"
-                           class="nav-link d-flex align-items-center gap-3 px-3 py-3 rounded-4 fw-extrabold text-uppercase @(ViewContext.RouteData.Values["controller"]?.ToString() == "Learn" ? "active" : "")">
-                            <i class="bi bi-house-door-fill fs-4 text-primary"></i> Навчання
-                        </a>
-                        <div class="nav-item position-relative dl-more-menu-container">
-                            <a href="#" class="nav-link d-flex align-items-center gap-3 px-3 py-3 rounded-4 fw-extrabold text-uppercase">
-                                <i class="bi bi-three-dots fs-4 text-secondary"></i> Більше
-                            </a>
-
-                            <div class="dl-more-menu shadow p-3 bg-white border border-2 border-light-subtle">
-                                <a asp-controller="Settings" asp-action="Account"
-                                   class="nav-link d-flex align-items-center gap-3 px-3 py-3 rounded-4 fw-extrabold text-uppercase mb-1 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Settings" ? "active" : "")">
-                                    <i class="bi bi-gear-fill fs-4 text-secondary"></i> Налаштування
-                                </a>
-
-                                <form asp-controller="Account" asp-action="Logout" method="post" class="m-0 p-0">
-                                    <button type="submit" class="nav-link d-flex align-items-center gap-3 px-3 py-3 rounded-4 fw-extrabold text-uppercase w-100 border-0 bg-transparent text-start dl-logout-btn">
-                                        <i class="bi bi-box-arrow-right fs-4 text-danger"></i> Вийти
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </nav>
-                </div>
-
-                <div class="px-2">
-                    <a asp-controller="Admin" asp-action="Index" class="btn btn-3d-light text-uppercase fw-extrabold py-3 rounded-4 w-100 border-2 d-flex align-items-center justify-content-center gap-2">
-                        <i class="bi bi-gear-fill"></i> Адмінка
-                    </a>
-                </div>
+            <aside class="d-none d-lg-flex col-lg-2 border-end border-2 border-light-subtle px-4 py-4 flex-column justify-content-between dl-sticky-aside order-1">
+                <partial name="_LeftNav" />
             </aside>
 
-            <main class="col-lg-7 col-md-6 py-4 px-lg-5 overflow-auto bg-white">
+            <main class="col-12 col-lg-7 py-4 px-3 px-lg-5 overflow-auto bg-white order-2">
                 <div class="mx-auto position-relative py-2" style="max-width: 560px;">
                     @RenderBody()
                 </div>
             </main>
 
-            <aside class="col-lg-3 col-md-3 border-start border-2 border-light-subtle py-4 px-4 bg-white d-flex flex-column gap-4 position-sticky top-0 h-100vh">
-                @RenderSection("RightSidebar", required: false)
+            <aside class="col-12 col-lg-3 border-2 border-light-subtle py-4 px-4 bg-white d-flex flex-column gap-4 dl-sticky-aside dl-right-aside order-3">
+                @if (IsSectionDefined("RightSidebar"))
+                {
+                    @RenderSection("RightSidebar", required: false)
+                }
             </aside>
 
         </div>

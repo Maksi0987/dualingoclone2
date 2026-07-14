@@ -1,0 +1,62 @@
+﻿@model Languio.Models.ApplicationUser
+@{
+    ViewData["Title"] = "Магазин";
+    Layout = "_Layout";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="fw-extrabold m-0 text-dark">Крамниця</h1>
+        <div class="d-flex align-items-center gap-2 fw-extrabold text-info fs-5">
+            <i class="bi bi-gem fs-4 text-cyan"></i> @Model.Coins
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success fw-bold rounded-4 border-2" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i> @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger fw-bold rounded-4 border-2" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i> @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="dl-section-divider mb-4">
+        <span>Підсилення</span>
+    </div>
+
+    <!-- Товар: Заморозка серії -->
+    <div class="card dl-light-card p-4 rounded-4 shadow-sm border-2 mb-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-3">
+                <div class="fs-1">🧊</div>
+                <div>
+                    <h5 class="fw-extrabold m-0 text-dark">Заморозка серії</h5>
+                    <p class="text-secondary small fw-bold m-0">Зберігає вашу серію днів, якщо ви пропустите 1 день навчання.</p>
+                </div>
+            </div>
+
+            <div>
+                @if (Model.HasStreakFreeze)
+                {
+                    <button class="btn btn-outline-secondary fw-extrabold rounded-4 border-2 disabled px-4 py-2">
+                        ОБЛАДНАНО
+                    </button>
+                }
+                else
+                {
+                    <form asp-action="BuyStreakFreeze" method="post" class="m-0">
+                        <button type="submit" class="btn btn-outline-info fw-extrabold rounded-4 border-2 px-4 py-2 d-flex align-items-center gap-2">
+                            ОТРИМАТИ ЗА 10 <i class="bi bi-gem"></i>
+                        </button>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,92 @@
+﻿@model Languio.Models.CreateQuestionViewModel
+@{
+    ViewData["Title"] = "Додати питання";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid min-vh-100 bg-white d-flex align-items-center justify-content-center p-4">
+    <div class="w-100" style="max-width: 650px;">
+
+        <nav class="mb-3 text-center">
+            <a asp-action="Questions" asp-route-lessonId="@Model.LessonId" class="text-info fw-bold text-decoration-none small">
+                <i class="bi bi-arrow-left"></i> Назад до питань
+            </a>
+        </nav>
+
+        <h1 class="h3 fw-extrabold mb-4 text-dark text-center d-flex align-items-center justify-content-center gap-2" style="font-family: 'Nunito', sans-serif;">
+            <span>📝</span> Додати питання до уроку
+        </h1>
+
+        <form asp-action="CreateQuestion" method="post" id="questionForm" class="card dl-light-card p-4 p-md-5 rounded-4 shadow-sm border-2">
+            <input type="hidden" asp-for="LessonId" />
+
+            <div class="mb-4">
+                <label asp-for="Type" class="form-label fw-extrabold text-secondary small text-uppercase mb-2" style="letter-spacing: 0.8px;">Тип завдання</label>
+                <select asp-for="Type" class="form-select dl-light-input py-2.5 text-dark fw-bold border-2" asp-items="Html.GetEnumSelectList<Languio.Models.QuestionType>()"></select>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="PromptText" class="form-label fw-extrabold text-secondary small text-uppercase mb-2" style="letter-spacing: 0.8px;">Текст завдання (Prompt)</label>
+                <input asp-for="PromptText" class="form-control dl-light-input py-2.5 text-dark fw-bold border-2" placeholder="Наприклад: Перекладіть слово 'Яблуко'" required autocomplete="off" />
+            </div>
+
+            <h5 class="fw-extrabold text-dark mt-4 mb-3 border-top border-2 border-light-subtle pt-4 text-center">
+                Варіанти відповідей
+            </h5>
+            <div class="form-text text-secondary text-opacity-75 small mb-3 text-center fw-bold">
+                Додайте варіанти відповідей та позначте правильну(і).
+            </div>
+
+            <div id="options-container" class="d-flex flex-column gap-3 mb-4">
+            </div>
+
+            <button type="button" class="btn btn-3d-light text-uppercase fw-extrabold w-100 py-3 rounded-3 fs-7 mb-4 text-info d-flex align-items-center justify-content-center gap-2" onclick="addOption()">
+                <i class="bi bi-plus-circle-fill fs-5"></i> Додати варіант
+            </button>
+
+            <div class="d-flex justify-content-end gap-3 border-top border-2 border-light-subtle pt-4 mt-2">
+                <a asp-action="Questions" asp-route-lessonId="@Model.LessonId" class="btn btn-3d-light text-uppercase fw-extrabold px-4 py-3 rounded-3 fs-7 text-decoration-none flex-grow-1 text-center">Скасувати</a>
+                <button type="submit" class="btn btn-3d-green text-uppercase fw-extrabold px-4 py-3 rounded-3 fs-7 flex-grow-1">Зберегти питання</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let optionIndex = 0;
+
+        function addOption() {
+            const container = document.getElementById('options-container');
+
+            const html = `
+                <div class="d-flex flex-wrap flex-sm-nowrap align-items-center gap-3 option-row p-3 rounded-4 border border-2 border-light-subtle bg-light shadow-sm">
+
+                    <div class="flex-grow-1 w-100">
+                        <input type="text" name="Options[${optionIndex}].Text" class="form-control py-2 fw-bold text-dark border-2 rounded-3" placeholder="Текст варіанту" required />
+                    </div>
+
+                    <div class="form-check m-0 d-flex align-items-center gap-2" title="Позначити як правильну відповідь">
+                        <input class="form-check-input border-2 mt-0 border-secondary" type="checkbox" name="Options[${optionIndex}].IsCorrect" value="true" style="width: 1.8em; height: 1.8em; cursor: pointer;" id="check_${optionIndex}">
+                        <label class="form-check-label fw-extrabold text-secondary small text-uppercase mt-1" style="cursor: pointer; letter-spacing: 0.5px;" for="check_${optionIndex}">
+                            Правильна
+                        </label>
+                    </div>
+
+                    <div class="vr mx-1 text-secondary opacity-25 d-none d-sm-block"></div>
+
+                    <button type="button" class="btn btn-outline-danger border-2 rounded-3 d-flex align-items-center justify-content-center ms-auto" style="width: 45px; height: 45px; transition: all 0.2s;" onclick="this.closest('.option-row').remove()" title="Видалити варіант">
+                        <i class="bi bi-trash-fill fs-5"></i>
+                    </button>
+                </div>
+            `;
+
+            container.insertAdjacentHTML('beforeend', html);
+            optionIndex++;
+        }
+
+        addOption();
+        addOption();
+    </script>
+}

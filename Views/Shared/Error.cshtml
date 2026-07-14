@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Помилка";
+}
+
+<div class="container d-flex flex-column justify-content-center align-items-center text-center" style="min-height: 70vh;">
+    <i class="bi bi-exclamation-triangle-fill text-warning" style="font-size: 5rem;"></i>
+    <h1 class="fw-black mt-4 mb-3" style="font-weight: 900;">Ой, халепа!</h1>
+    <p class="text-secondary fw-bold fs-5 mb-5">Щось пішло не так на сервері. Ми вже працюємо над цим.</p>
+
+    <a asp-controller="Home" asp-action="Index" class="btn btn-primary fw-extrabold py-3 px-5 rounded-4 text-uppercase">
+        Повернутися на головну
+    </a>
+</div>

@@ -1,0 +1,351 @@
+﻿@{
+    ViewData["Title"] = "Безкоштовне вивчення мов - Languio";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+
+    <!-- Підключення красивого шрифту Nunito -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <style>
+            body {
+                font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+            }
+
+            /* Приховуємо стандартні елементи Google Translate, щоб зберегти наш дизайн */
+            .goog-te-banner-frame.skiptranslate {
+                display: none !important;
+            }
+
+            body {
+                top: 0px !important;
+            }
+
+            #goog-gt-tt {
+                display: none !important;
+            }
+
+            .goog-tooltip {
+                display: none !important;
+            }
+
+                .goog-tooltip:hover {
+                    display: none !important;
+                }
+
+            .goog-text-highlight {
+                background-color: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+            }
+
+            #google_translate_element {
+                display: none;
+            }
+
+            .duo-btn-start {
+                background-color: #58cc02;
+                color: white;
+                border: 2px solid #58cc02;
+                border-bottom: 4px solid #58a700;
+                border-radius: 15px;
+            }
+
+                .duo-btn-start:hover {
+                    background-color: #46a302;
+                    color: white;
+                }
+
+            .duo-btn-login {
+                background-color: white;
+                color: #1cb0f6;
+                border: 2px solid #e5e5e5;
+                border-bottom: 4px solid #e5e5e5;
+                border-radius: 15px;
+            }
+
+                .duo-btn-login:hover {
+                    background-color: #f7f7f7;
+                    color: #1cb0f6;
+                }
+
+            .duo-hero {
+                min-height: 92vh;
+            }
+
+            .duo-feature-icon {
+                width: 72px;
+                height: 72px;
+                border-radius: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 2rem;
+                margin: 0 auto 1.25rem;
+            }
+
+            .duo-stats-section {
+                background-color: #58cc02;
+            }
+
+            .duo-stat-number {
+                font-size: 2.5rem;
+                font-weight: 800;
+                color: white;
+            }
+
+            .duo-testimonial-card {
+                background-color: #f7f7f7;
+                border-radius: 24px;
+                border: 2px solid #e5e5e5;
+            }
+
+            .duo-cta-section {
+                background-color: #1cb0f6;
+            }
+
+            .duo-footer {
+                background-color: #212529;
+                color: #adb5bd;
+            }
+
+                .duo-footer a {
+                    color: #adb5bd;
+                    text-decoration: none;
+                }
+
+                    .duo-footer a:hover {
+                        color: white;
+                    }
+    </style>
+</head>
+<body>
+
+    <!-- Прихований контейнер для Google Translate -->
+    <div id="google_translate_element"></div>
+
+    <!-- HERO -->
+    <div class="container d-flex flex-column duo-hero">
+        <header class="d-flex justify-content-between align-items-center py-4">
+            <h2 class="fw-black m-0 notranslate" style="color: #58cc02; font-weight: 900; font-size: 2rem;">languio</h2>
+            <div class="dropdown">
+                <button class="btn btn-light text-secondary fw-bold border-0 bg-transparent dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    МОВА САЙТУ
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3 mt-2" aria-labelledby="languageDropdown">
+                    <!-- Додано виклики функції перекладу -->
+                    <li><a class="dropdown-item fw-bold py-2" href="#" onclick="changeLanguage('uk')">Українська</a></li>
+                    <li><a class="dropdown-item fw-bold py-2" href="#" onclick="changeLanguage('en')">English</a></li>
+                    <li><a class="dropdown-item fw-bold py-2" href="#" onclick="changeLanguage('de')">Deutsch</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <main class="row flex-grow-1 align-items-center justify-content-between my-5">
+            <!-- Ліва колонка -->
+            <div class="col-md-6 d-flex flex-column align-items-center align-items-md-start text-center text-md-start">
+                <h1 class="fw-black mb-5 text-dark" style="font-size: 2.5rem; line-height: 1.3; font-weight: 900;">
+                    Безкоштовний, веселий та<br>ефективний спосіб<br>вивчення мови!
+                </h1>
+
+                <div class="d-grid gap-3 w-100" style="max-width: 350px;">
+                    <a asp-controller="Account" asp-action="Register" class="btn duo-btn-start fw-extrabold py-3 fs-6">
+                        РОЗПОЧАТИ
+                    </a>
+
+                    <a asp-controller="Account" asp-action="Login" class="btn duo-btn-login fw-extrabold py-3 fs-6 text-uppercase">
+                        Вже маю обліковий запис
+                    </a>
+                </div>
+            </div>
+
+            <!-- Права колонка: ВИПРАВЛЕНО ШЛЯХ ДО ФОТО -->
+            <div class="col-md-5 mt-5 mt-md-0 text-center">
+                <img src="~/images/mascot.gif" alt="Languio Hero" class="img-fluid" style="max-height: 400px; object-fit: contain;" />
+            </div>
+        </main>
+
+        <div class="text-center pb-4 mt-auto">
+            <i class="bi bi-chevron-down text-secondary fs-4 opacity-50"></i>
+        </div>
+    </div>
+
+    <!-- ПЕРЕВАГИ -->
+    <section class="py-5 py-md-5" style="background-color: #ffffff;">
+        <div class="container py-5">
+            <h2 class="fw-black text-center text-dark mb-5" style="font-size: 2rem; font-weight: 900;">
+                Чому languio?
+            </h2>
+
+            <div class="row g-4 text-center">
+                <div class="col-md-4">
+                    <div class="duo-feature-icon" style="background-color: #d7ffb8;">
+                        <i class="bi bi-award-fill" style="color: #58cc02;"></i>
+                    </div>
+                    <h5 class="fw-extrabold mb-2">Науково доведено</h5>
+                    <p class="text-secondary px-md-3 fw-semibold">
+                        Наша методика поєднує повторення та практику, щоб знання закріплювались надовго.
+                    </p>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="duo-feature-icon" style="background-color: #ddf4ff;">
+                        <i class="bi bi-controller" style="color: #1cb0f6;"></i>
+                    </div>
+                    <h5 class="fw-extrabold mb-2">Навчання через гру</h5>
+                    <p class="text-secondary px-md-3 fw-semibold">
+                        Короткі уроки, бали, серії та досягнення — навчання перетворюється на захопливу гру.
+                    </p>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="duo-feature-icon" style="background-color: #ffe5b4;">
+                        <i class="bi bi-graph-up-arrow" style="color: #ff9600;"></i>
+                    </div>
+                    <h5 class="fw-extrabold mb-2">Персональний прогрес</h5>
+                    <p class="text-secondary px-md-3 fw-semibold">
+                        Ми підлаштовуємо складність уроків під ваш рівень і швидкість навчання.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- СТАТИСТИКА -->
+    <section class="duo-stats-section py-5">
+        <div class="container py-4">
+            <div class="row g-4 text-center">
+                <div class="col-6 col-md-3">
+                    <div class="duo-stat-number">500K+</div>
+                    <div class="text-white fw-extrabold text-uppercase small opacity-75">Учнів</div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="duo-stat-number">12</div>
+                    <div class="text-white fw-extrabold text-uppercase small opacity-75">Мов</div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="duo-stat-number">100%</div>
+                    <div class="text-white fw-extrabold text-uppercase small opacity-75">Безкоштовно</div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="duo-stat-number">4.8★</div>
+                    <div class="text-white fw-extrabold text-uppercase small opacity-75">Оцінка учнів</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ВІДГУК -->
+    <section class="py-5">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-md-7">
+                    <div class="duo-testimonial-card p-5 text-center">
+                        <i class="bi bi-quote fs-1" style="color: #58cc02;"></i>
+                        <p class="fs-5 fw-bold text-dark mb-4">
+                            "Завдяки languio я нарешті почав розмовляти англійською впевнено.
+                            Короткі щоденні уроки — саме те, чого мені не вистачало."
+                        </p>
+                        <div class="fw-extrabold text-dark">Олексій, 27 років</div>
+                        <div class="text-secondary small fw-bold">Вивчає англійську — 180 днів поспіль</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="duo-cta-section py-5">
+        <div class="container py-4 text-center">
+            <h2 class="fw-black text-white mb-4" style="font-size: 2rem; font-weight: 900;">
+                Готові розпочати свою мовну подорож?
+            </h2>
+            <a asp-controller="Account" asp-action="Register" class="btn btn-light fw-extrabold py-3 px-5 rounded-4 mt-3" style="color: #1cb0f6;">
+                РОЗПОЧАТИ БЕЗКОШТОВНО
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="duo-footer py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-6 col-md-3">
+                    <h6 class="text-white fw-extrabold text-uppercase small mb-3">Про нас</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2 small fw-semibold">
+                        <li><a href="#">Про Languio</a></li>
+                        <li><a href="#">Команда</a></li>
+                        <li><a href="#">Кар'єра</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3">
+                    <h6 class="text-white fw-extrabold text-uppercase small mb-3">Навчання</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2 small fw-semibold">
+                        <li><a href="#">Курси</a></li>
+                        <li><a href="#">Блог</a></li>
+                        <li><a href="#">Подкаст</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3">
+                    <h6 class="text-white fw-extrabold text-uppercase small mb-3">Підтримка</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2 small fw-semibold">
+                        <li><a href="#">Довідка</a></li>
+                        <li><a href="#">Контакти</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3">
+                    <h6 class="text-white fw-extrabold text-uppercase small mb-3">Соцмережі</h6>
+                    <div class="d-flex gap-3 fs-5">
+                        <a href="#"><i class="bi bi-instagram"></i></a>
+                        <a href="#"><i class="bi bi-facebook"></i></a>
+                        <a href="#"><i class="bi bi-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="border-secondary opacity-25 my-4">
+
+            <div class="text-center small fw-bold opacity-75">
+                © @DateTime.Now.Year Languio. Усі права захищено.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Скрипти для перекладу сайту -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+        pageLanguage: 'uk',
+        includedLanguages: 'uk,en,de',
+        autoDisplay: false
+        }, 'google_translate_element');
+        }
+
+        // Функція, яка спрацьовує при виборі мови з нашого меню
+        function changeLanguage(langCode) {
+        var selectField = document.querySelector(".goog-te-combo");
+        if (selectField) {
+        selectField.value = langCode;
+        selectField.dispatchEvent(new Event("change"));
+        }
+        }
+    </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>

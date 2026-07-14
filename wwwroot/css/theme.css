@@ -1,0 +1,72 @@
+﻿
+:root {
+    --bg-main: #ffffff;
+    --bg-sidebar: #ffffff;
+    --bg-card: #ffffff;
+    --text-main: #212529;
+    --text-secondary: #6c757d;
+    --border-color: #e9ecef;
+    --hover-bg: #f5f5f5;
+}
+
+[data-theme="dark"] {
+    --bg-main: #121212;
+    --bg-sidebar: #1a1a1a;
+    --bg-card: #1e1e1e;
+    --text-main: #e9ecef;
+    --text-secondary: #adb5bd;
+    --border-color: #2d2d2d;
+    --hover-bg: #2a2a2a;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+        --bg-main: #121212;
+        --bg-sidebar: #1a1a1a;
+        --bg-card: #1e1e1e;
+        --text-main: #e9ecef;
+        --text-secondary: #adb5bd;
+        --border-color: #2d2d2d;
+        --hover-bg: #2a2a2a;
+    }
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.bg-white {
+    background-color: var(--bg-card) !important;
+}
+
+.text-dark {
+    color: var(--text-main) !important;
+}
+
+.text-secondary {
+    color: var(--text-secondary) !important;
+}
+
+.border-light-subtle {
+    border-color: var(--border-color) !important;
+}
+
+.bg-light {
+    background-color: var(--bg-main) !important;
+}
+
+.hover-gray:hover {
+    background-color: var(--hover-bg) !important;
+}
+
+.dl-more-menu, .card.dl-sidebar-card {
+    background-color: var(--bg-card) !important;
+    border-color: var(--border-color) !important;
+}
+
+.dl-btn-locked {
+    background-color: var(--bg-main) !important;
+    border-color: var(--border-color) !important;
+}

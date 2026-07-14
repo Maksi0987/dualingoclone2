@@ -1,0 +1,51 @@
+@model Languio.Models.LanguageCourse
+@{
+    ViewData["Title"] = "Редагувати курс";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid min-vh-100 bg-white d-flex align-items-center justify-content-center p-4">
+    <div class="w-100" style="max-width: 500px;">
+
+        <h1 class="h3 fw-extrabold mb-4 text-dark text-center d-flex align-items-center justify-content-center gap-2" style="font-family: 'Nunito', sans-serif;">
+            <span>✏️</span> Редагувати курс
+        </h1>
+
+        <form asp-action="EditCourse" method="post" class="card dl-light-card p-4 rounded-4 shadow-sm border-2">
+            <div asp-validation-summary="ModelOnly" class="text-danger small mb-3 fw-bold"></div>
+
+            <input type="hidden" asp-for="Id" />
+
+            <div class="mb-4">
+                <label asp-for="Name" class="form-label fw-extrabold text-secondary small text-uppercase mb-2" style="letter-spacing: 0.8px;">
+                    Назва мови
+                </label>
+                <input asp-for="Name" class="form-control dl-light-input py-2.5 text-center fw-extrabold text-uppercase fs-4 text-dark"
+                       placeholder="Наприклад: Німецька, Англійська" required autocomplete="off" />
+                <span asp-validation-for="Name" class="text-danger small fw-bold"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="LanguageCode" class="form-label fw-extrabold text-secondary small text-uppercase mb-2" style="letter-spacing: 0.8px;">
+                    Код мови (ISO)
+                </label>
+                <input asp-for="LanguageCode" class="form-control dl-light-input py-2.5 text-center fw-extrabold text-uppercase fs-4 text-dark"
+                       placeholder="Наприклад: en, de, fr" required autocomplete="off" maxlength="5" />
+                <span asp-validation-for="LanguageCode" class="text-danger small fw-bold"></span>
+                <div class="form-text text-secondary text-opacity-75 small mt-2 text-center fw-bold">
+                    Використовуйте стандартні дволітерні коди мов.
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end gap-3 border-top border-2 border-light-subtle pt-4 mt-2">
+                <a asp-action="Index" class="btn btn-3d-light text-uppercase fw-extrabold px-4 py-2.5 rounded-3 fs-7 text-decoration-none flex-grow-1 text-center">
+                    Скасувати
+                </a>
+                <button type="submit" class="btn btn-3d-green text-uppercase fw-extrabold px-4 py-2.5 rounded-3 fs-7 flex-grow-1">
+                    Зберегти
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>

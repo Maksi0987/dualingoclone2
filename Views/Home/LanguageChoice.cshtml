@@ -1,0 +1,53 @@
+﻿@model Languio.Models.ChooseLanguageViewModel
+
+@{
+    ViewData["Title"] = "Вибір мови";
+    // Вимикаємо бічну панель для цієї сторінки, щоб вона виглядала як екран привітання
+    Layout = "_Layout";
+}
+
+<div class="container d-flex flex-column align-items-center justify-content-center min-vh-100 py-5">
+    <h2 class="fw-extrabold mb-5 text-center">Яку мову ви хочете вивчати?</h2>
+
+    <div class="d-flex flex-column gap-3 w-100" style="max-width: 500px;">
+        @if (Model != null && Model.Languages != null && Model.Languages.Any())
+        {
+            @foreach (var lang in Model.Languages)
+            {
+                // Визначаємо правильний прапор (для англійської us, для інших - код мови)
+                var flagClass = lang.Code.ToLower() == "en" ? "fi-us" : $"fi-{lang.Code.ToLower()}";
+
+                <form asp-controller="Home" asp-action="SelectLanguage" method="post" class="w-100 m-0">
+                    <input type="hidden" name="lang" value="@lang.Code" />
+
+                    <button type="submit" class="btn btn-outline-secondary w-100 p-4 rounded-4 d-flex align-items-center justify-content-between fw-extrabold fs-5 border-2 dl-course-btn">
+                        <span class="d-flex align-items-center gap-4 text-dark">
+                            <span class="fi @flagClass fis rounded-circle shadow-sm" style="font-size: 2.5rem;"></span>
+                            <span class="text-uppercase">@lang.Name</span>
+                        </span>
+                        <i class="bi bi-chevron-right text-muted fs-4"></i>
+                    </button>
+                </form>
+            }
+        }
+        else
+        {
+            <div class="alert alert-warning rounded-4 border-2 text-center fw-bold">
+                Курси ще не додані. Зачекайте, поки адміністратор створить перший курс.
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    /* Невелика анімація для кнопок вибору курсу */
+    .dl-course-btn {
+        transition: all 0.2s ease-in-out;
+    }
+
+        .dl-course-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            border-color: #0dcaf0 !important; /* Колір інфо-рамки при наведенні */
+        }
+</style>

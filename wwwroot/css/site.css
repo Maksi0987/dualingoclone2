@@ -1,0 +1,440 @@
+/* ==========================================================
+   АДМІН-ПАНЕЛЬ (навмисно завжди темна, незалежно від теми)
+   ========================================================== */
+
+.dl-admin-card {
+    background-color: #1c2d35 !important;
+    border: 2px solid #37464f !important;
+}
+
+.dl-admin-input {
+    background-color: #131f24 !important;
+    border: 2px solid #37464f !important;
+    color: #ffffff !important;
+    border-radius: 12px !important;
+}
+
+    .dl-admin-input:focus {
+        border-color: #1cb0f6 !important;
+        box-shadow: 0 0 0 3px rgba(28, 176, 246, 0.2) !important;
+    }
+
+.dl-clickable-row {
+    background-color: #1c2d35 !important;
+    border: 2px solid #37464f !important;
+    border-bottom: 5px solid #37464f !important;
+    color: #ffffff !important;
+    transition: all 0.15s ease;
+    display: flex;
+}
+
+    .dl-clickable-row:hover {
+        background-color: #243741 !important;
+        border-color: #4b5f6c !important;
+        transform: translateY(-1px);
+    }
+
+    .dl-clickable-row:active {
+        transform: translateY(3px);
+        border-bottom-width: 2px !important;
+    }
+
+.dl-light-row-static {
+    background-color: #ffffff !important;
+    border: 2px solid #e5e5e5 !important;
+    border-bottom: 5px solid #e5e5e5 !important;
+    color: #3c3c3c !important;
+}
+
+.dl-light-row:hover {
+    background-color: var(--hover-bg);
+    border-color: var(--border-color);
+}
+
+.btn-outline-danger:hover {
+    background-color: #ffe5e5;
+    color: #ea2b2b;
+    border-color: #ffcccc;
+}
+
+.btn-outline-primary:hover {
+    background-color: #e5f3ff;
+    color: #007bff;
+    border-color: #cce5ff;
+}
+
+/* ==========================================================
+   ТИПОГРАФІКА / УТИЛІТИ
+   ========================================================== */
+
+.fw-extrabold {
+    font-weight: 800 !important;
+}
+
+.fs-7 {
+    font-size: 0.85rem !important;
+}
+
+.tracking-wider {
+    letter-spacing: 1px;
+}
+
+.tracking-wide {
+    letter-spacing: 0.8px;
+}
+
+.gap-1\.5 {
+    gap: 0.35rem;
+}
+
+.h-100vh {
+    height: 100vh !important;
+}
+
+/* ==========================================================
+   ЛІВЕ МЕНЮ НАВІГАЦІЇ
+   ========================================================== */
+
+.left-sidebar .nav-link {
+    transition: all 0.15s ease;
+    color: var(--text-secondary) !important;
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    border: 2px solid transparent;
+}
+
+    .left-sidebar .nav-link i {
+        width: 28px;
+        text-align: center;
+    }
+
+    .left-sidebar .nav-link:hover {
+        background-color: var(--hover-bg) !important;
+        color: var(--text-main) !important;
+    }
+
+    .left-sidebar .nav-link.active {
+        background-color: #ddf4ff !important;
+        color: #1899d6 !important;
+        border: 2px solid #84d8ff !important;
+    }
+
+/* ==========================================================
+   БАННЕР РОЗДІЛУ / РОЗДІЛЬНИК ЗАБЛОКОВАНОЇ ГРУПИ
+   ========================================================== */
+
+.dl-section-banner {
+    background-color: #58cc02 !important;
+    border-bottom: 5px solid #46a302 !important;
+}
+
+.dl-section-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+    .dl-section-divider::before,
+    .dl-section-divider::after {
+        content: "";
+        flex: 1;
+        height: 2px;
+        background-color: var(--border-color);
+        border-radius: 2px;
+    }
+
+    .dl-section-divider span {
+        color: var(--text-secondary);
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+        font-size: 0.95rem;
+    }
+
+/* ==========================================================
+   КНОПКИ ЗМІЙКИ УРОКІВ
+   ========================================================== */
+
+.dl-btn {
+    width: 74px;
+    height: 70px;
+    border: none !important;
+    padding: 0;
+    transition: all 0.1s ease;
+}
+
+    .dl-btn i {
+        font-size: 1.6rem;
+    }
+
+.dl-btn-active {
+    background-color: #58cc02 !important;
+    box-shadow: 0 8px 0 #46a302 !important;
+}
+
+    .dl-btn-active:hover {
+        background-color: #61e004 !important;
+    }
+
+    .dl-btn-active:active {
+        transform: translateY(4px);
+        box-shadow: 0 4px 0 #46a302 !important;
+    }
+
+.dl-btn-locked {
+    background-color: var(--bg-main) !important;
+    border: 3px dashed var(--border-color) !important;
+    box-shadow: none !important;
+    color: var(--text-secondary) !important;
+    opacity: 1 !important;
+    cursor: not-allowed;
+}
+
+.dl-chest-locked, .dl-trophy-locked {
+    width: 70px;
+    height: 65px;
+    background-color: var(--bg-main);
+    border: 3px dashed var(--border-color);
+    border-radius: 18px;
+}
+
+/* ==========================================================
+   ПЛАШКА "ПОЧАТИ" НАД АКТИВНИМ УРОКОМ
+   ========================================================== */
+
+.dl-tooltip {
+    position: absolute;
+    top: -45px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--bg-card);
+    color: #58cc02;
+    font-weight: 800;
+    font-size: 0.75rem;
+    padding: 6px 14px;
+    border-radius: 12px;
+    border: 2px solid var(--border-color);
+    letter-spacing: 0.8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    white-space: nowrap;
+    z-index: 10;
+}
+
+    .dl-tooltip::after {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 8px 8px 0;
+        border-style: solid;
+        border-color: var(--bg-card) transparent;
+    }
+
+    .dl-tooltip::before {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 9px 9px 0;
+        border-style: solid;
+        border-color: var(--border-color) transparent;
+        z-index: -1;
+    }
+
+/* ==========================================================
+   БОКОВІ КАРТКИ / СТАТИСТИКА
+   ========================================================== */
+
+.dl-sidebar-card {
+    background-color: var(--bg-card) !important;
+    border: 2px solid var(--border-color) !important;
+}
+
+.stats-row .text-cyan {
+    color: #1cb0f6 !important;
+}
+
+.stats-row .text-danger {
+    color: #ff4b4b !important;
+}
+
+.stats-row .text-warning {
+    color: #ff9600 !important;
+}
+
+.hover-gray {
+    transition: background 0.2s ease;
+}
+
+    .hover-gray:hover {
+        background-color: var(--hover-bg);
+        cursor: pointer;
+    }
+
+/* ==========================================================
+   КНОПКИ
+   ========================================================== */
+
+.btn-3d-subtle {
+    border: none !important;
+    border-bottom: 4px solid #e5e5e5 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.btn-3d-blue {
+    background-color: #1cb0f6 !important;
+    border: none !important;
+    border-bottom: 5px solid #1899d6 !important;
+    color: #ffffff !important;
+}
+
+    .btn-3d-blue:hover {
+        background-color: #24baff !important;
+    }
+
+    .btn-3d-blue:active {
+        transform: translateY(4px) !important;
+        border-bottom-width: 1px !important;
+    }
+
+.btn-3d-light {
+    background-color: var(--bg-card) !important;
+    border: 2px solid var(--border-color) !important;
+    border-bottom: 4px solid var(--border-color) !important;
+    color: var(--text-main) !important;
+}
+
+    .btn-3d-light:hover {
+        background-color: var(--hover-bg) !important;
+    }
+
+.btn-3d-green {
+    background-color: #58cc02 !important;
+    border: none !important;
+    border-bottom: 5px solid #46a302 !important;
+    color: #ffffff !important;
+}
+
+    .btn-3d-green:hover {
+        background-color: #61e004 !important;
+    }
+
+    .btn-3d-green:active {
+        transform: translateY(4px) !important;
+        border-bottom-width: 1px !important;
+    }
+
+/* ==========================================================
+   ВИПАДАЮЧЕ МЕНЮ "БІЛЬШЕ"
+   ========================================================== */
+
+.dl-more-menu-container .dl-more-menu {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    min-width: 220px;
+    border-radius: 16px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.2s ease-in-out;
+    z-index: 1050;
+    margin-bottom: 5px;
+}
+
+.dl-more-menu-container:hover .dl-more-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dl-more-menu .nav-link:hover {
+    background-color: var(--hover-bg) !important;
+}
+
+.dl-more-menu .dl-logout-btn:hover {
+    background-color: #ffd3d3 !important;
+    color: #ea2b2b !important;
+}
+
+    .dl-more-menu .dl-logout-btn:hover i {
+        color: #ea2b2b !important;
+    }
+
+/* ==========================================================
+   ПЕРЕХОДИ МІЖ СТОРІНКАМИ
+   ========================================================== */
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+}
+
+@keyframes fade-out {
+    to {
+        opacity: 0;
+    }
+}
+
+body {
+    opacity: 1;
+    transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+    body.fade-out {
+        opacity: 0;
+    }
+
+
+/* ==========================================================
+   НАЛАШТУВАННЯ
+   ========================================================== */
+.dl-course-row {
+    border: 2px solid var(--border-color);
+    transition: background-color 0.15s ease;
+}
+
+    .dl-course-row:hover {
+        background-color: var(--hover-bg);
+    }
+
+/* ==========================================================
+   АДАПТИВНІ САЙДБАРИ
+   ========================================================== */
+
+.dl-sticky-aside {
+    position: static;
+    height: auto;
+}
+
+@media (min-width: 992px) {
+    .dl-sticky-aside {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+    }
+}
+
+.dl-right-aside {
+    border-top-width: 2px;
+    border-top-style: solid;
+    border-left-width: 0;
+}
+
+@media (min-width: 992px) {
+    .dl-right-aside {
+        border-top-width: 0;
+        border-left-width: 2px;
+        border-left-style: solid;
+    }
+}
+
+.offcanvas {
+    background-color: var(--bg-card) !important;
+    color: var(--text-main) !important;
+}

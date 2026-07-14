@@ -24,6 +24,11 @@ namespace Languio.Data
             .HasOne(up => up.LanguageLesson)
             .WithMany()
             .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<UserProgress>()
+            .HasOne(p => p.User)
+            .WithMany(u => u.Progresses)
+            .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

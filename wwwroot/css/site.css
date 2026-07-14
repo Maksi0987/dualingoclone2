@@ -1,10 +1,12 @@
-/* ЕЛЕМЕНТИ КАРТОК В АДМІНЦІ */
+/* ==========================================================
+   АДМІН-ПАНЕЛЬ (навмисно завжди темна, незалежно від теми)
+   ========================================================== */
+
 .dl-admin-card {
-    background-color: #1c2d35 !important; /* Трохи світліший за фон додатка для створення об'єму */
+    background-color: #1c2d35 !important;
     border: 2px solid #37464f !important;
 }
 
-/* КОНТРАСТНИЙ ІНПУТ ДЛЯ ТЕМНОЇ ТЕМИ */
 .dl-admin-input {
     background-color: #131f24 !important;
     border: 2px solid #37464f !important;
@@ -17,7 +19,6 @@
         box-shadow: 0 0 0 3px rgba(28, 176, 246, 0.2) !important;
     }
 
-/* ІНТЕРАКТИВНИЙ РЯДОК КУРСУ */
 .dl-clickable-row {
     background-color: #1c2d35 !important;
     border: 2px solid #37464f !important;
@@ -38,7 +39,34 @@
         border-bottom-width: 2px !important;
     }
 
-/* КОРЕКЦІЯ ШРИФТІВ ДЛЯ УЗГОДЖЕНОСТІ */
+.dl-light-row-static {
+    background-color: #ffffff !important;
+    border: 2px solid #e5e5e5 !important;
+    border-bottom: 5px solid #e5e5e5 !important;
+    color: #3c3c3c !important;
+}
+
+.dl-light-row:hover {
+    background-color: var(--hover-bg);
+    border-color: var(--border-color);
+}
+
+.btn-outline-danger:hover {
+    background-color: #ffe5e5;
+    color: #ea2b2b;
+    border-color: #ffcccc;
+}
+
+.btn-outline-primary:hover {
+    background-color: #e5f3ff;
+    color: #007bff;
+    border-color: #cce5ff;
+}
+
+/* ==========================================================
+   ТИПОГРАФІКА / УТИЛІТИ
+   ========================================================== */
+
 .fw-extrabold {
     font-weight: 800 !important;
 }
@@ -47,25 +75,43 @@
     font-size: 0.85rem !important;
 }
 
-/* СТАТИЧНИЙ СВІТЛИЙ РЯДОК БЕЗ ЕФЕКТУ КЛІКУ НА ВСЮ ПЛОЩУ */
-.dl-light-row-static {
-    background-color: #ffffff !important;
-    border: 2px solid #e5e5e5 !important;
-    border-bottom: 5px solid #e5e5e5 !important;
-    color: #3c3c3c !important;
+.tracking-wider {
+    letter-spacing: 1px;
 }
 
-/* ЛІВЕ МЕНЮ НАВІГАЦІЇ (СВІТЛЕ) */
-.left-sidebar .nav-link {
-    transition: all 0.15s ease;
-    color: #4b5f6c !important;
-    font-size: 0.85rem;
+.tracking-wide {
     letter-spacing: 0.8px;
 }
 
+.gap-1\.5 {
+    gap: 0.35rem;
+}
+
+.h-100vh {
+    height: 100vh !important;
+}
+
+/* ==========================================================
+   ЛІВЕ МЕНЮ НАВІГАЦІЇ
+   ========================================================== */
+
+.left-sidebar .nav-link {
+    transition: all 0.15s ease;
+    color: var(--text-secondary) !important;
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    border: 2px solid transparent;
+}
+
+    .left-sidebar .nav-link i {
+        width: 28px;
+        text-align: center;
+    }
+
     .left-sidebar .nav-link:hover {
-        background-color: #f7f7f7 !important;
-        color: #3c3c3c !important;
+        background-color: var(--hover-bg) !important;
+        color: var(--text-main) !important;
     }
 
     .left-sidebar .nav-link.active {
@@ -74,22 +120,46 @@
         border: 2px solid #84d8ff !important;
     }
 
-/* ФІРМОВИЙ ЗЕЛЕНИЙ БАННЕР */
+/* ==========================================================
+   БАННЕР РОЗДІЛУ / РОЗДІЛЬНИК ЗАБЛОКОВАНОЇ ГРУПИ
+   ========================================================== */
+
 .dl-section-banner {
     background-color: #58cc02 !important;
     border-bottom: 5px solid #46a302 !important;
 }
 
-.btn-3d-subtle {
-    border: none !important;
-    border-bottom: 4px solid #e5e5e5 !important;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+.dl-section-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 
-/* БАЗОВІ КНОПКИ У ЗМІЙЦІ */
+    .dl-section-divider::before,
+    .dl-section-divider::after {
+        content: "";
+        flex: 1;
+        height: 2px;
+        background-color: var(--border-color);
+        border-radius: 2px;
+    }
+
+    .dl-section-divider span {
+        color: var(--text-secondary);
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+        font-size: 0.95rem;
+    }
+
+/* ==========================================================
+   КНОПКИ ЗМІЙКИ УРОКІВ
+   ========================================================== */
+
 .dl-btn {
-    width: 76px;
-    height: 72px;
+    width: 74px;
+    height: 70px;
     border: none !important;
     padding: 0;
     transition: all 0.1s ease;
@@ -99,7 +169,6 @@
         font-size: 1.6rem;
     }
 
-/* СТАН КНОПКИ: АКТИВНИЙ (Зелений 3D) */
 .dl-btn-active {
     background-color: #58cc02 !important;
     box-shadow: 0 8px 0 #46a302 !important;
@@ -114,36 +183,39 @@
         box-shadow: 0 4px 0 #46a302 !important;
     }
 
-/* СТАН КНОПКИ: ЗАБЛОКОВАНИЙ (Сірий) */
 .dl-btn-locked {
-    background-color: #e5e5e5 !important;
-    box-shadow: 0 8px 0 #ccc !important;
-    color: #afafaf !important;
+    background-color: var(--bg-main) !important;
+    border: 3px dashed var(--border-color) !important;
+    box-shadow: none !important;
+    color: var(--text-secondary) !important;
+    opacity: 1 !important;
     cursor: not-allowed;
 }
 
-/* ЕЛЕМЕНТИ ЗМІЙКИ: СКРИНЯ ТА КУБОК */
 .dl-chest-locked, .dl-trophy-locked {
     width: 70px;
     height: 65px;
-    background-color: #f7f7f7;
-    border: 3px dashed #e5e5e5;
+    background-color: var(--bg-main);
+    border: 3px dashed var(--border-color);
     border-radius: 18px;
 }
 
-/* ПЛАШКА "ПОЧАТИ" НАД АКТИВНИМ УРОКОМ */
+/* ==========================================================
+   ПЛАШКА "ПОЧАТИ" НАД АКТИВНИМ УРОКОМ
+   ========================================================== */
+
 .dl-tooltip {
     position: absolute;
     top: -45px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #ffffff;
+    background-color: var(--bg-card);
     color: #58cc02;
     font-weight: 800;
     font-size: 0.75rem;
     padding: 6px 14px;
     border-radius: 12px;
-    border: 2px solid #e5e5e5;
+    border: 2px solid var(--border-color);
     letter-spacing: 0.8px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.06);
     white-space: nowrap;
@@ -158,7 +230,7 @@
         transform: translateX(-50%);
         border-width: 8px 8px 0;
         border-style: solid;
-        border-color: #ffffff transparent;
+        border-color: var(--bg-card) transparent;
     }
 
     .dl-tooltip::before {
@@ -169,110 +241,19 @@
         transform: translateX(-50%);
         border-width: 9px 9px 0;
         border-style: solid;
-        border-color: #e5e5e5 transparent;
+        border-color: var(--border-color) transparent;
         z-index: -1;
     }
 
-/* СВІТЛІ БОКОВІ КАРТКИ */
+/* ==========================================================
+   БОКОВІ КАРТКИ / СТАТИСТИКА
+   ========================================================== */
+
 .dl-sidebar-card {
-    background-color: #ffffff !important;
-    border: 2px solid #e5e5e5 !important;
+    background-color: var(--bg-card) !important;
+    border: 2px solid var(--border-color) !important;
 }
 
-/* БЛАКИТНА 3D КНОПКА ДЛЯ ВХОДУ */
-.btn-3d-blue {
-    background-color: #1cb0f6 !important;
-    border: none !important;
-    border-bottom: 5px solid #1899d6 !important;
-    color: #ffffff !important;
-}
-
-    .btn-3d-blue:hover {
-        background-color: #24baff !important;
-    }
-
-    .btn-3d-blue:active {
-        transform: translateY(4px) !important;
-        border-bottom-width: 1px !important;
-    }
-
-.tracking-wider {
-    letter-spacing: 1px;
-}
-
-.gap-1\.5 {
-    gap: 0.35rem;
-}
-/* ГЛОБАЛЬНЕ НАЛАШТУВАННЯ ВИСОТИ СТОРІНКИ */
-.h-100vh {
-    height: 100vh !important;
-}
-
-/* ЛІВИЙ САДБАР (Широкий та адаптований під Duolingo) */
-.left-sidebar .nav-link {
-    transition: all 0.15s ease;
-    color: #4b5f6c !important;
-    font-size: 0.95rem;
-    font-weight: 800;
-    letter-spacing: 0.8px;
-    border: 2px solid transparent;
-}
-
-    .left-sidebar .nav-link i {
-        width: 28px;
-        text-align: center;
-    }
-
-    .left-sidebar .nav-link:hover {
-        background-color: #f7f7f7 !important;
-        color: #3c3c3c !important;
-    }
-    /* Стан активного пункту навігації */
-    .left-sidebar .nav-link.active {
-        background-color: #ddf4ff !important;
-        color: #1899d6 !important;
-        border: 2px solid #84d8ff !important;
-    }
-
-/* ФІРМОВИЙ ЗЕЛЕНИЙ БАНЕР РОЗДІЛУ */
-.dl-section-banner {
-    background-color: #58cc02 !important;
-    border-bottom: 5px solid #46a302 !important;
-}
-
-/* КНОПКИ У ЗМІЙЦІ */
-.dl-btn {
-    width: 74px;
-    height: 70px;
-    border: none !important;
-    padding: 0;
-    transition: all 0.1s ease;
-}
-
-/* АКТИВНА ЗЕЛЕНА КНОПКА З ЕФЕКТОМ НАТИСКАННЯ */
-.dl-btn-active {
-    background-color: #58cc02 !important;
-    box-shadow: 0 8px 0 #46a302 !important;
-}
-
-    .dl-btn-active:hover {
-        background-color: #61e004 !important;
-    }
-
-    .dl-btn-active:active {
-        transform: translateY(4px);
-        box-shadow: 0 4px 0 #46a302 !important;
-    }
-
-/* ЗАБЛОКОВАНА КНОПКА (Прибираємо темні відтінки) */
-.dl-btn-locked {
-    background-color: #e5e5e5 !important;
-    box-shadow: 0 8px 0 #afafaf !important;
-    color: #afafaf !important;
-    opacity: 1 !important;
-}
-
-/* ПРАВА ПАНЕЛЬ СТАТИСТИКИ */
 .stats-row .text-cyan {
     color: #1cb0f6 !important;
 }
@@ -290,24 +271,69 @@
 }
 
     .hover-gray:hover {
-        background-color: #f7f7f7;
+        background-color: var(--hover-bg);
         cursor: pointer;
     }
 
-/* КАРТКИ В САЙДБАРІ */
-.dl-sidebar-card {
-    background-color: #ffffff !important;
-    border: 2px solid #e5e5e5 !important;
+/* ==========================================================
+   КНОПКИ
+   ========================================================== */
+
+.btn-3d-subtle {
+    border: none !important;
+    border-bottom: 4px solid #e5e5e5 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-.tracking-wide {
-    letter-spacing: 0.8px;
+.btn-3d-blue {
+    background-color: #1cb0f6 !important;
+    border: none !important;
+    border-bottom: 5px solid #1899d6 !important;
+    color: #ffffff !important;
 }
 
-/* Стилі для випадаючого меню "Більше" */
+    .btn-3d-blue:hover {
+        background-color: #24baff !important;
+    }
+
+    .btn-3d-blue:active {
+        transform: translateY(4px) !important;
+        border-bottom-width: 1px !important;
+    }
+
+.btn-3d-light {
+    background-color: var(--bg-card) !important;
+    border: 2px solid var(--border-color) !important;
+    border-bottom: 4px solid var(--border-color) !important;
+    color: var(--text-main) !important;
+}
+
+    .btn-3d-light:hover {
+        background-color: var(--hover-bg) !important;
+    }
+
+.btn-3d-green {
+    background-color: #58cc02 !important;
+    border: none !important;
+    border-bottom: 5px solid #46a302 !important;
+    color: #ffffff !important;
+}
+
+    .btn-3d-green:hover {
+        background-color: #61e004 !important;
+    }
+
+    .btn-3d-green:active {
+        transform: translateY(4px) !important;
+        border-bottom-width: 1px !important;
+    }
+
+/* ==========================================================
+   ВИПАДАЮЧЕ МЕНЮ "БІЛЬШЕ"
+   ========================================================== */
+
 .dl-more-menu-container .dl-more-menu {
     position: absolute;
-    /* Відображаємо меню зверху кнопки (бо вона в самому низу списку) */
     bottom: 100%;
     left: 0;
     min-width: 220px;
@@ -320,26 +346,18 @@
     margin-bottom: 5px;
 }
 
-/* При наведенні на весь контейнер показуємо меню */
 .dl-more-menu-container:hover .dl-more-menu {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
 }
 
-/* Ефекти при наведенні на пункти меню */
-.dl-more-menu .dropdown-item {
-    transition: background-color 0.15s;
-    color: #777; /* Сірий колір тексту */
+.dl-more-menu .nav-link:hover {
+    background-color: var(--hover-bg) !important;
 }
 
-    .dl-more-menu .dropdown-item:hover {
-        background-color: #f7f7f7;
-    }
-
-/* Робимо червоний акцент для кнопки виходу при наведенні */
 .dl-more-menu .dl-logout-btn:hover {
-    background-color: #ffd3d3;
+    background-color: #ffd3d3 !important;
     color: #ea2b2b !important;
 }
 
@@ -347,21 +365,9 @@
         color: #ea2b2b !important;
     }
 
-.btn-outline-danger:hover {
-        background-color: #ffe5e5;
-        color: #ea2b2b;
-        border-color: #ffcccc;
-    }
-    .btn-outline-primary:hover {
-        background-color: #e5f3ff;
-        color: #007bff;
-        border-color: #cce5ff;
-    }
-    .dl-light-row:hover {
-        background-color: #fcfcfc;
-        border-color: #e5e5e5;
-    }
-
+/* ==========================================================
+   ПЕРЕХОДИ МІЖ СТОРІНКАМИ
+   ========================================================== */
 
 @keyframes fade-in {
     from {
@@ -377,7 +383,7 @@
 
 body {
     opacity: 1;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
 }
 
     body.fade-out {
@@ -385,26 +391,14 @@ body {
     }
 
 
-.dl-section-divider {
-    display: flex;
-    align-items: center;
-    gap: 16px;
+/* ==========================================================
+   НАЛАШТУВАННЯ
+   ========================================================== */
+.dl-course-row {
+    border: 2px solid var(--border-color);
+    transition: background-color 0.15s ease;
 }
 
-    .dl-section-divider::before,
-    .dl-section-divider::after {
-        content: "";
-        flex: 1;
-        height: 2px;
-        background-color: #2d3748;
-        border-radius: 2px;
-    }
-
-    .dl-section-divider span {
-        color: #64748b;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        white-space: nowrap;
-        font-size: 0.95rem;
+    .dl-course-row:hover {
+        background-color: var(--hover-bg);
     }

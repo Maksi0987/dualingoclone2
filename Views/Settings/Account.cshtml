@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Параметри";
+}
+
+@section RightSidebar {
+    <partial name="_SettingsNav" />
+}
+
+<h1 class="fw-extrabold mb-5">Параметри</h1>
+
+<section class="mb-5">
+    <h2 class="h5 fw-extrabold text-uppercase mb-3">Зовнішній вигляд</h2>
+    <hr class="border-2 opacity-25 mb-4">
+
+    <div class="d-flex justify-content-between align-items-center">
+        <span class="fw-bold">Темний режим</span>
+        <select id="theme-select" class="form-select form-select-sm w-auto fw-bold text-uppercase">
+            <option value="light">Вимкнено</option>
+            <option value="dark">Увімкнено</option>
+            <option value="system">За замовчуванням</option>
+        </select>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const select = document.getElementById('theme-select');
+            select.value = localStorage.getItem('theme') || 'system';
+
+            select.addEventListener('change', function () {
+                const value = select.value;
+                if (value === 'system') {
+                    localStorage.removeItem('theme');
+                    document.documentElement.removeAttribute('data-theme');
+                } else {
+                    localStorage.setItem('theme', value);
+                    document.documentElement.setAttribute('data-theme', value);
+                }
+            });
+        });
+    </script>
+}

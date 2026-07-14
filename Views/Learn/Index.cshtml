@@ -3,194 +3,106 @@
     ViewData["Title"] = "Навчання";
 }
 
-<div class="container-fluid min-vh-100 bg-white font-sans text-dark m-0 p-0">
-    <div class="row min-vh-100 g-0">
+@if (Model.LanguageLessonGroups == null || !Model.LanguageLessonGroups.Any())
+{
+    <div class="p-5 text-center text-secondary border border-2 border-dashed border-secondary-subtle rounded-4 my-5 bg-light">
+        <h5 class="fw-bold">Курс поки порожній</h5>
+        <p class="small m-0">Перейдіть в панель адміністратора, щоб додати розділи та уроки.</p>
+    </div>
+}
+else
+{
+    int groupCounter = 1;
+    foreach (var group in Model.LanguageLessonGroups)
+    {
+        var lessons = group.Lessons?.OrderBy(l => l.Order).ToList() ?? new List<LanguageLesson>();
+        int[] shifts = new int[] { 0, -30, -55, -30, 0, 30, 55, 30 };
+        bool isGroupLocked = Model.CurrentLanguageLesson != null && lessons.Any()
+            && lessons.Min(l => l.Order) > Model.CurrentLanguageLesson.Order;
 
-        <aside class="col-lg-2 col-md-3 border-end border-2 border-light-subtle px-4 py-4 d-flex flex-column justify-content-between position-sticky top-0 h-100vh">
-            <div>
-                <div class="logo fw-extrabold text-success fs-1 px-2 mb-4 pb-2" style="letter-spacing: -2px; font-family: 'Nunito', sans-serif;">
-                    languio
-                </div>
-                <nav class="nav flex-column gap-2 left-sidebar">
-                    <a href="#" class="nav-link active d-flex align-items-center gap-3 px-3 py-3 rounded-4 fw-extrabold text-uppercase">
-                        <i class="bi bi-house-door-fill fs-4 text-primary"></i> Навчання
-                    </a>
-                    <a href="#" class="nav-link d-flex align-items-center gap-3 px-3 py-3 rounded-4 fw-extrabold text-uppercase">
-                        <i class="bi bi-shield-shaded fs-4 text-warning"></i> Ліги
-                    </a>
-                    <a href="#" class="nav-link d-flex align-items-center gap-3 px-3 py-3 rounded-4 fw-extrabold text-uppercase">
-                        <i class="bi bi-award-fill fs-4 text-success"></i> Квести
-                    </a>
-                    <a href="#" class="nav-link d-flex align-items-center gap-3 px-3 py-3 rounded-4 fw-extrabold text-uppercase">
-                        <i class="bi bi-shop fs-4 text-danger"></i> Магазин
-                    </a>
-                    <a href="#" class="nav-link d-flex align-items-center gap-3 px-3 py-3 rounded-4 fw-extrabold text-uppercase">
-                        <i class="bi bi-person-circle fs-4 text-info"></i> Профіль
-                    </a>
-                    <div class="nav-item position-relative dl-more-menu-container">
-                        <a href="#" class="nav-link d-flex align-items-center gap-3 px-3 py-3 rounded-4 fw-extrabold text-uppercase">
-                            <i class="bi bi-three-dots fs-4 text-secondary"></i> Більше
-                        </a>
-
-                        <div class="dl-more-menu shadow p-3 bg-white border border-2 border-light-subtle">
-                            <a href="#" class="nav-link d-flex align-items-center gap-3 px-3 py-3 rounded-4 fw-extrabold text-uppercase mb-1">
-                                <i class="bi bi-gear-fill fs-4 text-secondary"></i> Налаштування
-                            </a>
-
-                            <form asp-controller="Account" asp-action="Logout" method="post" class="m-0 p-0">
-                                <button type="submit" class="nav-link d-flex align-items-center gap-3 px-3 py-3 rounded-4 fw-extrabold text-uppercase w-100 border-0 bg-transparent text-start dl-logout-btn">
-                                    <i class="bi bi-box-arrow-right fs-4 text-danger"></i> Вийти
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </nav>
+        if (isGroupLocked)
+        {
+            <div class="dl-section-divider mb-5">
+                <span>@group.Title</span>
             </div>
+        }
+        else
+        {
+            <div class="dl-section-banner p-4 text-white rounded-4 d-flex justify-content-between align-items-center mb-5 shadow-sm">
+                <div>
+                    <div class="text-uppercase fw-extrabold small text-white-50 tracking-wider">Розділ @groupCounter</div>
+                    <h2 class="h4 fw-extrabold m-0 mt-1">@group.Title</h2>
+                </div>
+            </div>
+        }
 
-            @if (User.IsInRole("Admin"))
+        <div class="d-flex flex-column align-items-center gap-4 py-3 mb-5 position-relative">
+
+            @if (!lessons.Any())
             {
-                <div class="px-2">
-                    <a asp-controller="Admin" asp-action="Index" class="btn btn-3d-light text-uppercase fw-extrabold py-3 rounded-4 w-100 border-2 d-flex align-items-center justify-content-center gap-2">
-                        <i class="bi bi-gear-fill"></i> Адмінка
-                    </a>
+                <div class="text-muted small fw-bold py-2">Уроків у цьому розділі ще немає...</div>
+            }
+
+            @for (int i = 0; i < lessons.Count; i++)
+            {
+                var lesson = lessons[i];
+                int shiftX = shifts[i % shifts.Length];
+                bool isCompleted = Model.CurrentLanguageLesson != null && lesson.Order < Model.CurrentLanguageLesson.Order;
+                bool isActive = Model.CurrentLanguageLesson != null && lesson.Id == Model.CurrentLanguageLesson.Id;
+
+                <div class="position-relative" style="transform: translateX(@(shiftX)px);">
+                    @if (isActive)
+                    {
+                        <div class="dl-tooltip text-uppercase">Почати</div>
+                        <a asp-controller="Lesson" asp-action="Start" asp-route-id="@lesson.Id"
+                           class="btn dl-btn dl-btn-active rounded-circle d-flex align-items-center justify-content-center animate-bounce">
+                            <i class="bi bi-star-fill text-white fs-4"></i>
+                        </a>
+                    }
+                    else if (isCompleted)
+                    {
+                        <a asp-controller="Lesson" asp-action="Start" asp-route-id="@lesson.Id"
+                           class="btn dl-btn dl-btn-active rounded-circle d-flex align-items-center justify-content-center animate-bounce">
+                            <i class="bi bi-check-lg text-white fs-3"></i>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="btn dl-btn dl-btn-locked rounded-circle d-flex align-items-center justify-content-center">
+                            <i class="bi bi-play-fill fs-3 text-secondary"></i>
+                        </a>
+                    }
                 </div>
             }
-        </aside>
+        </div>
 
-        <main class="col-lg-7 col-md-6 py-4 px-lg-5 overflow-auto bg-white">
-            <div class="mx-auto position-relative py-2" style="max-width: 560px;">
+        groupCounter++;
+    }
+}
 
-                @if (Model.LanguageLessonGroups == null || !Model.LanguageLessonGroups.Any())
+@section RightSidebar {
+    <div class="d-flex justify-content-between align-items-center fw-extrabold px-1 stats-row">
+        <a asp-action="LanguageChoice" asp-controller="Home"
+            class="d-flex align-items-center gap-2 text-dark fs-5 cursor-pointer rounded-3 px-2 py-1 hover-gray" title="Поточна мова">
+            @{
+                var flagClass = Model.LanguageCode == "en" ? "fi-us" : $"fi-{Model.LanguageCode}";
+                @if (!string.IsNullOrEmpty(flagClass))
                 {
-                    <div class="p-5 text-center text-secondary border border-2 border-dashed border-secondary-subtle rounded-4 my-5 bg-light">
-                        <h5 class="fw-bold">Курс поки порожній</h5>
-                        <p class="small m-0">Перейдіть в панель адміністратора, щоб додати розділи та уроки.</p>
-                    </div>
+                    <span class="fi @flagClass fis" style="font-size: 1.5rem;"></span>
                 }
                 else
                 {
-                    int groupCounter = 1;
-                    foreach (var group in Model.LanguageLessonGroups)
-                    {
-                        var lessons = group.Lessons?.OrderBy(l => l.Order).ToList() ?? new List<LanguageLesson>();
-                        int[] shifts = new int[] { 0, -30, -55, -30, 0, 30, 55, 30 };
-                        bool isGroupLocked = Model.CurrentLanguageLesson != null && lessons.Any()
-                            && lessons.Min(l => l.Order) > Model.CurrentLanguageLesson.Order;
-
-                        if (isGroupLocked)
-                        {
-                            <div class="dl-section-divider mb-5">
-                                <span>@group.Title</span>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="dl-section-banner p-4 text-white rounded-4 d-flex justify-content-between align-items-center mb-5 shadow-sm">
-                                <div>
-                                    <div class="text-uppercase fw-extrabold small text-white-50 tracking-wider">Розділ @groupCounter</div>
-                                    <h2 class="h4 fw-extrabold m-0 mt-1">@group.Title</h2>
-                                </div>
-                            </div>
-                        }
-
-                        <div class="d-flex flex-column align-items-center gap-4 py-3 mb-5 position-relative">
-
-                            @if (!lessons.Any())
-                            {
-                                <div class="text-muted small fw-bold py-2">Уроків у цьому розділі ще немає...</div>
-                            }
-
-                            @for (int i = 0; i < lessons.Count; i++)
-                            {
-                                var lesson = lessons[i];
-                                int shiftX = shifts[i % shifts.Length];
-                                bool isCompleted = Model.CurrentLanguageLesson != null && lesson.Order < Model.CurrentLanguageLesson.Order;
-                                bool isActive = Model.CurrentLanguageLesson != null && lesson.Id == Model.CurrentLanguageLesson.Id;
-
-                                <div class="position-relative" style="transform: translateX(@(shiftX)px);">
-
-                                    @if (isActive)
-                                    {
-                                        <div class="dl-tooltip text-uppercase">Почати</div>
-                                        <a asp-controller="Lesson" asp-action="Start" asp-route-id="@lesson.Id"
-                                           class="btn dl-btn dl-btn-active rounded-circle d-flex align-items-center justify-content-center animate-bounce">
-                                            <i class="bi bi-star-fill text-white fs-4"></i>
-                                        </a>
-                                    }
-                                    else if (isCompleted)
-                                    {
-                                        <a asp-controller="Lesson" asp-action="Start" asp-route-id="@lesson.Id"
-                                           class="btn dl-btn dl-btn-active rounded-circle d-flex align-items-center justify-content-center animate-bounce">
-                                            <i class="bi bi-check-lg text-white fs-3"></i>
-                                        </a>
-                                    }
-                                    else
-                                    {
-                                        <a class="btn dl-btn dl-btn-locked rounded-circle d-flex align-items-center justify-content-center"
-                                           style="background-color: #f7f7f7 !important; border: 3px dashed #e5e5e5 !important; box-shadow: none !important;">
-                                            <i class="bi bi-play-fill fs-3 text-secondary"></i>
-                                        </a>
-                                    }
-                                </div>
-                            }
-
-                        </div>
-
-                        groupCounter++;
-                    }
+                    <i class="bi bi-globe fs-3"></i>
                 }
-            </div>
-        </main>
+            }
+        </a>
 
-        <aside class="col-lg-3 col-md-3 border-start border-2 border-light-subtle py-4 px-4 bg-white d-flex flex-column gap-4 position-sticky top-0 h-100vh">
+        <span class="d-flex align-items-center gap-1.5 text-danger fs-5 rounded-3 px-2 py-1 hover-gray" title="Ударний режим (Дні)">
+            <i class="bi bi-fire fs-4"></i> @Model.DayStreak
+        </span>
 
-            <div class="d-flex justify-content-between align-items-center fw-extrabold px-1 stats-row">
-                <span class="d-flex align-items-center gap-2 text-dark fs-5 cursor-pointer rounded-3 px-2 py-1 hover-gray" title="Поточна мова">
-                    <span class="fs-4">@(!string.IsNullOrEmpty(Model.LanguageCode) ? (Model.LanguageCode.ToLower() == "en" ? "🇺🇸" : "🇩🇪") : "🌐")</span>
-                </span>
-
-                <span class="d-flex align-items-center gap-1.5 text-danger fs-5 rounded-3 px-2 py-1 hover-gray" title="Ударний режим (Дні)">
-                    <i class="bi bi-fire fs-4"></i> @Model.DayStreak
-                </span>
-
-                <span class="d-flex align-items-center gap-1.5 text-info fs-5 rounded-3 px-2 py-1 hover-gray" title="Лінгвоти (Монети)">
-                    <i class="bi bi-gem fs-4 text-cyan"></i> @Model.Coins
-                </span>
-            </div>
-
-            <div class="card dl-sidebar-card p-4 rounded-4 border-2 shadow-sm">
-                <h5 class="fw-extrabold text-dark mb-3 h6 text-uppercase tracking-wide text-secondary">Ліга прогресу</h5>
-                <div class="d-flex align-items-center gap-3">
-                    <div class="bg-light border border-2 border-light-subtle rounded-4 p-3 text-secondary opacity-70">
-                        <i class="bi bi-shield-lock-fill fs-2 text-warning"></i>
-                    </div>
-                    <div>
-                        <h6 class="fw-extrabold text-dark m-0 mb-1">Розблокуйте ліги!</h6>
-                        <p class="small text-secondary fw-bold m-0" style="line-height: 1.4;">Пройдіть ще декілька уроків, щоб змагатися з іншими.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card dl-sidebar-card p-4 rounded-4 border-2 shadow-sm">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="fw-extrabold text-dark m-0 h6 text-uppercase tracking-wide text-secondary">Квести дня</h5>
-                    <a href="#" class="text-info text-decoration-none fw-extrabold small tracking-wider">УСІ</a>
-                </div>
-                <div class="d-flex align-items-start gap-3">
-                    <i class="bi bi-lightning-charge-fill text-warning fs-2 mt-1"></i>
-                    <div class="flex-grow-1">
-                        <div class="d-flex justify-content-between small fw-extrabold text-dark mb-1">
-                            <span>Наберіть 10 балів</span>
-                            <span class="text-secondary fw-bold">0 / 10</span>
-                        </div>
-                        <div class="progress bg-light border border-light-subtle" style="height: 14px; border-radius: 8px;">
-                            <div class="progress-bar bg-warning" role="progressbar" style="width: 20%; border-radius: 8px;"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </aside>
-
+        <span class="d-flex align-items-center gap-1.5 text-info fs-5 rounded-3 px-2 py-1 hover-gray" title="Лінгвоти (Монети)">
+            <i class="bi bi-gem fs-4 text-cyan"></i> @Model.Coins
+        </span>
     </div>
-</div>
+}

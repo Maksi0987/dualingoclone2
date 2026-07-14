@@ -1,0 +1,50 @@
+﻿@using Languio.Models
+@model List<UserProgress>
+@{
+    ViewData["Title"] = "Курси";
+}
+
+@section RightSidebar {
+    <partial name="_SettingsNav" />
+}
+
+<h1 class="fw-extrabold mb-5">Курси</h1>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="p-5 text-center text-secondary border border-2 border-dashed border-secondary-subtle rounded-4 my-5 bg-light">
+        <h5 class="fw-bold">Ви ще не почали жодного курсу</h5>
+        <a asp-controller="Home" asp-action="LanguageChoice" class="fw-extrabold text-decoration-none">Обрати мову</a>
+    </div>
+}
+else
+{
+    <div class="d-flex flex-column gap-2">
+        @foreach (var progress in Model)
+        {
+            var langCode = progress.Course?.LanguageCode?.ToLower() ?? "";
+            var flagClass = langCode == "en" ? "fi-us" : $"fi-{langCode}";
+
+            <div class="d-flex align-items-center justify-content-between p-3 rounded-4 dl-course-row">
+                <div class="d-flex align-items-center gap-3">
+                    @if (!string.IsNullOrEmpty(flagClass))
+                    {
+                        <span class="fi @flagClass fis" style="font-size: 1.5rem;"></span>
+                    }
+                    else
+                    {
+                        <i class="bi bi-globe fs-3"></i>
+                    }
+                    <span class="fw-extrabold">@progress.Course?.Name</span>
+                </div>
+
+                <form asp-controller="Settings" asp-action="ResetCourse" method="post" onsubmit="return confirm('Скинути весь прогрес по цьому курсу?');">
+                    <input type="hidden" name="courseId" value="@progress.LanguageCourseId" />
+                    <button type="submit" class="btn btn-link text-danger fw-extrabold text-uppercase text-decoration-none small p-0">
+                        Скинути
+                    </button>
+                </form>
+            </div>
+        }
+    </div>
+}

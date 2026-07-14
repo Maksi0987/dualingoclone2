@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,7 +17,6 @@ namespace Languio.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly AppDbContext _context;
 
-        // Додано AppDbContext у конструктор
         public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, AppDbContext context)
         {
             _userManager = userManager;
@@ -34,6 +34,103 @@ namespace Languio.Controllers
         [HttpGet] public IActionResult Login() => View();
         [HttpGet] public IActionResult ForgotPassword() => View();
 
+        // ДОПОМІЖНИЙ МЕТОД ДЛЯ ГЕНЕРАЦІЇ ПАРОЛЯ
+        private string GenerateRandomPassword()
+        {
+            var random = new Random();
+            const string upper = "ABCDEFGHJKLMNOPQRSTUVWXYZ";
+            const string lower = "abcdefghijkmnopqrstuvwxyz";
+            const string digits = "0123456789";
+            const string nonAlphanumeric = "!@$?_-";
+
+            // Обов'язково додаємо по одному символу кожного типу, щоб Identity пропустив пароль
+            string password =
+                upper[random.Next(upper.Length)].ToString() +
+                lower[random.Next(lower.Length)].ToString() +
+                digits[random.Next(digits.Length)].ToString() +
+                nonAlphanumeric[random.Next(nonAlphanumeric.Length)].ToString();
+
+            // Добиваємо ще 4 випадкових символи (загальна довжина буде 8)
+            const string allChars = upper + lower + digits + nonAlphanumeric;
+            for (int i = 0; i < 4; i++)
+            {
+                password += allChars[random.Next(allChars.Length)];
+            }
+
+            // Перемішуємо символи випадковим чином
+            return new string(password.OrderBy(x => random.Next()).ToArray());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                ModelState.AddModelError(string.Empty, "Введіть електронну пошту.");
+                return View();
+            }
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user != null)
+            {
+                // 1. Генеруємо новий випадковий пароль
+                string newPassword = GenerateRandomPassword();
+
+                // 2. Отримуємо токен і примусово змінюємо пароль у базі даних
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var resetResult = await _userManager.ResetPasswordAsync(user, token, newPassword);
+
+                if (resetResult.Succeeded)
+                {
+                    // 3. Відправляємо лист із новим готовим паролем
+                    try
+                    {
+                        var myEmail = "mfxmaxfair@gmail.com";
+                        var appPassword = "umwm txwk vmaa yvho";
+
+                        using var smtp = new System.Net.Mail.SmtpClient
+                        {
+                            Host = "smtp.gmail.com",
+                            Port = 587,
+                            EnableSsl = true,
+                            DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network,
+                            UseDefaultCredentials = false,
+                            Credentials = new System.Net.NetworkCredential(myEmail, appPassword)
+                        };
+
+                        var fromAddress = new System.Net.Mail.MailAddress(myEmail, "Languio Support");
+                        var toAddress = new System.Net.Mail.MailAddress(email);
+
+                        using var message = new System.Net.Mail.MailMessage(fromAddress, toAddress)
+                        {
+                            Subject = "Ваш новий пароль на Languio",
+                            Body = $"<h3>Привіт!</h3>" +
+                                   $"<p>Ваш пароль на платформі Languio було успішно скинуто.</p>" +
+                                   $"<p>Ваш новий пароль для входу: <strong style='font-size: 18px; color: #0d6efd;'>{newPassword}</strong></p>" +
+                                   $"<p>Ви можете використовувати його для входу просто зараз.</p>",
+                            IsBodyHtml = true
+                        };
+
+                        await smtp.SendMailAsync(message);
+                    }
+                    catch (System.Exception ex)
+                    {
+                        ModelState.AddModelError(string.Empty, "Помилка відправки листа: " + ex.Message);
+                        return View();
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Сталася помилка при скиданні пароля в системі.");
+                    return View();
+                }
+            }
+
+            TempData["StatusMessage"] = "Якщо така пошта існує в системі, ми відправили на неї новий пароль.";
+            return RedirectToAction(nameof(Login));
+        }
+
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
@@ -43,7 +140,6 @@ namespace Languio.Controllers
                 return View(model);
             }
 
-            // Шукаємо обраний курс разом із його структурою
             var course = await _context.Courses
                 .Include(c => c.Groups)
                     .ThenInclude(g => g.Lessons)
@@ -60,14 +156,13 @@ namespace Languio.Controllers
             {
                 UserName = model.Email,
                 Email = model.Email,
-                ActiveLanguageCourseId = course.Id // Відразу встановлюємо курс користувачу
+                ActiveLanguageCourseId = course.Id
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
             {
-                // Налаштування початкового прогресу
                 var firstLesson = course.Groups
                     .OrderBy(g => g.Id)
                     .SelectMany(g => g.Lessons)
@@ -87,7 +182,6 @@ namespace Languio.Controllers
                 }
 
                 await _signInManager.SignInAsync(user, isPersistent: false);
-                // Одразу переходимо до навчання, оскільки мова вже вибрана!
                 return RedirectToAction("Index", "Learn");
             }
 
@@ -132,7 +226,6 @@ namespace Languio.Controllers
             {
                 await _userManager.AddLoginAsync(user, info);
                 await _signInManager.SignInAsync(user, isPersistent: false);
-                // При вході через Google користувач ще не вибрав мову, тому перекидаємо на LanguageChoice
                 return RedirectToAction("LanguageChoice", "Home");
             }
 

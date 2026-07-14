@@ -34,13 +34,17 @@ namespace Languio.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCourse(LanguageCourse course)
         {
+            if (!string.IsNullOrEmpty(course.LanguageCode) && course.LanguageCode.Length > 3)
+            {
+                ModelState.AddModelError("LanguageCode", "Код мови має містити 2-3 символи (наприклад, DE, EN).");
+            }
+
             if (!ModelState.IsValid) return View(course);
 
-            course.LanguageCode = course.LanguageCode.Trim().ToLower();
+            course.LanguageCode = course.LanguageCode.Trim().ToUpper();
             _context.Courses.Add(course);
             await _context.SaveChangesAsync();
 
-            // Виправлено: повертаємось на головну адмінки
             return RedirectToAction(nameof(Index));
         }
 
@@ -55,11 +59,17 @@ namespace Languio.Controllers
         [HttpPost]
         public async Task<IActionResult> EditCourse(LanguageCourse course)
         {
+            if (!string.IsNullOrEmpty(course.LanguageCode) && course.LanguageCode.Length > 3)
+            {
+                ModelState.AddModelError("LanguageCode", "Код мови має містити 2-3 символи (наприклад, DE, EN).");
+            }
+
             if (!ModelState.IsValid) return View(course);
+
+            course.LanguageCode = course.LanguageCode.Trim().ToUpper();
             _context.Courses.Update(course);
             await _context.SaveChangesAsync();
 
-            // Виправлено: була помилка ("Courses" замість "Index")
             return RedirectToAction(nameof(Index));
         }
 
@@ -114,11 +124,9 @@ namespace Languio.Controllers
             var group = await _context.Groups.FindAsync(id);
             if (group != null)
             {
-                int courseId = group.LanguageCourseId; // Запам'ятовуємо ID курсу до видалення
+                int courseId = group.LanguageCourseId;
                 _context.Groups.Remove(group);
                 await _context.SaveChangesAsync();
-
-                // Виправлено: тепер правильно повертає в список груп цього курсу
                 return RedirectToAction("Groups", new { courseId = courseId });
             }
             return RedirectToAction(nameof(Index));
@@ -181,11 +189,9 @@ namespace Languio.Controllers
             var lesson = await _context.Lessons.FindAsync(id);
             if (lesson != null)
             {
-                int groupId = lesson.LanguageLessonGroupId; // Запам'ятовуємо ID групи
+                int groupId = lesson.LanguageLessonGroupId;
                 _context.Lessons.Remove(lesson);
                 await _context.SaveChangesAsync();
-
-                // Виправлено: тепер правильно повертає в список уроків цієї групи
                 return RedirectToAction("Lessons", new { groupId = groupId });
             }
             return RedirectToAction(nameof(Index));
@@ -247,11 +253,9 @@ namespace Languio.Controllers
             var question = await _context.Questions.FindAsync(id);
             if (question != null)
             {
-                int lessonId = question.LanguageLessonId; // Запам'ятовуємо ID уроку
+                int lessonId = question.LanguageLessonId;
                 _context.Questions.Remove(question);
                 await _context.SaveChangesAsync();
-
-                // Виправлено: тепер правильно повертає в список питань цього уроку
                 return RedirectToAction("Questions", new { lessonId = lessonId });
             }
             return RedirectToAction(nameof(Index));

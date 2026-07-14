@@ -18,7 +18,8 @@
                 <label asp-for="Name" class="form-label fw-extrabold text-secondary small text-uppercase mb-2" style="letter-spacing: 0.8px;">
                     Назва мови
                 </label>
-                <input asp-for="LanguageCode" class="form-control dl-light-input py-2.5 text-center fw-extrabold text-uppercase fs-4 text-dark"
+                <!-- ВИПРАВЛЕНО: asp-for="Name" замість asp-for="LanguageCode" -->
+                <input asp-for="Name" class="form-control dl-light-input py-2.5 text-center fw-extrabold text-uppercase fs-4 text-dark"
                        placeholder="Наприклад: Німецька, Англійська" required autocomplete="off" />
             </div>
 

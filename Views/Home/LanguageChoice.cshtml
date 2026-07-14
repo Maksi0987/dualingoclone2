@@ -1,7 +1,7 @@
 ﻿@model Languio.Models.ChooseLanguageViewModel
 @{
     ViewData["Title"] = "Яку мову ви хочете вчити?";
-    Layout = null;
+    Layout = "_StylesLayout";
 }
 
 <div class="container-fluid min-vh-100 bg-white d-flex flex-column">
@@ -20,13 +20,21 @@
             <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4 justify-content-center">
                 @foreach (var lang in Model.Languages)
                 {
+                    var flagClass = lang.Code == "en" ? "fi-us" : $"fi-{lang.Code}";
                     <div class="col">
                         <div class="card h-100 text-center p-4 border-2 rounded-4 shadow-sm dl-lang-card"
                              style="cursor: pointer; transition: all 0.2s;"
                              onclick="submitLanguage('@lang.Code')">
 
                             <div class="card-body p-0 d-flex flex-column align-items-center justify-content-center">
-                                <span class="fs-1 mb-2">@lang.Code</span>
+                                @if (!string.IsNullOrEmpty(flagClass))
+                                {
+                                    <span class="fi @flagClass fis" style="font-size: 1.5rem;"></span>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-globe fs-3"></i>
+                                }
                                 <h5 class="card-title fw-extrabold fs-6 m-0 text-dark">@lang.Name</h5>
                             </div>
                         </div>
@@ -38,11 +46,16 @@
 </div>
 
 <style>
-    .dl-lang-card:hover {
-        background-color: #f7f7f7;
-        border-color: #1cb0f6 !important;
-        transform: translateY(-5px);
+    .dl-lang-card {
+        background-color: var(--bg-card) !important;
+        border-color: var(--border-color) !important;
     }
+
+        .dl-lang-card:hover {
+            background-color: var(--hover-bg) !important;
+            border-color: #1cb0f6 !important;
+            transform: translateY(-5px);
+        }
 
     .logo {
         font-family: 'Nunito', sans-serif;
